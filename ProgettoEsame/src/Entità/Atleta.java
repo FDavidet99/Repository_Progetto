@@ -7,7 +7,7 @@ public class Atleta
 	private String CodiceFiscale;
 	private String Nome;
 	private String Cognome;
-	private Sesso Sesso;
+	private Sesso SessoAtleta;
 	private Date DataNascita;
 	private String Provincia;
 	
@@ -18,7 +18,7 @@ public class Atleta
 		CodiceFiscale = codiceFiscale;
 		Provincia = provincia;
 		DataNascita = dataNascita;
-		Sesso = sesso;
+		SessoAtleta = sesso;
 	
 	}
 

@@ -5,7 +5,7 @@ public class ProcuratoreSportivo {
 	private String CodiceFiscale;
 	private String Nome;
 	private String Cognome;
-	private Sesso Sesso;
+	private Sesso SessoProcuratore;
 	private Date DataNascita;
 	private String Provincia;
 	
@@ -15,7 +15,7 @@ public class ProcuratoreSportivo {
 		CodiceFiscale = codiceFiscale;
 		Nome = nome;
 		Cognome = cognome;
-		Sesso = sesso;
+		SessoProcuratore = sesso;
 		DataNascita = dataNascita;
 		Provincia = provincia;
 	}
@@ -46,11 +46,11 @@ public class ProcuratoreSportivo {
 	}
 
 	public Sesso getSesso() {
-		return Sesso;
+		return SessoProcuratore;
 	}
 
 	public void setSesso(Sesso sesso) {
-		Sesso = sesso;
+		SessoProcuratore = sesso;
 	}
 
 	public Date getDataNascita() {
