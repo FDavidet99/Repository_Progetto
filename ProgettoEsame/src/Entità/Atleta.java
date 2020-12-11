@@ -13,12 +13,12 @@ public class Atleta
 	
 	public Atleta(String nome, String cognome, String codiceFiscale, String provincia, Date dataNascita, Sesso sesso) {
 		super();
+		CodiceFiscale = codiceFiscale;
 		Nome = nome;
 		Cognome = cognome;
-		CodiceFiscale = codiceFiscale;
-		Provincia = provincia;
-		DataNascita = dataNascita;
 		SessoAtleta = sesso;
+		DataNascita = dataNascita;
+		Provincia = provincia;
 	
 	}
 
