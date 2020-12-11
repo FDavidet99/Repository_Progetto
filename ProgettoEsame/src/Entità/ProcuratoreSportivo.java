@@ -9,6 +9,17 @@ public class ProcuratoreSportivo {
 	private Date DataNascita;
 	private String Provincia;
 	private String CAP;
+	public ProcuratoreSportivo(String codiceFiscale, String nome, String cognome, String sesso, Date dataNascita,
+			String provincia, String cAP) {
+		super();
+		CodiceFiscale = codiceFiscale;
+		Nome = nome;
+		Cognome = cognome;
+		Sesso = sesso;
+		DataNascita = dataNascita;
+		Provincia = provincia;
+		CAP = cAP;
+	}
 	public String getCodiceFiscale() {
 		return CodiceFiscale;
 	}
@@ -30,6 +41,7 @@ public class ProcuratoreSportivo {
 	public String getSesso() {
 		return Sesso;
 	}
+	
 	public void setSesso(String sesso) {
 		Sesso = sesso;
 	}
