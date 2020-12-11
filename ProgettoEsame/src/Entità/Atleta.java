@@ -9,19 +9,25 @@ public class Atleta
 	private String Cognome;
 	private Sesso SessoAtleta;
 	private Date DataNascita;
+	private String Provincia;
 	private String LuogoNascita;
-	
-	public Atleta(String nome, String cognome, String codiceFiscale, String luogoNascita, Date dataNascita, Sesso sesso) {
+	public Atleta(String codiceFiscale, String nome, String cognome, Sesso sessoAtleta, Date dataNascita,
+			String provincia, String luogoNascita) {
 		super();
 		CodiceFiscale = codiceFiscale;
 		Nome = nome;
 		Cognome = cognome;
-		SessoAtleta = sesso;
+		SessoAtleta = sessoAtleta;
 		DataNascita = dataNascita;
+		Provincia = provincia;
 		LuogoNascita = luogoNascita;
-	
 	}
-
+	public String getCodiceFiscale() {
+		return CodiceFiscale;
+	}
+	public void setCodiceFiscale(String codiceFiscale) {
+		CodiceFiscale = codiceFiscale;
+	}
 	public String getNome() {
 		return Nome;
 	}
@@ -34,17 +40,11 @@ public class Atleta
 	public void setCognome(String cognome) {
 		Cognome = cognome;
 	}
-	public String getCodiceFiscale() {
-		return CodiceFiscale;
+	public Sesso getSessoAtleta() {
+		return SessoAtleta;
 	}
-	public void setCodiceFiscale(String codiceFiscale) {
-		CodiceFiscale = codiceFiscale;
-	}
-	public String getLuogoNascita() {
-		return LuogoNascita;
-	}
-	public void setLuogoNascita(String luogoNascita) {
-		LuogoNascita = luogoNascita;
+	public void setSessoAtleta(Sesso sessoAtleta) {
+		SessoAtleta = sessoAtleta;
 	}
 	public Date getDataNascita() {
 		return DataNascita;
@@ -52,11 +52,19 @@ public class Atleta
 	public void setDataNascita(Date dataNascita) {
 		DataNascita = dataNascita;
 	}
-	public Sesso getSessoAtleta() {
-		return SessoAtleta;
+	public String getProvincia() {
+		return Provincia;
 	}
-	public void setSessoAtleta(Sesso sessoAtleta) {
-		SessoAtleta = sessoAtleta;
+	public void setProvincia(String provincia) {
+		Provincia = provincia;
 	}
+	public String getLuogoNascita() {
+		return LuogoNascita;
+	}
+	public void setLuogoNascita(String luogoNascita) {
+		LuogoNascita = luogoNascita;
+	}
+	
+	
 	
 }
