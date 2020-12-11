@@ -4,12 +4,12 @@ import java.util.Date;
 
 public class Atleta 
 {
-	public String Nome;
-	public String Cognome;
-	public String CodiceFiscale;
-	public String Provincia;
-	public Date DataNascita;
-	public Sesso SessoAtleta;
+	private String CodiceFiscale;
+	private String Nome;
+	private String Cognome;
+	private Sesso Sesso;
+	private Date DataNascita;
+	private String Provincia;
 	
 	public Atleta(String nome, String cognome, String codiceFiscale, String provincia, Date dataNascita, Sesso sesso) {
 		super();
@@ -18,8 +18,8 @@ public class Atleta
 		CodiceFiscale = codiceFiscale;
 		Provincia = provincia;
 		DataNascita = dataNascita;
-		SessoAtleta = sesso;
-		//adada
+		Sesso = sesso;
+	
 	}
 
 	public String getNome() {
