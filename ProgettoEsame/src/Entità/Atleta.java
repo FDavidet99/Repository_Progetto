@@ -9,16 +9,16 @@ public class Atleta
 	private String Cognome;
 	private Sesso SessoAtleta;
 	private Date DataNascita;
-	private String Provincia;
+	private String LuogoNascita;
 	
-	public Atleta(String nome, String cognome, String codiceFiscale, String provincia, Date dataNascita, Sesso sesso) {
+	public Atleta(String nome, String cognome, String codiceFiscale, String luogoNascita, Date dataNascita, Sesso sesso) {
 		super();
 		CodiceFiscale = codiceFiscale;
 		Nome = nome;
 		Cognome = cognome;
 		SessoAtleta = sesso;
 		DataNascita = dataNascita;
-		Provincia = provincia;
+		LuogoNascita = luogoNascita;
 	
 	}
 
@@ -40,11 +40,11 @@ public class Atleta
 	public void setCodiceFiscale(String codiceFiscale) {
 		CodiceFiscale = codiceFiscale;
 	}
-	public String getProvincia() {
-		return Provincia;
+	public String getLuogoNascita() {
+		return LuogoNascita;
 	}
-	public void setProvincia(String provincia) {
-		Provincia = provincia;
+	public void setLuogoNascita(String luogoNascita) {
+		LuogoNascita = luogoNascita;
 	}
 	public Date getDataNascita() {
 		return DataNascita;

@@ -7,17 +7,17 @@ public class ProcuratoreSportivo {
 	private String Cognome;
 	private Sesso SessoProcuratore;
 	private Date DataNascita;
-	private String Provincia;
+	private String LuogoNascita;
 	
 	public ProcuratoreSportivo(String codiceFiscale, String nome, String cognome, Sesso sesso, Date dataNascita,
-			String provincia) {
+			String luogoNascita) {
 		super();
 		CodiceFiscale = codiceFiscale;
 		Nome = nome;
 		Cognome = cognome;
 		SessoProcuratore = sesso;
 		DataNascita = dataNascita;
-		Provincia = provincia;
+		LuogoNascita = luogoNascita;
 	}
 	
 	
@@ -61,12 +61,12 @@ public class ProcuratoreSportivo {
 		DataNascita = dataNascita;
 	}
 
-	public String getProvincia() {
-		return Provincia;
+	public String getLuogoNascita() {
+		return LuogoNascita;
 	}
 
-	public void setProvincia(String provincia) {
-		Provincia = provincia;
+	public void setLuogoNascita(String luogoNascita) {
+		LuogoNascita = luogoNascita;
 	}
 
 	
