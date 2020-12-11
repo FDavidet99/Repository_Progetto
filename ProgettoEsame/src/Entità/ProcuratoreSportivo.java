@@ -8,9 +8,9 @@ public class ProcuratoreSportivo {
 	private String Sesso;
 	private Date DataNascita;
 	private String Provincia;
-	private String CAP;
+	
 	public ProcuratoreSportivo(String codiceFiscale, String nome, String cognome, String sesso, Date dataNascita,
-			String provincia, String cAP) {
+			String provincia) {
 		super();
 		CodiceFiscale = codiceFiscale;
 		Nome = nome;
@@ -18,7 +18,7 @@ public class ProcuratoreSportivo {
 		Sesso = sesso;
 		DataNascita = dataNascita;
 		Provincia = provincia;
-		CAP = cAP;
+		
 	}
 	public String getCodiceFiscale() {
 		return CodiceFiscale;
@@ -57,11 +57,6 @@ public class ProcuratoreSportivo {
 	public void setProvincia(String provincia) {
 		Provincia = provincia;
 	}
-	public String getCAP() {
-		return CAP;
-	}
-	public void setCAP(String cAP) {
-		CAP = cAP;
-	}
+
 
 }
