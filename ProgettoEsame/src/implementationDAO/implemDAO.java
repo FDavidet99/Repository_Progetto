@@ -5,15 +5,16 @@ import java.util.List;
 import Entita.Comune;
 import Entita.Nazione;
 import Entita.Provincia;
+import interfaceDAO.*;
 
-public class PostgresImplemDAO extends implemDAO{
-	
-	public PostgresImplemDAO() {
+public class implemDAO implements ComuneDAO,ProvinciaDAO,NazioneDAO{
+
+	public implemDAO() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public Provincia getBySigla(String sigla) {
+	public List<Nazione> getByNomeNazione(String nome) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -25,25 +26,25 @@ public class PostgresImplemDAO extends implemDAO{
 	}
 
 	@Override
-	public Comune getBycodCatastale(String codCatastale) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<Provincia> getByNomeProvincia(String nome) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Nazione> getByNomeNazione(String nome) {
+	public Provincia getBySigla(String sigla) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Comune> getByNomeComune(String nome) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Comune getBycodCatastale(String codCatastale) {
 		// TODO Auto-generated method stub
 		return null;
 	}
