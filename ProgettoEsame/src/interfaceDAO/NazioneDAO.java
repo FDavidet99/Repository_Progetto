@@ -2,9 +2,11 @@ package interfaceDAO;
 
 import java.util.List;
 import Entita.Nazione;
+import Entita.Provincia;
 
 public interface NazioneDAO {
 	
-	public List<Nazione> getNomeNazione(String nome);
-	public Nazione getCodiceAt(String codAt);
+	public String getCodiceAt(Nazione nazione);
+	public Nazione getByCodiceAt(String codAt);
+	public List<Provincia> getNomeProvince(String CodiceNazione);
 }

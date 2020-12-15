@@ -20,7 +20,7 @@ public class DatabaseConnection {
     	try {
 			Class.forName("org.postgresql.Driver");
 			Connection = DriverManager.getConnection(url, USERNAME, PASSWORD);
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException ex) {
 			System.out.println("Database Connection Creation Failed : " + ex.getMessage());
 		  }		 
     }

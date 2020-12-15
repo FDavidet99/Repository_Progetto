@@ -1,10 +1,10 @@
 package interfaceDAO;
 
 import java.util.List;
-import Entita.Provincia;
+import Entita.*;
 
 public interface ProvinciaDAO {
 	
-	public List<Provincia> getNomeProvincia(String nome);
-	public Provincia getSigla(String sigla);
+	public Provincia getByNomeProvincia(String nome);
+	public List<Comune> getComuni(Provincia provincia);
 }
