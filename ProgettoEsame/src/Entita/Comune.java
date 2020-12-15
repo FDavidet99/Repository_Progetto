@@ -2,32 +2,39 @@ package Entita;
 
 public class Comune {
 
-	private String codiceCatastale;
-	private String nome;
-	private Provincia provincia;
+	private String CodiceCatastale;
+	private String Nome;
+	private Provincia Provincia;
+	
 	public Comune(String codiceCatastale, String nome,Provincia provincia) {
 		super();
-		this.codiceCatastale = codiceCatastale;
-		this.nome = nome;
-		this.provincia = provincia;
+		CodiceCatastale = codiceCatastale;
+		Nome = nome;
+		Provincia = provincia;
 	}
+	
 	public Provincia getProvincia() {
-		return provincia;
+		return Provincia;
 	}
+	
 	public void setProvincia(Provincia provincia) {
-		this.provincia = provincia;
+		Provincia = provincia;
 	}
+	
 	public String getCodiceCatastale() {
-		return codiceCatastale;
+		return CodiceCatastale;
 	}
+	
 	public void setCodiceCatastale(String codiceCatastale) {
-		this.codiceCatastale = codiceCatastale;
+		CodiceCatastale = codiceCatastale;
 	}
+	
 	public String getNome() {
-		return nome;
+		return Nome;
 	}
+	
 	public void setNome(String nome) {
-		this.nome = nome;
+		Nome = nome;
 	}
 	
 }
