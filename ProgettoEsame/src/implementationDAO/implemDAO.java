@@ -14,37 +14,37 @@ public class implemDAO implements ComuneDAO,ProvinciaDAO,NazioneDAO{
 	}
 
 	@Override
-	public List<Nazione> getByNomeNazione(String nome) {
+	public List<Nazione> getNomeNazione(String nome) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Nazione getBycodiceAt(String codAt) {
+	public Nazione getCodiceAt(String codAt) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Provincia> getByNomeProvincia(String nome) {
+	public List<Provincia> getNomeProvincia(String nome) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Provincia getBySigla(String sigla) {
+	public Provincia getSigla(String sigla) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Comune> getByNomeComune(String nome) {
+	public List<Comune> getNomeComune(String nome) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Comune getBycodCatastale(String codCatastale) {
+	public Comune getCodCatastale(String codCatastale) {
 		// TODO Auto-generated method stub
 		return null;
 	}

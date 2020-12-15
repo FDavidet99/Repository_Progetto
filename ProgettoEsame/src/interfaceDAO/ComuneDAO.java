@@ -6,5 +6,5 @@ import Entita.*;
 public interface ComuneDAO {
 	
 	public List<Comune> getNomeComune(String nome);
-	public Comune getcodCatastale(String codCatastale);
+	public Comune getCodCatastale(String codCatastale);
 }

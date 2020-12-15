@@ -18,11 +18,13 @@ public class Persona
 	public Persona(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
 			String nazioneNascita, String provinciaNascita, String comuneNascita){
 		super();
+		
 		try {
 			CodiceFiscale = calcolaCF(nome, cognome, sessoPersona, dataNascita, nazioneNascita, provinciaNascita, comuneNascita);
 		} catch (EccezioneCF e) {
 			System.out.println("Dati non compatibili con il sistema");
 		}
+		
 		Nome = nome;
 		Cognome = cognome;
 		SessoPersona = sessoPersona;
