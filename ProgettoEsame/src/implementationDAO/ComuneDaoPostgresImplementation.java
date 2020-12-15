@@ -18,14 +18,17 @@ public class ComuneDaoPostgresImplementation implements ComuneDAO {
 	public ComuneDaoPostgresImplementation(Connection connection) throws SQLException {
 		super();
 		Connection = connection;
-		getCodiceCastaleComune=Connection.prepareStatement("SELECT CodiceAt from Comune Where NomeComune=?");
+		getCodiceCastaleComune=Connection.prepareStatement("SELECT codicecatastale from comune Where nomecomune = ?");
 	}
 
 	@Override
 	public String getCodiceCatastale(String nomecomune) throws SQLException {
 		getCodiceCastaleComune.setString(1, nomecomune);
 		ResultSet rs=getCodiceCastaleComune.executeQuery();
-		String CodiceCatastale= rs.getString("codicecatastale");
+		String CodiceCatastale=null;
+		while(rs.next()) {
+			 CodiceCatastale= rs.getString("codicecatastale");
+		}
 		return CodiceCatastale;
 
 	}

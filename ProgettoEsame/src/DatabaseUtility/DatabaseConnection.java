@@ -14,7 +14,7 @@ public class DatabaseConnection {
     private final String PASSWORD = "postgres";
     private final String IP = "localhost";
     private final String PORT = "5432";
-    private String url = "jdbc:postgresql://"+IP+":"+PORT+"/DB_Agenzia_Procuratori";
+    private String url = "jdbc:postgresql://"+IP+":"+PORT+"/DB_AgenziaProcuratori";
 
     private DatabaseConnection() throws SQLException {
     	try {
