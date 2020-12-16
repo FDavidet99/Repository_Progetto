@@ -6,7 +6,7 @@ import Entita.Comune;
 import Entita.Nazione;
 import Entita.Provincia;
 
-public class PostgresImplemDAO extends implemDAO{
+public class PostgresImplemDAO extends ImplemDAO{
 	
 	public PostgresImplemDAO() {
 		// TODO Auto-generated constructor stub

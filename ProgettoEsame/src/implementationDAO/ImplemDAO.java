@@ -7,9 +7,9 @@ import Entita.Nazione;
 import Entita.Provincia;
 import interfaceDAO.*;
 
-public class implemDAO implements ComuneDAO,ProvinciaDAO,NazioneDAO{
+public class ImplemDAO implements ComuneDAO,ProvinciaDAO,NazioneDAO{
 
-	public implemDAO() {
+	public ImplemDAO() {
 		// TODO Auto-generated constructor stub
 	}
 

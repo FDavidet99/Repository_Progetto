@@ -2,12 +2,12 @@ package Singleton;
 
 import implementationDAO.ImplementazioniDAO;
 import implementationDAO.PostgresImplemDAO;
-import implementationDAO.implemDAO;
+import implementationDAO.ImplemDAO;
 
 public class ControllerQuery {
 	private final ImplementazioniDAO implementazioneScelta = ImplementazioniDAO.postgres;
 	private static ControllerQuery instance;
-	private implemDAO dao;
+	private ImplemDAO dao;
 	private ControllerQuery()
 	{
 		if(implementazioneScelta == ImplementazioniDAO.postgres)
