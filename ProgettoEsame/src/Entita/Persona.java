@@ -7,8 +7,7 @@ import EccezioniPersona.*;
 import implementationDAO.*;
 import DatabaseUtility.*;
 
-public class Persona 
-{
+public class Persona {
 	private String CodiceFiscale;
 	private String Nome;
 	private String Cognome;
@@ -182,7 +181,7 @@ public class Persona
 	        
 		nome = nome.toLowerCase();
 		cognome = cognome.toLowerCase();
-		if(!(isAlpha(nome) && isAlpha(cognome) && isAlpha(comuneNascita)))
+		if(!(isAlpha(nome) && isAlpha(cognome)))
 					throw new EccezioneCF();
 		
 		String CodiceFiscale="";
@@ -281,7 +280,7 @@ public class Persona
 	}
 	
 	private boolean isAlpha(String s) {
-        return s != null && s.matches("^[a-zA-Z]*$");
+        return s != null && s.matches("^[a-zA-Z']*$");
     }
 	
 	private boolean isConsonante(char c) {

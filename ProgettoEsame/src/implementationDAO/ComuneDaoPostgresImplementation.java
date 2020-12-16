@@ -7,9 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import implementationDAO.*;
-import interfaceDAO.ComuneDAO;
 import DatabaseUtility.*;
 import Entita.Comune;
+import InterfaceDAO.ComuneDAO;
 
 public class ComuneDaoPostgresImplementation implements ComuneDAO {
 	private Connection Connection;
