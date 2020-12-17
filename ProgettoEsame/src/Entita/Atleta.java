@@ -3,6 +3,7 @@ package Entita;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+
 import EccezioniPersona.EccezioneCF;
 
 public class Atleta extends Persona {
