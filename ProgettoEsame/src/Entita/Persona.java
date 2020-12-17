@@ -201,7 +201,7 @@ public class Persona {
 		if (strGiornoNascita.length()==1) strGiornoNascita = "0"+strGiornoNascita;
 		CodiceFiscale += strGiornoNascita;
 		
-		ComuneDaoPostgresImplementation tempo= new ComuneDaoPostgresImplementation(connection);
+		ImplementationClassPostgres tempo= new ImplementationClassPostgres(connection);
 		
 		//if(nazioneNascita.equals("Italia"))
 		CodiceFiscale += tempo.getCodiceCatastale(comuneNascita);
