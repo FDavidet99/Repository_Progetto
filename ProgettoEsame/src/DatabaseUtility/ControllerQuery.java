@@ -20,7 +20,8 @@ public class ControllerQuery {
 			
 		}
 	}
-	public static ControllerQuery getInstance(Connection c) throws SQLException
+	
+	public static ControllerQuery getInstance() throws SQLException
 	{
 		if(instance==null)
 		{
@@ -28,6 +29,7 @@ public class ControllerQuery {
 		}
 		return instance;
 	}
+	
 	public ImplementationClass getDAO()
 	{
 		return dao;

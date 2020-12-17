@@ -201,28 +201,19 @@ public class Persona {
 		if (strGiornoNascita.length()==1) strGiornoNascita = "0"+strGiornoNascita;
 		CodiceFiscale += strGiornoNascita;
 		
-		//ImplementationClassPostgres tempo= new ImplementationClassPostgres(connection);
-		ImplementationClass dao = ControllerQuery.getInstance(
-						DatabaseConnection.getInstance().getConnection()).getDAO();
-		//if(nazioneNascita.equals("Italia"))
-		CodiceFiscale += dao.getCodiceCatastale(comuneNascita);
+		
+		ImplementationClass dao = ControllerQuery.getInstance().getDAO();
+		if(nazioneNascita.equals("Italia"))
+			CodiceFiscale += dao.getCodiceCatastale(comuneNascita);
+		else
+			CodiceFiscale += dao.getCodiceAt(nazioneNascita);
+	
 		
 		CodiceFiscale += carControllo(CodiceFiscale);
-//		else
-//			CodiceFiscale += getCodiceNazione(nazioneNascita);
-//		
-//		aggiungere il carattere di controllo
 		return CodiceFiscale;
 	}
 	
 	
-	
-	private String getCodiceNazione(String nomeNazione)
-	{
-		// TODO
-		// cerca il codice della nazione nel database, se non lo trovi lancia eccezione
-		return "";
-	}
 	
 	private char caratterePerIlMese(LocalDate dataNascita) {
 		switch (dataNascita.getMonthValue()) {

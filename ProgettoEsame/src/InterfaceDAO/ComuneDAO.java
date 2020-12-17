@@ -6,6 +6,6 @@ import Entita.*;
 
 public interface ComuneDAO {
 	
-	public List<String> getNomiComuni() throws SQLException;
+	public List<String> getNomiComuni() throws SQLException; //andra in combobox
 	public String getCodiceCatastale(String nomecomune) throws SQLException;
 }

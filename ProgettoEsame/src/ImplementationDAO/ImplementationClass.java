@@ -6,10 +6,10 @@ import java.sql.SQLException;
 
 import InterfaceDAO.*;
 
-public abstract class ImplementationClass implements ComuneDAO {
+public abstract class ImplementationClass implements ComuneDAO,NazioneDAO {
 	
 	protected Connection Connection;
-    protected PreparedStatement St_getCodiceCatastaleComune, St_getNomiComuni;
+    protected PreparedStatement StmGetCodiceCatastaleComune, StmGetNomiComuni,StmGetCodiceAt;
     
 	
 	

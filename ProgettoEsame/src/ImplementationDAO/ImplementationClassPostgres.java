@@ -12,14 +12,15 @@ public class ImplementationClassPostgres extends ImplementationClass {
 	public ImplementationClassPostgres(Connection connection) throws SQLException {
 		super();
 		Connection = connection;
-		St_getCodiceCatastaleComune = Connection.prepareStatement("SELECT CodiceCatastale from Comune Where NomeComune = ?");
-		St_getNomiComuni = Connection.prepareStatement("SELECT NomeComune FROM Comune");
+		StmGetCodiceCatastaleComune = Connection.prepareStatement("SELECT CodiceCatastale from Comune Where lower(NomeComune) = lower(?)");
+		StmGetNomiComuni = Connection.prepareStatement("SELECT NomeComune FROM Comune");
+		StmGetCodiceAt=Connection.prepareStatement("SELECT CodiceAt FROM Nazione where lower(NomeNazione)= lower(?)");
 	}
 
 	@Override
 	public String getCodiceCatastale(String nomecomune) throws SQLException {
-		St_getCodiceCatastaleComune.setString(1, nomecomune);
-		ResultSet rs=St_getCodiceCatastaleComune.executeQuery();
+		StmGetCodiceCatastaleComune.setString(1, nomecomune);
+		ResultSet rs=StmGetCodiceCatastaleComune.executeQuery();
 		String CodiceCatastale=null;
 		while(rs.next()) {
 			 CodiceCatastale= rs.getString("codicecatastale");
@@ -31,7 +32,7 @@ public class ImplementationClassPostgres extends ImplementationClass {
 
 	@Override
 	public List<String> getNomiComuni() throws SQLException {
-		ResultSet rs=St_getNomiComuni.executeQuery();
+		ResultSet rs=StmGetNomiComuni.executeQuery();
 		ArrayList ElencoComuni=new ArrayList<>();
 		
 		while(rs.next()) {
@@ -40,7 +41,19 @@ public class ImplementationClassPostgres extends ImplementationClass {
 		}
 		return ElencoComuni;
 	}
-	
+
+	@Override
+	public String getCodiceAt(String NomeNazione) throws SQLException {
+		StmGetCodiceAt.setString(1, NomeNazione);
+		ResultSet rs=StmGetCodiceAt.executeQuery();
+		String CodiceAt=null;
+		while(rs.next()) {
+			 CodiceAt= rs.getString("codiceat");
+		}
+		rs.close();
+		return CodiceAt;
+		
+	}
 	
 	
 }

@@ -16,7 +16,7 @@ public class MainClass {
 
 	public static void main(String[] args) throws SQLException {
 		
-		Persona p2 = new Persona("Davide", "Ferreri",Sesso.M, LocalDate.of(1999, 2, 5),"Italia","Napoli","Lacco Ameno");
+		Persona p2 = new Persona("Davide", "Ferreri",Sesso.M, LocalDate.of(1985, 12, 17),"Italia","Napoli","LACCO Ameno");
 
 		System.out.println(p2);
 		
@@ -25,20 +25,17 @@ public class MainClass {
         Connection connection = null;
         dbconn=DatabaseConnection.getInstance();
         connection=dbconn.getConnection();
-	//finisce la connessione
         
-		ImplementationClass obj = ControllerQuery.getInstance(connection).getDAO();
-		
-		
-//		ImplementationClassPostgres a=new ImplementationClassPostgres(connection);
-//		a.getNomiComuni();
-//		Iterator i=a.getNomiComuni().iterator() ;
-		
-		
-		Iterator i=obj.getNomiComuni().iterator() ;
-		while(i.hasNext())
-			System.out.println(i.next());
-		
+	//finisce la connessione
+//        
+//		ImplementationClass obj = ControllerQuery.getInstance(connection).getDAO();
+//		
+//		
+//		
+//		Iterator i=obj.getNomiComuni().iterator() ;
+//		while(i.hasNext())
+//			System.out.println(i.next());
+//		
 	}
 
 }
