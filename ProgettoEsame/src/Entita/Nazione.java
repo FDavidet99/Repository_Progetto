@@ -3,33 +3,31 @@ package Entita;
 import java.util.ArrayList;
 
 public class Nazione {
-	private String codiceAt;
-	public ArrayList<Provincia> getProvince() {
-		return province;
-	}
-	public void setProvince(ArrayList<Provincia> province) {
-		this.province = province;
-	}
-	private String nome;
-	private ArrayList<Provincia> province;
+	private String CodiceAt;
+	private String NomeNazione;
+	private ArrayList<Provincia> Province;
 	
-	public Nazione(String codiceAt, String nome, ArrayList<Provincia> province) {
+	public Nazione(String codiceAt, String nomeNazione, ArrayList<Provincia> province ) {
 		super();
-		this.codiceAt = codiceAt;
-		this.nome = nome;
-		this.province = province;
+		CodiceAt = codiceAt;
+		NomeNazione = nomeNazione;
+		Province=province;
 	}
+
 	public String getCodiceAt() {
-		return codiceAt;
+		return CodiceAt;
 	}
+
 	public void setCodiceAt(String codiceAt) {
-		this.codiceAt = codiceAt;
+		CodiceAt = codiceAt;
 	}
-	public String getNome() {
-		return nome;
+
+	public String getNomeNazione() {
+		return NomeNazione;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+
+	public void setNomeNazione(String nomeNazione) {
+		NomeNazione = nomeNazione;
 	}
 	
 	

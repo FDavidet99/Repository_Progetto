@@ -1,21 +1,44 @@
 package Entita;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Iterator;
+import java.util.ListIterator;
 
-import EccezioniPersona.EccezioneCF;
+import DatabaseUtility.ControllerQuery;
+import DatabaseUtility.DatabaseConnection;
+import ImplementationDAO.ImplementationClass;
+import ImplementationDAO.ImplementationClassPostgres;
+
 
 public class MainClass {
 
-	public MainClass() {
-		// TODO Auto-generated constructor stub
-	}
+	public static void main(String[] args) throws SQLException {
+		
+		Persona p2 = new Persona("Davide", "Ferreri",Sesso.M, LocalDate.of(1999, 2, 5),"Italia","Napoli","Lacco Ameno");
 
-	public static void main(String[] args)  {
-		// TODO Auto-generated method stub
-		//Persona p1 = new Persona("Alessandro", "Bonomo", LocalDate.of(2001, 3, 28),"Caserta");
-		Persona p2 = new Persona("Davide", "Ferreri",Sesso.M, LocalDate.of(1999, 2, 5),"Italia","boh","boh");
 		System.out.println(p2);
-		//System.out.println(p2.getCF());
+		
+		//solo per ora metto qua la connessione che andra nel main alla fine
+	    DatabaseConnection dbconn = null;
+        Connection connection = null;
+        dbconn=DatabaseConnection.getInstance();
+        connection=dbconn.getConnection();
+	//finisce la connessione
+        
+		ImplementationClass obj = ControllerQuery.getInstance(connection).getDAO();
+		
+		
+//		ImplementationClassPostgres a=new ImplementationClassPostgres(connection);
+//		a.getNomiComuni();
+//		Iterator i=a.getNomiComuni().iterator() ;
+		
+		
+		Iterator i=obj.getNomiComuni().iterator() ;
+		while(i.hasNext())
+			System.out.println(i.next());
+		
 	}
 
 }

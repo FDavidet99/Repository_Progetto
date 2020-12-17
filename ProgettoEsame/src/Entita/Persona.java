@@ -1,11 +1,14 @@
 package Entita;
 
+import java.sql.Connection;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
-
 import EccezioniPersona.*;
+import ImplementationDAO.*;
+import DatabaseUtility.*;
 
-public class Persona 
-{
+public class Persona {
 	private String CodiceFiscale;
 	private String Nome;
 	private String Cognome;
@@ -16,13 +19,15 @@ public class Persona
 	private String ComuneNascita=new String("");
 	
 	public Persona(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
-			String nazioneNascita, String provinciaNascita, String comuneNascita){
+			String nazioneNascita, String provinciaNascita, String comuneNascita) throws SQLException{
 		super();
+		
 		try {
 			CodiceFiscale = calcolaCF(nome, cognome, sessoPersona, dataNascita, nazioneNascita, provinciaNascita, comuneNascita);
 		} catch (EccezioneCF e) {
 			System.out.println("Dati non compatibili con il sistema");
 		}
+		
 		Nome = nome;
 		Cognome = cognome;
 		SessoPersona = sessoPersona;
@@ -32,7 +37,7 @@ public class Persona
 		ComuneNascita = comuneNascita;
 	}
 	
-	public String getCF() throws EccezioneCF {
+	public String getCF() throws EccezioneCF, SQLException {
 		if(CodiceFiscale!=null)
 			return CodiceFiscale;
 		else
@@ -121,7 +126,10 @@ public class Persona
 		String out = "[";
 		try {
 			out+="CF: "+getCF()+", ";
-		} catch (EccezioneCF e) {}
+		} catch (EccezioneCF e) {} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		out+="Nome: "+ Nome +", ";
 		out+="Cognome: "+ Cognome +", ";
@@ -133,40 +141,48 @@ public class Persona
 			if(hasProviciaNascita()) {
 				out+="Provincia: "+ ProvinciaNascita +", ";
 				if(hasComuneNascita())
-					out+="Comune:"+ ComuneNascita +", ";
+					out+="Comune:"+ ComuneNascita ;
 			}
 		}
 		out+="]";
 		return out;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj.getClass() == Persona.class) {
-			Persona p = (Persona)obj;
-			try {
-				if(p.getCF() == getCF())
-					return true;
-				else
-					return false;
-			} catch (EccezioneCF e) {
-				return false;
-			}
-		}
-		else
-			return false;
-	}
-	
+//	@Override
+//	public boolean equals(Object obj) {
+//		if(obj.getClass() == Persona.class) {
+//			Persona p = (Persona)obj;
+//			try {
+//				if(p.getCF() == getCF())
+//					return true;
+//				else
+//					return false;
+//			} catch (EccezioneCF e) {
+//				return false;
+//			}
+//		}
+//		else
+//			return false;
+//	}
+//	
 	
 	//METODI CODICE FISCALE//////////////////////////////////////
 	
 	private String calcolaCF(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
-			String nazioneNascita, String provinciaNascita, String comuneNascita) throws EccezioneCF {
+			String nazioneNascita, String provinciaNascita, String comuneNascita) throws EccezioneCF, SQLException {
 		
+		
+		//solo per ora metto qua la connessione che andra nel main alla fine
+		    DatabaseConnection dbconn = null;
+	        Connection connection = null;
+	        dbconn=DatabaseConnection.getInstance();
+	        connection=dbconn.getConnection();
+		//finisce la connessione
+	        
+	        
 		nome = nome.toLowerCase();
 		cognome = cognome.toLowerCase();
-		comuneNascita = comuneNascita.toUpperCase();
-		if(!(isAlpha(nome) && isAlpha(cognome) && isAlpha(comuneNascita)))
+		if(!(isAlpha(nome) && isAlpha(cognome)))
 					throw new EccezioneCF();
 		
 		String CodiceFiscale="";
@@ -185,8 +201,10 @@ public class Persona
 		if (strGiornoNascita.length()==1) strGiornoNascita = "0"+strGiornoNascita;
 		CodiceFiscale += strGiornoNascita;
 		
-//		if(NazioneNascita.equals("Italia"))
-//			CodiceFiscale += getCodiceCatastaleComune(comuneNascita);
+		ImplementationClassPostgres tempo= new ImplementationClassPostgres(connection);
+		
+		//if(nazioneNascita.equals("Italia"))
+		CodiceFiscale += tempo.getCodiceCatastale(comuneNascita);
 //		else
 //			CodiceFiscale += getCodiceNazione(nazioneNascita);
 //		
@@ -195,12 +213,7 @@ public class Persona
 	}
 	
 	
-	private String getCodiceCatastaleComune(String nomeComune)
-	{
-		// TODO
-		// cerca il codice del comune nel database, se non lo trovi lancia eccezione
-		return "";
-	}
+	
 	private String getCodiceNazione(String nomeNazione)
 	{
 		// TODO
@@ -268,7 +281,7 @@ public class Persona
 	}
 	
 	private boolean isAlpha(String s) {
-        return s != null && s.matches("^[a-zA-Z]*$");
+        return s != null && s.matches("^[a-zA-Z']*$");
     }
 	
 	private boolean isConsonante(char c) {

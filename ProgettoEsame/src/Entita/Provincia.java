@@ -3,40 +3,48 @@ package Entita;
 import java.util.ArrayList;
 
 public class Provincia {
-	private String nome;
-	private String sigla;
-	private ArrayList<Comune> comuni;
-	private Nazione nazione;
-	public Provincia(String nome, String sigla,ArrayList<Comune> comuni,Nazione nazione) {
+	private String Nome;
+	private String Sigla;
+	private ArrayList<Comune> Comuni;
+	private Nazione Nazione;
+	
+	public Provincia(String nome, String sigla,ArrayList<Comune> comuni, Nazione nazione) {
 		super();
-		this.nome = nome;
-		this.sigla = sigla;
-		this.comuni = comuni;
-		this.nazione = nazione;
+		Nome = nome;
+		Sigla = sigla;
+		Comuni = comuni;
+		Nazione = nazione;
 	}
+	
 	public Nazione getNazione() {
-		return nazione;
+		return Nazione;
 	}
+	
 	public void setNazione(Nazione nazione) {
-		this.nazione = nazione;
+		Nazione = nazione;
 	}
+	
 	public ArrayList<Comune> getComuni() {
-		return comuni;
+		return Comuni;
 	}
+	
 	public void setComuni(ArrayList<Comune> comuni) {
-		this.comuni = comuni;
+		Comuni = comuni;
 	}
+	
 	public String getNome() {
-		return nome;
+		return Nome;
 	}
+	
 	public void setNome(String nome) {
-		this.nome = nome;
+		Nome = nome;
 	}
+	
 	public String getSigla() {
-		return sigla;
+		return Sigla;
 	}
 	public void setSigla(String sigla) {
-		this.sigla = sigla;
+		Sigla = sigla;
 	}
 	
 
