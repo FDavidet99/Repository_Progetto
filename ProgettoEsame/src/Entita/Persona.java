@@ -201,10 +201,13 @@ public class Persona {
 		if (strGiornoNascita.length()==1) strGiornoNascita = "0"+strGiornoNascita;
 		CodiceFiscale += strGiornoNascita;
 		
-		ImplementationClassPostgres tempo= new ImplementationClassPostgres(connection);
-		
+		//ImplementationClassPostgres tempo= new ImplementationClassPostgres(connection);
+		ImplementationClass dao = ControllerQuery.getInstance(
+						DatabaseConnection.getInstance().getConnection()).getDAO();
 		//if(nazioneNascita.equals("Italia"))
-		CodiceFiscale += tempo.getCodiceCatastale(comuneNascita);
+		CodiceFiscale += dao.getCodiceCatastale(comuneNascita);
+		
+		CodiceFiscale += carControllo(CodiceFiscale);
 //		else
 //			CodiceFiscale += getCodiceNazione(nazioneNascita);
 //		
@@ -308,6 +311,87 @@ public class Persona {
 			if(isVocale(c)) vocali+=c;
 		}
 		return vocali;
+	}
+	public char carControllo(String cf15) throws EccezioneCF
+	{
+		if(cf15.length()!=15)throw new EccezioneCF();
+		String carPari = getCarPostoPari(cf15);
+		String carDispari = getCarPostoDispari(cf15);
+		int somma = 0;
+		for(int i=0;i<carPari.length();i++)
+			somma += getValAssociatoAcarDiStringaPari(carPari.charAt(i));
+		
+		for(int i=0;i<carDispari.length();i++)
+			somma += getValAssociatoAcarDiStringaDispari(carDispari.charAt(i));
+		
+		int resto = somma % 26;
+		
+		char carAssociatoAresto = (char)(resto + 65);
+		return carAssociatoAresto;
+	}
+	private int getValAssociatoAcarDiStringaPari(char carStrPari) throws EccezioneCF
+	{
+		int asciiCode = (int)carStrPari;
+		// per i caratteri 0..9 ritorna 0..9
+		if( asciiCode >=48 && asciiCode<=57)return asciiCode - 48;
+		else return asciiCode - 65; // enumera A..Z
+	}
+	private int getValAssociatoAcarDiStringaDispari(char carStrDispari) throws EccezioneCF
+	{
+		switch(carStrDispari)
+		{
+			case '0':return 1;
+			case '1':return 0;
+			case '2':return 5;
+			case '3':return 7;
+			case '4':return 9;
+			case '5':return 13;
+			case '6':return 15;
+			case '7':return 17;
+			case '8':return 19;
+			case '9':return 21;
+			case 'A':return 1;
+			case 'B':return 0;
+			case 'C':return 5;
+			case 'D':return 7;
+			case 'E':return 9;
+			case 'F':return 13;
+			case 'G':return 15;
+			case 'H':return 17;
+			case 'I':return 19;
+			case 'J':return 21;
+			case 'K':return 2;
+			case 'L':return 4;
+			case 'M':return 18;
+			case 'N':return 20;
+			case 'O':return 11;
+			case 'P':return 3;
+			case 'Q':return 6;
+			case 'R':return 8;
+			case 'S':return 12;
+			case 'T':return 14;
+			case 'U':return 16;
+			case 'V':return 10;
+			case 'W':return 22;
+			case 'X':return 25;
+			case 'Y':return 24;
+			case 'Z':return 23;
+		}
+		throw new carattereSenzaValoreAssociato();
+	}
+	private String getCarPostoPari(String s)
+	{
+		String res ="";
+		for(int i=0;i<s.length();i++)
+			if((i+1)%2==0)res+=s.charAt(i);
+		return res;
+	}
+	private String getCarPostoDispari(String s)
+	{
+		String res ="";
+		for(int i=0;i<s.length();i++)
+			if((i+1)%2!=0)res+=s.charAt(i);
+		return res;
 	}
 	
 }
