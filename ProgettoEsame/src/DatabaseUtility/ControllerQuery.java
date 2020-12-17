@@ -10,29 +10,25 @@ import ImplementationDAO.ImplementazioniDAO;
 public class ControllerQuery {
 	private final ImplementazioniDAO implementazioneScelta = ImplementazioniDAO.postgres;
 	private static ControllerQuery instance;
-	private ImplementationClass dao;
-	private ControllerQuery() throws SQLException
-	{
-		if(implementazioneScelta == ImplementazioniDAO.postgres)
-		{
-			//TODO
-			dao = new ImplementationClassPostgres(DatabaseConnection.getInstance().getConnection());
+	private ImplementationClass ImplementazioneScelta;
+	
+	private ControllerQuery() throws SQLException {
+		if(implementazioneScelta == ImplementazioniDAO.postgres) {
+			
+			ImplementazioneScelta = new ImplementationClassPostgres(DatabaseConnection.getInstance().getConnection());
 			
 		}
 	}
 	
-	public static ControllerQuery getInstance() throws SQLException
-	{
-		if(instance==null)
-		{
+	public static ControllerQuery getInstance() throws SQLException {
+		if(instance==null) {
 			instance = new ControllerQuery();
 		}
 		return instance;
 	}
 	
-	public ImplementationClass getDAO()
-	{
-		return dao;
+	public ImplementationClass getDAO() {
+		return ImplementazioneScelta;
 	}
 	
 }

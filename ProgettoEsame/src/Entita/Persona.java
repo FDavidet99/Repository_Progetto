@@ -136,7 +136,7 @@ public class Persona {
 		out+="Sesso: "+ SessoPersona+", ";
 		out+="DataNascita: "+ DataNascita +", ";
 		out+="Nazione: "+ NazioneNascita;
-		if(hasNazioneNascita() && NazioneNascita.equals("Italia")) {
+		if(hasNazioneNascita() && NazioneNascita.equalsIgnoreCase("Italia")) {
 			out+=", ";
 			if(hasProviciaNascita()) {
 				out+="Provincia: "+ ProvinciaNascita +", ";
@@ -148,23 +148,6 @@ public class Persona {
 		return out;
 	}
 	
-//	@Override
-//	public boolean equals(Object obj) {
-//		if(obj.getClass() == Persona.class) {
-//			Persona p = (Persona)obj;
-//			try {
-//				if(p.getCF() == getCF())
-//					return true;
-//				else
-//					return false;
-//			} catch (EccezioneCF e) {
-//				return false;
-//			}
-//		}
-//		else
-//			return false;
-//	}
-//	
 	
 	//METODI CODICE FISCALE//////////////////////////////////////
 	
@@ -203,7 +186,7 @@ public class Persona {
 		
 		
 		ImplementationClass dao = ControllerQuery.getInstance().getDAO();
-		if(nazioneNascita.equals("Italia"))
+		if(nazioneNascita.equalsIgnoreCase("Italia"))
 			CodiceFiscale += dao.getCodiceCatastale(comuneNascita);
 		else
 			CodiceFiscale += dao.getCodiceAt(nazioneNascita);
@@ -275,7 +258,7 @@ public class Persona {
 	}
 	
 	private boolean isAlpha(String s) {
-        return s != null && s.matches("^[a-zA-Z']*$");
+        return s != null && s.matches("^[a-zA-Z' ]*$");
     }
 	
 	private boolean isConsonante(char c) {
@@ -320,17 +303,18 @@ public class Persona {
 		char carAssociatoAresto = (char)(resto + 65);
 		return carAssociatoAresto;
 	}
-	private int getValAssociatoAcarDiStringaPari(char carStrPari) throws EccezioneCF
-	{
+	
+	private int getValAssociatoAcarDiStringaPari(char carStrPari) throws EccezioneCF {
 		int asciiCode = (int)carStrPari;
 		// per i caratteri 0..9 ritorna 0..9
-		if( asciiCode >=48 && asciiCode<=57)return asciiCode - 48;
-		else return asciiCode - 65; // enumera A..Z
+		if( asciiCode >=48 && asciiCode<=57)
+			return asciiCode - 48;
+		else
+			return asciiCode - 65; // enumera A..Z
 	}
-	private int getValAssociatoAcarDiStringaDispari(char carStrDispari) throws EccezioneCF
-	{
-		switch(carStrDispari)
-		{
+	
+	private int getValAssociatoAcarDiStringaDispari(char carStrDispari) throws EccezioneCF {
+		switch(carStrDispari) {
 			case '0':return 1;
 			case '1':return 0;
 			case '2':return 5;
@@ -370,19 +354,20 @@ public class Persona {
 		}
 		throw new carattereSenzaValoreAssociato();
 	}
-	private String getCarPostoPari(String s)
-	{
+	
+	private String getCarPostoPari(String s) {
 		String res ="";
 		for(int i=0;i<s.length();i++)
 			if((i+1)%2==0)res+=s.charAt(i);
 		return res;
 	}
-	private String getCarPostoDispari(String s)
-	{
+	
+	private String getCarPostoDispari(String s) {
 		String res ="";
 		for(int i=0;i<s.length();i++)
-			if((i+1)%2!=0)res+=s.charAt(i);
-		return res;
+			if((i+1)%2!=0)
+				res+=s.charAt(i);
+	return res;
 	}
 	
 }
