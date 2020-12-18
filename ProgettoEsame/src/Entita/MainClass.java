@@ -6,10 +6,10 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import DatabaseUtility.ControllerQuery;
+import Controller.ControllerQuery;
 import DatabaseUtility.DatabaseConnection;
-import ImplementationDAO.ImplementationClass;
-import ImplementationDAO.ImplementationClassPostgres;
+import ImplementationDAO.ImplementationDAO;
+import ImplementationDAO.ImplementationDAO_Postgres;
 
 
 public class MainClass {

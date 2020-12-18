@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImplementationClassPostgres extends ImplementationClass {
+public class ImplementationDAO_Postgres extends ImplementationDAO {
 	
-	public ImplementationClassPostgres(Connection connection) throws SQLException {
+	public ImplementationDAO_Postgres(Connection connection) throws SQLException {
 		super();
 		Connection = connection;
 		StmGetCodiceCatastaleComune = Connection.prepareStatement("SELECT CodiceCatastale from Comune Where lower(NomeComune) = lower(?)");

@@ -1,4 +1,4 @@
-package InterfaceDAO;
+package InterfacceDAO;
 
 import java.util.List;
 import Entita.*;

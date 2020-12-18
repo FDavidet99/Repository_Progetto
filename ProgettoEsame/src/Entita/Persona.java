@@ -4,6 +4,8 @@ import java.sql.Connection;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+
+import Controller.ControllerQuery;
 import EccezioniPersona.*;
 import ImplementationDAO.*;
 import DatabaseUtility.*;
@@ -185,7 +187,7 @@ public class Persona {
 		CodiceFiscale += strGiornoNascita;
 		
 		
-		ImplementationClass dao = ControllerQuery.getInstance().getDAO();
+		ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
 		if(nazioneNascita.equalsIgnoreCase("Italia"))
 			CodiceFiscale += dao.getCodiceCatastale(comuneNascita);
 		else

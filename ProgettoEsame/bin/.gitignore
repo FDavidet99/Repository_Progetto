@@ -1,6 +1,4 @@
-/Entita/
 /DatabaseUtility/
+/Entita/
 /ImplementationDAO/
-/InterfaceDAO/
-/Singleton/
-/EccezioniPersona/
+/Controller/

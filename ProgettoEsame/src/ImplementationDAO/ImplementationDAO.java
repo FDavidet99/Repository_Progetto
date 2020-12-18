@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import InterfaceDAO.*;
+import InterfacceDAO.*;
 
-public abstract class ImplementationClass implements ComuneDAO,NazioneDAO {
+public abstract class ImplementationDAO implements ComuneDAO,NazioneDAO {
 	
 	protected Connection Connection;
     protected PreparedStatement StmGetCodiceCatastaleComune, StmGetNomiComuni,StmGetCodiceAt;

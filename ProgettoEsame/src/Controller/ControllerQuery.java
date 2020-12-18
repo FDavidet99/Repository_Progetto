@@ -1,21 +1,23 @@
-package DatabaseUtility;
+package Controller;
 
 import java.sql.Connection;
+
 import java.sql.SQLException;
 
-import ImplementationDAO.ImplementationClass;
-import ImplementationDAO.ImplementationClassPostgres;
+import DatabaseUtility.DatabaseConnection;
+import ImplementationDAO.ImplementationDAO;
+import ImplementationDAO.ImplementationDAO_Postgres;
 import ImplementationDAO.ImplementazioniDAO;
 
 public class ControllerQuery {
 	private final ImplementazioniDAO implementazioneScelta = ImplementazioniDAO.postgres;
 	private static ControllerQuery instance;
-	private ImplementationClass ImplementazioneScelta;
+	private ImplementationDAO ImplementationDAO;
 	
 	private ControllerQuery() throws SQLException {
 		if(implementazioneScelta == ImplementazioniDAO.postgres) {
 			
-			ImplementazioneScelta = new ImplementationClassPostgres(DatabaseConnection.getInstance().getConnection());
+			ImplementationDAO = new ImplementationDAO_Postgres(DatabaseConnection.getInstance().getConnection());
 			
 		}
 	}
@@ -27,8 +29,8 @@ public class ControllerQuery {
 		return instance;
 	}
 	
-	public ImplementationClass getDAO() {
-		return ImplementazioneScelta;
+	public ImplementationDAO getDAO() {
+		return ImplementationDAO;
 	}
 	
 }
