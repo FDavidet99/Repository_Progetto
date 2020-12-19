@@ -1,4 +1,4 @@
-package Entita;
+package Entità;
 
 import java.sql.SQLException;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package Entita;
+package Entità;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,16 +26,16 @@ public class MainClass {
         dbconn=DatabaseConnection.getInstance();
         connection=dbconn.getConnection();
         
-	//finisce la connessione
-//        
-//		ImplementationClass obj = ControllerQuery.getInstance(connection).getDAO();
-//		
-//		
-//		
-//		Iterator i=obj.getNomiComuni().iterator() ;
-//		while(i.hasNext())
-//			System.out.println(i.next());
-//		
+//	finisce la connessione
+        
+		ImplementationDAO obj = ControllerQuery.getInstance().getDAO();
+		
+		
+		
+		Iterator i=obj.getNomiComuni().iterator() ;
+		while(i.hasNext())
+			System.out.println(i.next());
+		
 	}
 
 }

@@ -2,8 +2,9 @@ package InterfacceDAO;
 
 import java.sql.SQLException;
 import java.util.List;
-import Entita.Nazione;
-import Entita.Provincia;
+
+import Entità.Nazione;
+import Entità.Provincia;
 
 public interface NazioneDAO {
 	

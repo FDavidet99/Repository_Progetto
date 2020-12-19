@@ -1,4 +1,4 @@
-package Entita;
+package Entità;
 
 public class Comune {
 

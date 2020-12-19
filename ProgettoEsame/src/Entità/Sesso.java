@@ -1,4 +1,4 @@
-package Entita;
+package Entità;
 
 public enum Sesso {
 	M,

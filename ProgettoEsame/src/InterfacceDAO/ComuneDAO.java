@@ -2,7 +2,8 @@ package InterfacceDAO;
 
 import java.sql.SQLException;
 import java.util.List;
-import Entita.*;
+
+import Entità.*;
 
 public interface ComuneDAO {
 	
