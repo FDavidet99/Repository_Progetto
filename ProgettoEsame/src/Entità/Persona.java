@@ -16,12 +16,12 @@ public class Persona {
 	private String Cognome;
 	private Sesso SessoPersona;
 	private LocalDate DataNascita;
-	private String NazioneNascita;
-	private String ProvinciaNascita=new String("");
-	private String ComuneNascita=new String("");
+	private Nazione NazioneNascita;
+	private Provincia ProvinciaNascita;
+	private Comune ComuneNascita;
 	
 	public Persona(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
-			String nazioneNascita, String provinciaNascita, String comuneNascita) throws SQLException{
+			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws SQLException{
 		super();
 		
 		try {
@@ -78,27 +78,27 @@ public class Persona {
 		DataNascita = dataNascita;
 	}
 
-	public String getNazioneNascita() {
+	public Nazione getNazioneNascita() {
 		return NazioneNascita;
 	}
 
-	public void setNazioneNascita(String nazioneNascita) {
+	public void setNazioneNascita(Nazione nazioneNascita) {
 		NazioneNascita = nazioneNascita;
 	}
 
-	public String getProvinciaNascita() {
+	public Provincia getProvinciaNascita() {
 		return ProvinciaNascita;
 	}
 
-	public void setProvinciaNascita(String provinciaNascita) {
+	public void setProvinciaNascita(Provincia provinciaNascita) {
 		ProvinciaNascita = provinciaNascita;
 	}
 
-	public String getComuneNascita() {
+	public Comune getComuneNascita() {
 		return ComuneNascita;
 	}
 
-	public void setComuneNascita(String comuneNascita) {
+	public void setComuneNascita(Comune comuneNascita) {
 		ComuneNascita = comuneNascita;
 	}
 
@@ -137,13 +137,13 @@ public class Persona {
 		out+="Cognome: "+ Cognome +", ";
 		out+="Sesso: "+ SessoPersona+", ";
 		out+="DataNascita: "+ DataNascita +", ";
-		out+="Nazione: "+ NazioneNascita;
-		if(hasNazioneNascita() && NazioneNascita.equalsIgnoreCase("Italia")) {
+		out+="Nazione: "+ NazioneNascita.getNomeNazione();
+		if(hasNazioneNascita() && NazioneNascita.getNomeNazione().equalsIgnoreCase("Italia")) {
 			out+=", ";
 			if(hasProviciaNascita()) {
-				out+="Provincia: "+ ProvinciaNascita +", ";
+				out+="Provincia: "+ ProvinciaNascita.getNome() +", ";
 				if(hasComuneNascita())
-					out+="Comune:"+ ComuneNascita ;
+					out+="Comune:"+ ComuneNascita.getNome() ;
 			}
 		}
 		out+="]";
@@ -154,7 +154,7 @@ public class Persona {
 	//METODI CODICE FISCALE//////////////////////////////////////
 	
 	private String calcolaCF(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
-			String nazioneNascita, String provinciaNascita, String comuneNascita) throws EccezioneCF, SQLException {
+			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws EccezioneCF, SQLException {
 		
 		
 		//solo per ora metto qua la connessione che andra nel main alla fine
@@ -187,13 +187,14 @@ public class Persona {
 		CodiceFiscale += strGiornoNascita;
 		
 		
-		ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
-//		if(nazioneNascita.equalsIgnoreCase("Italia"))
-//			CodiceFiscale += dao.getCodiceCatastale(comuneNascita);
-//		else
-//			CodiceFiscale += dao.getCodiceAt(nazioneNascita);
-	
+		// ImplementationDAO dao = ControllerQuery.getInstance().getDAO(); Non serve più si sfruttano gli oggetti
 		
+    	if(nazioneNascita.getNomeNazione().equalsIgnoreCase("Italia"))
+    	//	CodiceFiscale += dao.getCodiceCatastale(comuneNascita); prima della modifica ha una query apposita
+    		CodiceFiscale += comuneNascita.getCodiceCatastale();
+    	else
+		//	CodiceFiscale += dao.getCodiceAt(nazioneNascita);  prima della modifica ha una query apposita
+    		CodiceFiscale += nazioneNascita.getCodiceAt();
 		CodiceFiscale += carControllo(CodiceFiscale);
 		return CodiceFiscale;
 	}

@@ -3,13 +3,13 @@ package Entità;
 public class Comune {
 
 	private String CodiceCatastale;
-	private String Nome;
+	private String NomeComune;
 	private Provincia Provincia;
 	
 	public Comune(String codiceCatastale, String nome,Provincia provincia) {
 		super();
 		CodiceCatastale = codiceCatastale;
-		Nome = nome;
+		NomeComune = nome;
 		Provincia = provincia;
 	}
 	
@@ -30,17 +30,17 @@ public class Comune {
 	}
 	
 	public String getNome() {
-		return Nome;
+		return NomeComune;
 	}
 	
 	public void setNome(String nome) {
-		Nome = nome;
+		NomeComune = nome;
 	}
 
 	@Override
 	public String toString() {
 		return "Comune [" + (CodiceCatastale != null ? "CodiceCatastale=" + CodiceCatastale + ", " : "")
-				+ (Nome != null ? "Nome=" + Nome + ", " : "") + (Provincia != null ? "Provincia=" + Provincia : "")
+				+ (NomeComune != null ? "Nome=" + NomeComune + ", " : "") + (Provincia != null ? "Provincia=" + Provincia : "")
 				+ "]";
 	}
 	

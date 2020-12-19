@@ -3,14 +3,14 @@ package Entità;
 import java.util.*;
 
 public class Provincia {
-	private String Nome;
+	private String NomeProvincia;
 	private String Sigla;
 	private Nazione Nazione;
 	private List<Comune> Comuni;
 	
 	public Provincia(String nome, String sigla,Nazione nazione,List<Comune> comune) {
 		super();
-		Nome = nome;
+		NomeProvincia = nome;
 		Sigla = sigla;
 		Nazione=nazione;
 		Comuni=comune;
@@ -18,7 +18,7 @@ public class Provincia {
 	
 	public Provincia(String nome, String sigla,Nazione nazione) {
 		super();
-		Nome = nome;
+		NomeProvincia = nome;
 		Sigla = sigla;
 		Nazione=nazione;
 		
@@ -41,11 +41,11 @@ public class Provincia {
 	}
 	
 	public String getNome() {
-		return Nome;
+		return NomeProvincia;
 	}
 	
 	public void setNome(String nome) {
-		Nome = nome;
+		NomeProvincia = nome;
 	}
 	
 	public String getSigla() {
@@ -57,7 +57,7 @@ public class Provincia {
 
 	@Override
 	public String toString() {
-		return "Provincia [" + (Nome != null ? "Nome=" + Nome + ", " : "")
+		return "Provincia [" + (NomeProvincia != null ? "Nome=" + NomeProvincia + ", " : "")
 				+ (Sigla != null ? "Sigla=" + Sigla + ", " : "") + (Nazione != null ? "Nazione=" + Nazione : "") + "]";
 	}
 	
