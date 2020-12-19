@@ -1,17 +1,24 @@
 package Entità;
 
-import java.util.ArrayList;
+import java.util.*;
+
 
 public class Nazione {
 	private String CodiceAt;
 	private String NomeNazione;
-	private ArrayList<Provincia> Province;
+	private List<Provincia> Province;
 	
-	public Nazione(String codiceAt, String nomeNazione, ArrayList<Provincia> province ) {
+	public Nazione(String codiceAt, String nomeNazione, List<Provincia> province) {
 		super();
 		CodiceAt = codiceAt;
 		NomeNazione = nomeNazione;
-		Province=province;
+		Province = province;
+	}
+	
+	public Nazione(String codiceAt, String nomeNazione) {
+		super();
+		CodiceAt = codiceAt;
+		NomeNazione = nomeNazione;
 	}
 
 	public String getCodiceAt() {
@@ -29,6 +36,20 @@ public class Nazione {
 	public void setNomeNazione(String nomeNazione) {
 		NomeNazione = nomeNazione;
 	}
-	
+
+	public List<Provincia> getProvince() {
+		return Province;
+	}
+
+	public void setProvince(List<Provincia> province) {
+		Province = province;
+	}
+
+	@Override
+	public String toString() {
+		return "Nazione [" + (CodiceAt != null ? "CodiceAt=" + CodiceAt + ", " : "")
+				+ (NomeNazione != null ? "NomeNazione=" + NomeNazione + ", " : "");
+	}
+
 	
 }

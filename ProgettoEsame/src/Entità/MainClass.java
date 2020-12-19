@@ -16,9 +16,8 @@ public class MainClass {
 
 	public static void main(String[] args) throws SQLException {
 		
-		Persona p2 = new Persona("Davide", "Ferreri",Sesso.M, LocalDate.of(1985, 12, 17),"Italia","Napoli","LACCO Ameno");
-
-		System.out.println(p2);
+//		Persona p2 = new Persona("Davide", "Ferreri",Sesso.M, LocalDate.of(1985, 12, 17),"Italia","Napoli","LACCO Ameno");
+//		System.out.println(p2);
 		
 		//solo per ora metto qua la connessione che andra nel main alla fine
 	    DatabaseConnection dbconn = null;
@@ -30,11 +29,17 @@ public class MainClass {
         
 		ImplementationDAO obj = ControllerQuery.getInstance().getDAO();
 		
+		Iterator i=obj.GetNazioni().iterator() ;
+		for(Nazione a:obj.GetNazioni()) {
+			for(Provincia p:obj.GetProvinceByNazione(a)){
+				for(Comune c:obj.GetComuniByProvincia(p))
+					System.out.println(c);
+			}
+		}
+			
 		
-		
-		Iterator i=obj.getNomiComuni().iterator() ;
-		while(i.hasNext())
-			System.out.println(i.next());
+//		while(i.hasNext())
+//			System.out.println(i.next());
 		
 	}
 

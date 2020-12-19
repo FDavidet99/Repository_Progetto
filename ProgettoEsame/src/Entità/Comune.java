@@ -36,5 +36,12 @@ public class Comune {
 	public void setNome(String nome) {
 		Nome = nome;
 	}
+
+	@Override
+	public String toString() {
+		return "Comune [" + (CodiceCatastale != null ? "CodiceCatastale=" + CodiceCatastale + ", " : "")
+				+ (Nome != null ? "Nome=" + Nome + ", " : "") + (Provincia != null ? "Provincia=" + Provincia : "")
+				+ "]";
+	}
 	
 }

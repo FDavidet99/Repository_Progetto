@@ -1,19 +1,27 @@
 package Entità;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Provincia {
 	private String Nome;
 	private String Sigla;
-	private ArrayList<Comune> Comuni;
 	private Nazione Nazione;
+	private List<Comune> Comuni;
 	
-	public Provincia(String nome, String sigla,ArrayList<Comune> comuni, Nazione nazione) {
+	public Provincia(String nome, String sigla,Nazione nazione,List<Comune> comune) {
 		super();
 		Nome = nome;
 		Sigla = sigla;
-		Comuni = comuni;
-		Nazione = nazione;
+		Nazione=nazione;
+		Comuni=comune;
+	}
+	
+	public Provincia(String nome, String sigla,Nazione nazione) {
+		super();
+		Nome = nome;
+		Sigla = sigla;
+		Nazione=nazione;
+		
 	}
 	
 	public Nazione getNazione() {
@@ -24,11 +32,11 @@ public class Provincia {
 		Nazione = nazione;
 	}
 	
-	public ArrayList<Comune> getComuni() {
+	public List<Comune> getComuni() {
 		return Comuni;
 	}
 	
-	public void setComuni(ArrayList<Comune> comuni) {
+	public void setComuni(List<Comune> comuni) {
 		Comuni = comuni;
 	}
 	
@@ -45,6 +53,12 @@ public class Provincia {
 	}
 	public void setSigla(String sigla) {
 		Sigla = sigla;
+	}
+
+	@Override
+	public String toString() {
+		return "Provincia [" + (Nome != null ? "Nome=" + Nome + ", " : "")
+				+ (Sigla != null ? "Sigla=" + Sigla + ", " : "") + (Nazione != null ? "Nazione=" + Nazione : "") + "]";
 	}
 	
 

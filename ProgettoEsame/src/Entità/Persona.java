@@ -188,10 +188,10 @@ public class Persona {
 		
 		
 		ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
-		if(nazioneNascita.equalsIgnoreCase("Italia"))
-			CodiceFiscale += dao.getCodiceCatastale(comuneNascita);
-		else
-			CodiceFiscale += dao.getCodiceAt(nazioneNascita);
+//		if(nazioneNascita.equalsIgnoreCase("Italia"))
+//			CodiceFiscale += dao.getCodiceCatastale(comuneNascita);
+//		else
+//			CodiceFiscale += dao.getCodiceAt(nazioneNascita);
 	
 		
 		CodiceFiscale += carControllo(CodiceFiscale);
