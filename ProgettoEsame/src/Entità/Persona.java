@@ -185,15 +185,9 @@ public class Persona {
 		String strGiornoNascita = Integer.toString(giornoNascita);
 		if (strGiornoNascita.length()==1) strGiornoNascita = "0"+strGiornoNascita;
 		CodiceFiscale += strGiornoNascita;
-		
-		
-		// ImplementationDAO dao = ControllerQuery.getInstance().getDAO(); Non serve più si sfruttano gli oggetti
-		
     	if(nazioneNascita.getNomeNazione().equalsIgnoreCase("Italia"))
-    	//	CodiceFiscale += dao.getCodiceCatastale(comuneNascita); prima della modifica ha una query apposita
     		CodiceFiscale += comuneNascita.getCodiceCatastale();
     	else
-		//	CodiceFiscale += dao.getCodiceAt(nazioneNascita);  prima della modifica ha una query apposita
     		CodiceFiscale += nazioneNascita.getCodiceAt();
 		CodiceFiscale += carControllo(CodiceFiscale);
 		return CodiceFiscale;
