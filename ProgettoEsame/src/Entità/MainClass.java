@@ -32,17 +32,17 @@ public class MainClass {
         dbconn=DatabaseConnection.getInstance();
         connection=dbconn.getConnection();
        
-//	finisce la connessione
+        //	finisce la connessione
         
-		ImplementationDAO obj = ControllerQuery.getInstance().getDAO();
-		
-		Iterator i=obj.GetNazioni().iterator() ;
-		for(Nazione a:obj.GetNazioni()) {
-			for(Provincia p:obj.GetProvinceByNazione(a)){
-				for(Comune c:obj.GetComuniByProvincia(p))
-					System.out.println(c);
-			}
-		}
+//		ImplementationDAO obj = ControllerQuery.getInstance().getDAO();
+//		
+//		Iterator i=obj.GetNazioni().iterator() ;
+//		for(Nazione a:obj.GetNazioni()) {
+//			for(Provincia p:obj.GetProvinceByNazione(a)){
+//				for(Comune c:obj.GetComuniByProvincia(p))
+//					System.out.println(c);
+//			}
+//		}
 			
 		
 //		while(i.hasNext())
