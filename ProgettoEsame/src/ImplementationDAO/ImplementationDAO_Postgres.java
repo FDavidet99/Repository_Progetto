@@ -17,11 +17,11 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		super();
 		Connection = connection;
 		StmGetNazioni=Connection.prepareStatement("Select * from Nazione");
-		StmGetProvinceByNazione=Connection.prepareStatement("Select * from Provincia Where lower(Codicenazione)= lower(?) ");
+		StmGetProvinceByNazione=Connection.prepareStatement("Select * from Provincia Where lower(Codicenazione)= lower(?)");
 		StmGetComuniByProvincia = Connection.prepareStatement("SELECT * FROM Comune Where lower(NomeProvincia)= lower(?)");
 		//StmGetCodiceAtByNazione=Connection.prepareStatement("SELECT CodiceAt FROM Nazione where lower(NomeNazione)= lower(?)");
 		//StmGetCodiceCatastaleComune = Connection.prepareStatement("SELECT CodiceCatastale from Comune Where lower(NomeComune) = lower(?)");
-		
+	
 	}
 
 //	@Override

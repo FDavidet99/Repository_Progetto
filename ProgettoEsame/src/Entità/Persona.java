@@ -4,6 +4,7 @@ import java.sql.Connection;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import Controller.ControllerQuery;
 import EccezioniPersona.*;
@@ -163,7 +164,6 @@ public class Persona {
 	        dbconn=DatabaseConnection.getInstance();
 	        connection=dbconn.getConnection();
 		//finisce la connessione
-	        
 	        
 		nome = nome.toLowerCase();
 		cognome = cognome.toLowerCase();

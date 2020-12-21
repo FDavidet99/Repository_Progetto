@@ -39,9 +39,7 @@ public class Comune {
 
 	@Override
 	public String toString() {
-		return "Comune [" + (CodiceCatastale != null ? "CodiceCatastale=" + CodiceCatastale + ", " : "")
-				+ (NomeComune != null ? "Nome=" + NomeComune + ", " : "") + (Provincia != null ? "Provincia=" + Provincia : "")
-				+ "]";
+		return NomeComune;
 	}
 	
 }

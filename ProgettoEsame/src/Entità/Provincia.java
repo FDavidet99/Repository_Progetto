@@ -57,8 +57,7 @@ public class Provincia {
 
 	@Override
 	public String toString() {
-		return "Provincia [" + (NomeProvincia != null ? "Nome=" + NomeProvincia + ", " : "")
-				+ (Sigla != null ? "Sigla=" + Sigla + ", " : "") + (Nazione != null ? "Nazione=" + Nazione : "") + "]";
+		return NomeProvincia ;
 	}
 	
 
