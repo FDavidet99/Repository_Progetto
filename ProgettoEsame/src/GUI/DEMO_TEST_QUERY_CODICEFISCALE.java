@@ -183,8 +183,9 @@ public class DEMO_TEST_QUERY_CODICEFISCALE extends JFrame {
 					try {
 						sql2=(ArrayList) OggettoConnessione.GetProvinceByNazione(Nazione_comboBox.getItemAt(Nazione_comboBox.getSelectedIndex()));
 						JComboBox<Provincia> Tempo_Provincia=new JComboBox(sql2.toArray());
+						Provincia_textArea.setVisible(true);
+						Provincia_comboBox.setVisible(true);
 						Tempo_Provincia.setSelectedIndex(-1);
-						
 						Provincia_comboBox.removeAllItems();
 						Iterator i=sql2.iterator();
 						while(i.hasNext())
@@ -196,6 +197,8 @@ public class DEMO_TEST_QUERY_CODICEFISCALE extends JFrame {
 								try {
 									sql3=(ArrayList) OggettoConnessione.GetComuniByProvincia(Provincia_comboBox.getItemAt(Provincia_comboBox.getSelectedIndex()));
 									JComboBox<Comune> Tempo_Comune=new JComboBox(sql3.toArray());
+									Comune_TextArea.setVisible(true);
+									Comune_comboBox.setVisible(true);
 									Tempo_Comune.setSelectedIndex(-1);
 									Comune_comboBox.removeAllItems();
 									Iterator i=sql3.iterator();
@@ -218,6 +221,7 @@ public class DEMO_TEST_QUERY_CODICEFISCALE extends JFrame {
 					Provincia_comboBox.setVisible(false);
 					Comune_TextArea.setVisible(false);
 					Comune_comboBox.setVisible(false);
+					btnNewButton_1.setVisible(false);
 				}
 			}
 		});
