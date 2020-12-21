@@ -43,13 +43,12 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
-public class DEMO_TEST_QUERY_CODICEFISCALE extends JFrame {
-
+public class Insert_Persona extends JFrame {
+	
 	private JPanel contentPane;
 	private JTextField Nome_textField;
 	private JTextField Cognome_textField;
 	private JTextField Cf_textField;
-	
 	
 	
 
@@ -60,7 +59,7 @@ public class DEMO_TEST_QUERY_CODICEFISCALE extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DEMO_TEST_QUERY_CODICEFISCALE frame = new DEMO_TEST_QUERY_CODICEFISCALE();
+					Insert_Persona frame = new Insert_Persona();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -73,9 +72,9 @@ public class DEMO_TEST_QUERY_CODICEFISCALE extends JFrame {
 	 * Create the frame.
 	 * @throws SQLException 
 	 */
-	public DEMO_TEST_QUERY_CODICEFISCALE() throws SQLException {
+	public Insert_Persona() throws SQLException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 541, 331);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -94,7 +93,7 @@ public class DEMO_TEST_QUERY_CODICEFISCALE extends JFrame {
 		
 		JTextArea Cognome_textArea = new JTextArea();
 		Cognome_textArea.setText("Cognome\r\n");
-		Cognome_textArea.setBounds(193, 26, 68, 22);
+		Cognome_textArea.setBounds(188, 26, 68, 22);
 		contentPane.add(Cognome_textArea);
 		
 		Cognome_textField = new JTextField();
@@ -113,7 +112,7 @@ public class DEMO_TEST_QUERY_CODICEFISCALE extends JFrame {
 		
 		JTextArea Data_textArea = new JTextArea();
 		Data_textArea.setText("Data");
-		Data_textArea.setBounds(188, 59, 52, 22);
+		Data_textArea.setBounds(179, 59, 52, 22);
 		contentPane.add(Data_textArea);
 		
 		JDateChooser dateChooser = new JDateChooser();
@@ -159,12 +158,12 @@ public class DEMO_TEST_QUERY_CODICEFISCALE extends JFrame {
 		
 		Cf_textField = new JTextField();
 		Cf_textField.setEditable(false);
-		Cf_textField.setBounds(129, 213, 239, 20);
+		Cf_textField.setBounds(100, 211, 239, 20);
 		contentPane.add(Cf_textField);
 		Cf_textField.setColumns(10);
 		
 		JButton CalcolaCf_Button = new JButton("Calcola Cf");
-		CalcolaCf_Button.setBounds(10, 212, 89, 23);
+		CalcolaCf_Button.setBounds(10, 210, 89, 23);
 		contentPane.add(CalcolaCf_Button);
 		
 		JButton Nazione_Button = new JButton("Prosegui");
@@ -174,6 +173,14 @@ public class DEMO_TEST_QUERY_CODICEFISCALE extends JFrame {
 		JButton btnNewButton_1 = new JButton("Prosegui");
 		btnNewButton_1.setBounds(241, 122, 93, 24);
 		contentPane.add(btnNewButton_1);
+		
+		JButton Insert_Button = new JButton("Inserisci");
+		Insert_Button.setBounds(411, 258, 89, 23);
+		contentPane.add(Insert_Button);
+		
+		JButton ReturnMenùButton = new JButton("Men\u00F9");
+		ReturnMenùButton.setBounds(300, 258, 89, 23);
+		contentPane.add(ReturnMenùButton);
 		btnNewButton_1.setVisible(false);
 		
 		Nazione_Button.addActionListener(new ActionListener() {
@@ -241,10 +248,10 @@ public class DEMO_TEST_QUERY_CODICEFISCALE extends JFrame {
 				Provincia TempProvincia=(Provincia)Provincia_comboBox.getSelectedItem();
 				Comune TempComune=(Comune)Comune_comboBox.getSelectedItem();
 				
-				Persona Tempo_Persona;
+				Persona TempoPersona;
 				try {
-					Tempo_Persona = new Persona(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune);
-					Cf_textField.setText(Tempo_Persona.getCF());
+				TempoPersona = new Persona(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune);
+					Cf_textField.setText(TempoPersona.getCF());
 				} catch (SQLException | EccezioneCF e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -252,6 +259,37 @@ public class DEMO_TEST_QUERY_CODICEFISCALE extends JFrame {
 				
 			}
 		});
+		
+		Insert_Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String TempNome=Nome_textField.getText();
+				String TempCognome=Cognome_textField.getText();
+				Sesso TempSesso= (Sesso)Sesso_comboBox.getSelectedItem();
+				
+				Date DataScelta=dateChooser.getDate();
+				LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+				TempDate.format(formatter);
+				
+				Nazione TempNazione=(Nazione) Nazione_comboBox.getSelectedItem();
+				Provincia TempProvincia=(Provincia)Provincia_comboBox.getSelectedItem();
+				Comune TempComune=(Comune)Comune_comboBox.getSelectedItem();
+				
+				Atleta TempAtleta;
+				try {
+					TempAtleta = new Atleta(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune,false);
+						Cf_textField.setText(TempAtleta.getCF());
+						OggettoConnessione.InsertAtleta(TempAtleta);
+						
+					} catch (SQLException | EccezioneCF e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				
+					
+				}
+			});
+		
 
 	}
 }

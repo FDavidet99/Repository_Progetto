@@ -19,48 +19,11 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetNazioni=Connection.prepareStatement("Select * from Nazione");
 		StmGetProvinceByNazione=Connection.prepareStatement("Select * from Provincia Where lower(Codicenazione)= lower(?)");
 		StmGetComuniByProvincia = Connection.prepareStatement("SELECT * FROM Comune Where lower(NomeProvincia)= lower(?)");
-		//StmGetCodiceAtByNazione=Connection.prepareStatement("SELECT CodiceAt FROM Nazione where lower(NomeNazione)= lower(?)");
-		//StmGetCodiceCatastaleComune = Connection.prepareStatement("SELECT CodiceCatastale from Comune Where lower(NomeComune) = lower(?)");
+		StmInsertProcuratoreSportivo=Connection.prepareStatement("Insert into ProcuratoreSportivo values (?)");
+		StmInsertAtleta=Connection.prepareStatement("Insert into Atleta values (?)");
+		
 	
 	}
-
-//	@Override
-//	public String getCodiceCatastale(String nomecomune) throws SQLException {
-//		StmGetCodiceCatastaleComune.setString(1, nomecomune);
-//		ResultSet rs=StmGetCodiceCatastaleComune.executeQuery();
-//		String CodiceCatastale=null;
-//		while(rs.next()) {
-//			 CodiceCatastale= rs.getString("codicecatastale");
-//		}
-//		rs.close();
-//		return CodiceCatastale;
-//
-//	}
-
-//	@Override
-//	public List<String> getNomiComuni() throws SQLException {
-//		ResultSet rs=StmGetNomiComuni.executeQuery();
-//		ArrayList ElencoComuni=new ArrayList<>();
-//		
-//		while(rs.next()) {
-//			
-//			 ElencoComuni.add(rs.getString("nomecomune"));
-//		}
-//		return ElencoComuni;
-//	}
-
-//	@Override
-//	public String GetCodiceAt(String NomeNazione) throws SQLException {
-//		StmGetCodiceAtByNazione.setString(1, NomeNazione);
-//		ResultSet rs=StmGetCodiceAtByNazione.executeQuery();
-//		String CodiceAt=null;
-//		while(rs.next()) {
-//			 CodiceAt= rs.getString("codiceat");
-//		}
-//		rs.close();
-//		return CodiceAt;
-//		
-//	}
 
 	@Override
 	public List<Nazione> GetNazioni() throws SQLException {
@@ -101,6 +64,22 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		rs.close();
 		return ListaComuni;
 	}
+
+
+	@Override
+	public void InsertAtleta(Atleta atleta) throws SQLException {
+		StmInsertAtleta.setString(1,atleta.toString());
+		int RigheAggiunte=StmInsertAtleta.executeUpdate();
+	}
+
+	@Override
+	public void InsertProcuratoreSportivo(ProcuratoreSportivo procuratore) throws SQLException {
+		StmInsertProcuratoreSportivo.setString(1,procuratore.toString());
+		int RigheAggiunte=StmInsertProcuratoreSportivo.executeUpdate();
+		
+	}
+
+	
 	
 	
 	
