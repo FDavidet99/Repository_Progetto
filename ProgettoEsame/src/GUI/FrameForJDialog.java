@@ -41,10 +41,5 @@ public class FrameForJDialog extends JFrame {
 		setBounds(100, 100, 559, 131);
 		getContentPane().setLayout(null);
 		
-		JTextArea txtrErroreDati = new JTextArea();
-		txtrErroreDati.setText("Errore dati");
-		txtrErroreDati.setBounds(203, 35, 110, 22);
-		getContentPane().add(txtrErroreDati);
-		
 	}
 }

@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 
 import Controller.ControllerQuery;
 import EccezioniPersona.EccezioneCF;
@@ -22,7 +23,7 @@ public class Controller {
 	
 	Demo_Menu_Principale HomePage;
 	Insert_Atleta F1;
-	FrameForJDialog DialogCF;
+	FrameForJDialog DialogErrori;
 	
 	public static void main(String[] args) throws SQLException {
 		Controller controller=new Controller();
@@ -53,8 +54,11 @@ public class Controller {
 			OggettoConnessione.InsertAtleta(TempAtleta);
 					
 			} catch (Exception e1) {
-				DialogCF=new FrameForJDialog(this);
-				DialogCF.setVisible(true);	
+				JDialog Dialog = new JDialog(DialogErrori, "dialog Box"); 
+	            JLabel LabelJDialog= new JLabel("Errori di inserimento"); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setBounds(400, 56, 100, 200);
+	             Dialog.setVisible(true); 
 				try {
 					F1.SvuotaCampi();
 				} catch (Exception e) {
