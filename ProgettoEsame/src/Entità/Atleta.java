@@ -25,17 +25,25 @@ public class Atleta extends Persona {
 	}
 
 	@Override
-	public String toString() {
+	public String toString()  {
 		try {
-			return "("+this.getCF()+this.getNome()+this.getCognome()+this.getSessoPersona()+this.getDataNascita()+
-					this.getNazioneNascita()+this.getProvinciaNascita()+this.getComuneNascita()+this.isHasProcuratore()+")";
-		} catch (EccezioneCF e) {
-			return "errore";
-			
-		} catch (SQLException e) {
+			return  (getCF() != null ? getCF() + ", " : "")
+					+ (getNome() != null ?  getNome() + ", " : "")
+					+ (getCognome() != null ? getCognome() + ", " : "")
+					+ (getSessoPersona() != null ? getSessoPersona() + ", " : "")
+					+ (getDataNascita() != null ? getDataNascita() + ", " : "")
+					+ (getNazioneNascita() != null ? getNazioneNascita().getNomeNazione() + ", " : "")
+					+ (getProvinciaNascita() != null ? getProvinciaNascita().getNome() + ", " : "")
+					+ (getComuneNascita() != null ? getComuneNascita().getNome() : "") +", "
+			        + HasProcuratore;
+		} catch (EccezioneCF | SQLException e) {
 			return "errore";
 		}
 	}
+
+	
+
+	
 	
 	
 

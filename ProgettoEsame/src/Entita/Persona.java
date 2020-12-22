@@ -1,14 +1,9 @@
-package Entità;
+package Entita;
 
 import java.sql.Connection;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
-import Controller.ControllerQuery;
 import EccezioniPersona.*;
 import ImplementationDAO.*;
 import DatabaseUtility.*;
@@ -19,12 +14,12 @@ public class Persona {
 	private String Cognome;
 	private Sesso SessoPersona;
 	private LocalDate DataNascita;
-	private Nazione NazioneNascita;
-	private Provincia ProvinciaNascita;
-	private Comune ComuneNascita;
+	private String NazioneNascita;
+	private String ProvinciaNascita=new String("");
+	private String ComuneNascita=new String("");
 	
 	public Persona(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
-			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws SQLException{
+			String nazioneNascita, String provinciaNascita, String comuneNascita) throws SQLException{
 		super();
 		
 		try {
@@ -81,27 +76,27 @@ public class Persona {
 		DataNascita = dataNascita;
 	}
 
-	public Nazione getNazioneNascita() {
+	public String getNazioneNascita() {
 		return NazioneNascita;
 	}
 
-	public void setNazioneNascita(Nazione nazioneNascita) {
+	public void setNazioneNascita(String nazioneNascita) {
 		NazioneNascita = nazioneNascita;
 	}
 
-	public Provincia getProvinciaNascita() {
+	public String getProvinciaNascita() {
 		return ProvinciaNascita;
 	}
 
-	public void setProvinciaNascita(Provincia provinciaNascita) {
+	public void setProvinciaNascita(String provinciaNascita) {
 		ProvinciaNascita = provinciaNascita;
 	}
 
-	public Comune getComuneNascita() {
+	public String getComuneNascita() {
 		return ComuneNascita;
 	}
 
-	public void setComuneNascita(Comune comuneNascita) {
+	public void setComuneNascita(String comuneNascita) {
 		ComuneNascita = comuneNascita;
 	}
 
@@ -140,24 +135,41 @@ public class Persona {
 		out+="Cognome: "+ Cognome +", ";
 		out+="Sesso: "+ SessoPersona+", ";
 		out+="DataNascita: "+ DataNascita +", ";
-		out+="Nazione: "+ NazioneNascita.getNomeNazione();
-		if(hasNazioneNascita() && NazioneNascita.getNomeNazione().equalsIgnoreCase("Italia")) {
+		out+="Nazione: "+ NazioneNascita;
+		if(hasNazioneNascita() && NazioneNascita.equals("Italia")) {
 			out+=", ";
 			if(hasProviciaNascita()) {
-				out+="Provincia: "+ ProvinciaNascita.getNome() +", ";
+				out+="Provincia: "+ ProvinciaNascita +", ";
 				if(hasComuneNascita())
-					out+="Comune:"+ ComuneNascita.getNome() ;
+					out+="Comune:"+ ComuneNascita ;
 			}
 		}
 		out+="]";
 		return out;
 	}
 	
+//	@Override
+//	public boolean equals(Object obj) {
+//		if(obj.getClass() == Persona.class) {
+//			Persona p = (Persona)obj;
+//			try {
+//				if(p.getCF() == getCF())
+//					return true;
+//				else
+//					return false;
+//			} catch (EccezioneCF e) {
+//				return false;
+//			}
+//		}
+//		else
+//			return false;
+//	}
+//	
 	
 	//METODI CODICE FISCALE//////////////////////////////////////
 	
 	private String calcolaCF(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
-			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws EccezioneCF, SQLException {
+			String nazioneNascita, String provinciaNascita, String comuneNascita) throws EccezioneCF, SQLException {
 		
 		
 		//solo per ora metto qua la connessione che andra nel main alla fine
@@ -166,6 +178,7 @@ public class Persona {
 	        dbconn=DatabaseConnection.getInstance();
 	        connection=dbconn.getConnection();
 		//finisce la connessione
+	        
 	        
 		nome = nome.toLowerCase();
 		cognome = cognome.toLowerCase();
@@ -187,15 +200,26 @@ public class Persona {
 		String strGiornoNascita = Integer.toString(giornoNascita);
 		if (strGiornoNascita.length()==1) strGiornoNascita = "0"+strGiornoNascita;
 		CodiceFiscale += strGiornoNascita;
-    	if(nazioneNascita.getNomeNazione().equalsIgnoreCase("Italia"))
-    		CodiceFiscale += comuneNascita.getCodiceCatastale();
-    	else
-    		CodiceFiscale += nazioneNascita.getCodiceAt();
-		CodiceFiscale += carControllo(CodiceFiscale);
+		
+		ImplementationClassPostgres tempo= new ImplementationClassPostgres(connection);
+		
+		//if(nazioneNascita.equals("Italia"))
+		CodiceFiscale += tempo.getCodiceCatastale(comuneNascita);
+//		else
+//			CodiceFiscale += getCodiceNazione(nazioneNascita);
+//		
+//		aggiungere il carattere di controllo
 		return CodiceFiscale;
 	}
 	
 	
+	
+	private String getCodiceNazione(String nomeNazione)
+	{
+		// TODO
+		// cerca il codice della nazione nel database, se non lo trovi lancia eccezione
+		return "";
+	}
 	
 	private char caratterePerIlMese(LocalDate dataNascita) {
 		switch (dataNascita.getMonthValue()) {
@@ -257,7 +281,7 @@ public class Persona {
 	}
 	
 	private boolean isAlpha(String s) {
-        return s != null && s.matches("^[a-zA-Z' ]*$");
+        return s != null && s.matches("^[a-zA-Z']*$");
     }
 	
 	private boolean isConsonante(char c) {
@@ -284,89 +308,6 @@ public class Persona {
 			if(isVocale(c)) vocali+=c;
 		}
 		return vocali;
-	}
-	public char carControllo(String cf15) throws EccezioneCF
-	{
-		if(cf15.length()!=15)throw new EccezioneCF();
-		String carPari = getCarPostoPari(cf15);
-		String carDispari = getCarPostoDispari(cf15);
-		int somma = 0;
-		for(int i=0;i<carPari.length();i++)
-			somma += getValAssociatoAcarDiStringaPari(carPari.charAt(i));
-		
-		for(int i=0;i<carDispari.length();i++)
-			somma += getValAssociatoAcarDiStringaDispari(carDispari.charAt(i));
-		
-		int resto = somma % 26;
-		
-		char carAssociatoAresto = (char)(resto + 65);
-		return carAssociatoAresto;
-	}
-	
-	private int getValAssociatoAcarDiStringaPari(char carStrPari) throws EccezioneCF {
-		int asciiCode = (int)carStrPari;
-		// per i caratteri 0..9 ritorna 0..9
-		if( asciiCode >=48 && asciiCode<=57)
-			return asciiCode - 48;
-		else
-			return asciiCode - 65; // enumera A..Z
-	}
-	
-	private int getValAssociatoAcarDiStringaDispari(char carStrDispari) throws EccezioneCF {
-		switch(carStrDispari) {
-			case '0':return 1;
-			case '1':return 0;
-			case '2':return 5;
-			case '3':return 7;
-			case '4':return 9;
-			case '5':return 13;
-			case '6':return 15;
-			case '7':return 17;
-			case '8':return 19;
-			case '9':return 21;
-			case 'A':return 1;
-			case 'B':return 0;
-			case 'C':return 5;
-			case 'D':return 7;
-			case 'E':return 9;
-			case 'F':return 13;
-			case 'G':return 15;
-			case 'H':return 17;
-			case 'I':return 19;
-			case 'J':return 21;
-			case 'K':return 2;
-			case 'L':return 4;
-			case 'M':return 18;
-			case 'N':return 20;
-			case 'O':return 11;
-			case 'P':return 3;
-			case 'Q':return 6;
-			case 'R':return 8;
-			case 'S':return 12;
-			case 'T':return 14;
-			case 'U':return 16;
-			case 'V':return 10;
-			case 'W':return 22;
-			case 'X':return 25;
-			case 'Y':return 24;
-			case 'Z':return 23;
-		}
-		throw new carattereSenzaValoreAssociato();
-	}
-	
-	private String getCarPostoPari(String s) {
-		String res ="";
-		for(int i=0;i<s.length();i++)
-			if((i+1)%2==0)res+=s.charAt(i);
-		return res;
-	}
-	
-	private String getCarPostoDispari(String s) {
-		String res ="";
-		for(int i=0;i<s.length();i++)
-			if((i+1)%2!=0)
-				res+=s.charAt(i);
-	return res;
 	}
 	
 }

@@ -8,5 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="LibrerieEsterne/postgresql-42.2.18.jar"/>
 	<classpathentry kind="lib" path="LibrerieEsterne/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

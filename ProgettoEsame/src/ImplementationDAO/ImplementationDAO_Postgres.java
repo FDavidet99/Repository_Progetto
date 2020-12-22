@@ -5,9 +5,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import EccezioniPersona.EccezioneCF;
 import Entità.*;
 
 
@@ -19,8 +21,8 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetNazioni=Connection.prepareStatement("Select * from Nazione");
 		StmGetProvinceByNazione=Connection.prepareStatement("Select * from Provincia Where lower(Codicenazione)= lower(?)");
 		StmGetComuniByProvincia = Connection.prepareStatement("SELECT * FROM Comune Where lower(NomeProvincia)= lower(?)");
-		StmInsertProcuratoreSportivo=Connection.prepareStatement("Insert into ProcuratoreSportivo values (?)");
-		StmInsertAtleta=Connection.prepareStatement("Insert into Atleta values (?)");
+		StmInsertProcuratoreSportivo=Connection.prepareStatement("Insert into ProcuratoreSportivo values (?,?,?,?,?,?,?,?);");
+		StmInsertAtleta=Connection.prepareStatement("Insert into atleta values (?,?,?,?,?,?,?,?,?);");
 		
 	
 	}
@@ -67,17 +69,45 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 
 
 	@Override
-	public void InsertAtleta(Atleta atleta) throws SQLException {
-		StmInsertAtleta.setString(1,atleta.toString());
+	public void InsertAtleta(Atleta atleta) throws SQLException, EccezioneCF {
+		StmInsertAtleta.setString(1,atleta.getCF());
+		StmInsertAtleta.setString(2,atleta.getNome());
+		StmInsertAtleta.setString(3,atleta.getCognome());
+		StmInsertAtleta.setObject(4,atleta.getSessoPersona(),Types.OTHER);
+		StmInsertAtleta.setObject(5,atleta.getDataNascita());
+		StmInsertAtleta.setString(6,atleta.getNazioneNascita().getCodiceAt());
+		if(atleta.getNazioneNascita().getCodiceAt().equals("Z000")) {
+			StmInsertAtleta.setString(7,atleta.getProvinciaNascita().getNome()); 
+			StmInsertAtleta.setString(8,atleta.getComuneNascita().getCodiceCatastale());
+		}
+		else {
+			StmInsertAtleta.setString(7,null); 
+			StmInsertAtleta.setString(8,null);
+		}
+		StmInsertAtleta.setBoolean(9,atleta.isHasProcuratore());	
 		int RigheAggiunte=StmInsertAtleta.executeUpdate();
+		
 	}
 
 	@Override
-	public void InsertProcuratoreSportivo(ProcuratoreSportivo procuratore) throws SQLException {
-		StmInsertProcuratoreSportivo.setString(1,procuratore.toString());
+	public void InsertProcuratoreSportivo(ProcuratoreSportivo procuratore) throws SQLException, EccezioneCF {
+		StmInsertProcuratoreSportivo.setString(1,procuratore.getCF());
+		StmInsertProcuratoreSportivo.setString(2,procuratore.getNome());
+		StmInsertProcuratoreSportivo.setString(3,procuratore.getCognome());
+		StmInsertProcuratoreSportivo.setObject(4,procuratore.getSessoPersona(),Types.OTHER);
+		StmInsertProcuratoreSportivo.setObject(5,procuratore.getDataNascita());
+		StmInsertProcuratoreSportivo.setString(6,procuratore.getNazioneNascita().getCodiceAt());
+		if(procuratore.getNazioneNascita().getCodiceAt().equals("Z000")) {
+			StmInsertProcuratoreSportivo.setString(7,procuratore.getProvinciaNascita().getNome()); 
+			StmInsertProcuratoreSportivo.setString(8,procuratore.getComuneNascita().getCodiceCatastale());
+		}
+		else {
+			StmInsertProcuratoreSportivo.setString(7,null); 
+			StmInsertProcuratoreSportivo.setString(8,null);
+		}
+			
 		int RigheAggiunte=StmInsertProcuratoreSportivo.executeUpdate();
-		
-	}
+		}
 
 	
 	

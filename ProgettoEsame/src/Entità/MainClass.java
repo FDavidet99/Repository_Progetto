@@ -1,7 +1,9 @@
 package Entità;
 
 import java.sql.Connection;
-
+//
+import java.sql.Date;
+//
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -10,21 +12,22 @@ import java.util.ListIterator;
 
 import Controller.ControllerQuery;
 import DatabaseUtility.DatabaseConnection;
+import EccezioniPersona.EccezioneCF;
 import ImplementationDAO.ImplementationDAO;
 import ImplementationDAO.ImplementationDAO_Postgres;
 
 
 public class MainClass {
 
-	public static void main(String[] args) throws SQLException {
-		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		//Persona p2 = new Persona("Davide", "Ferreri",Sesso.M, LocalDate.of(1985,12,17),null,null,null);
-		//System.out.println(p2);
+	public static void main(String[] args) throws SQLException, EccezioneCF {
+		Nazione a=new Nazione("Z100","Albania");
+		Atleta p2 = new Atleta("Davide", "Ferreri",Sesso.M, LocalDate.of(1985,12,17),a,null,null,false);
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		System.out.print(LocalDate.of(1985,12,17).format(formatter).toString());
+
 		
-		//System.out.println(p2);
+	
+		
+		System.out.println(p2);
 		
 		//solo per ora metto qua la connessione che andra nel main alla fine
 	    DatabaseConnection dbconn = null;
@@ -33,8 +36,9 @@ public class MainClass {
         connection=dbconn.getConnection();
        
         //	finisce la connessione
-        
-//		ImplementationDAO obj = ControllerQuery.getInstance().getDAO();
+          
+	   ImplementationDAO obj = ControllerQuery.getInstance().getDAO();
+	   obj.InsertAtleta(p2);
 //		
 //		Iterator i=obj.GetNazioni().iterator() ;
 //		for(Nazione a:obj.GetNazioni()) {
