@@ -1,52 +1,40 @@
 package GUI;
 
-import java.util.ArrayList;
-
-
-import java.util.Date;
-import java.util.Properties;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.desktop.UserSessionEvent;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextPane;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.JTable;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
-import java.util.Iterator;
-import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
 import Controller.ControllerQuery;
 import EccezioniPersona.EccezioneCF;
-import Entità.*;
+import Entità.Comune;
+import Entità.Nazione;
+import Entità.Persona;
+import Entità.Provincia;
+import Entità.Sesso;
 import ImplementationDAO.ImplementationDAO;
 
-import java.awt.event.ActionEvent;
-import com.toedter.components.JLocaleChooser;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
+public class InsertAtleta extends JFrame {
 
-public class Insert_Atleta extends JFrame {
-	
 	private JPanel contentPane;
 	private JTextField Nome_textField;
 	private JTextField Cognome_textField;
@@ -61,11 +49,11 @@ public class Insert_Atleta extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) throws SQLException {
+//	public static void main(String[] args) {
 //		EventQueue.invokeLater(new Runnable() {
 //			public void run() {
 //				try {
-//					Insert_Atleta frame = new Insert_Atleta();
+//					InsertAtleta frame = new InsertAtleta();
 //					frame.setVisible(true);
 //				} catch (Exception e) {
 //					e.printStackTrace();
@@ -76,9 +64,8 @@ public class Insert_Atleta extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @throws SQLException 
 	 */
-	public Insert_Atleta(Controller c) throws SQLException {
+	public InsertAtleta(Controller c) throws SQLException {
 		Controller=c;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 541, 331);
@@ -133,9 +120,7 @@ public class Insert_Atleta extends JFrame {
 		Nazione_textArea.setText("Nazione");
 		Nazione_textArea.setBounds(10, 89, 80, 22);
 		contentPane.add(Nazione_textArea);
-		
-		
-		
+	
 	     ArrayList sql=new ArrayList();
 	     sql=(ArrayList) OggettoConnessione.GetNazioni();
 		
@@ -183,7 +168,16 @@ public class Insert_Atleta extends JFrame {
 		contentPane.add(btnNewButton_1);
 		
 		JButton Insert_Button = new JButton("Inserisci");
-		Insert_Button.setBounds(411, 258, 89, 23);
+		Insert_Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Date DataScelta=dateChooser.getDate();
+				
+				Controller.InsertAtletaDB(Nome_textField.getText(), Cognome_textField.getText(), (Sesso)Sesso_comboBox.getSelectedItem(),
+						dateChooser.getDate(), (Nazione) Nazione_comboBox.getSelectedItem(), (Provincia)Provincia_comboBox.getSelectedItem(), (Comune)Comune_comboBox.getSelectedItem(), false);
+				
+				}
+			});
+		Insert_Button.setBounds(426, 258, 89, 23);
 		contentPane.add(Insert_Button);
 		
 		JButton ReturnMenuButton = new JButton("Menu");
@@ -192,8 +186,17 @@ public class Insert_Atleta extends JFrame {
 				Controller.GotoHomePageFromInsertAtleta();
 			}
 		});
-		ReturnMenuButton.setBounds(300, 258, 89, 23);
+		ReturnMenuButton.setBounds(241, 258, 89, 23);
 		contentPane.add(ReturnMenuButton);
+		
+		JButton RestoreButton = new JButton("Cancella");
+		RestoreButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SvuotaCampi();
+			}
+		});
+		RestoreButton.setBounds(332, 258, 89, 23);
+		contentPane.add(RestoreButton);
 		btnNewButton_1.setVisible(false);
 		
 		
@@ -250,53 +253,57 @@ public class Insert_Atleta extends JFrame {
 		
 		CalcolaCf_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String TempNome=Nome_textField.getText();
-				String TempCognome=Cognome_textField.getText();
-				Sesso TempSesso= (Sesso)Sesso_comboBox.getSelectedItem();
-				
-				Date DataScelta=dateChooser.getDate();
-				LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-				TempDate.format(formatter);
-				
-				Nazione TempNazione=(Nazione) Nazione_comboBox.getSelectedItem();
-				Provincia TempProvincia=(Provincia)Provincia_comboBox.getSelectedItem();
-				Comune TempComune=(Comune)Comune_comboBox.getSelectedItem();
-				
-				Persona TempoPersona;
 				try {
-				TempoPersona = new Persona(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune);
+					String TempNome=Nome_textField.getText();
+					String TempCognome=Cognome_textField.getText();
+					Sesso TempSesso= (Sesso)Sesso_comboBox.getSelectedItem();
+					
+					Date DataScelta=dateChooser.getDate();
+					LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+					TempDate.format(formatter);
+					
+					Nazione TempNazione=(Nazione) Nazione_comboBox.getSelectedItem();
+					Provincia TempProvincia=(Provincia)Provincia_comboBox.getSelectedItem();
+				    Comune TempComune=(Comune)Comune_comboBox.getSelectedItem();
+					
+				    Persona TempoPersona;
+				    TempoPersona = new Persona(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune);
 					Cf_textField.setText(TempoPersona.getCF());
-				} catch (SQLException | EccezioneCF e1) {
-					System.out.println("ERRORE");
+				} catch (EccezioneCF  e1) {
+					JDialog Dialog = new JDialog(); 
+		            JLabel LabelJDialog= new JLabel("Caratteri incompatibili col sistema"); 
+		            Dialog.add(LabelJDialog); 
+	                Dialog.setBounds(400, 150, 250, 200);
+		            Dialog.setVisible(true);
+		            SvuotaCampi();
+				} catch (SQLException e2) {
+					JDialog Dialog = new JDialog(); 
+		            JLabel LabelJDialog= new JLabel("connessione assente"); 
+		            Dialog.add(LabelJDialog); 
+	                Dialog.setBounds(400, 150, 250, 200);
+		            Dialog.setVisible(true);
+				} catch (NullPointerException e3) {
+					JDialog Dialog = new JDialog(); 
+		            JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati"); 
+		            Dialog.add(LabelJDialog); 
+	                Dialog.setBounds(400, 150, 250, 200);
+		            Dialog.setVisible(true);
 				}
-				
 			}
-		});
+		});	
 		
-		Insert_Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Date DataScelta=dateChooser.getDate();
-				
-				Controller.InsertAtletaDB(Nome_textField.getText(), Cognome_textField.getText(), (Sesso)Sesso_comboBox.getSelectedItem(),
-						dateChooser.getDate(), (Nazione) Nazione_comboBox.getSelectedItem(), (Provincia)Provincia_comboBox.getSelectedItem(), (Comune)Comune_comboBox.getSelectedItem(), false);
-				
-				}
-			});
-		
-
-	
 	}
 	
-
 	public void SvuotaCampi() {
 		Nome_textField.setText(null);
 		Cognome_textField.setText(null);
 		Cf_textField.setText(null);
-		Sesso_comboBox.setSelectedIndex(0);
-		dateChooser.removeAll();
-		Nazione_comboBox.setSelectedIndex(0);
-		Provincia_comboBox.setSelectedIndex(0);
-		Comune_comboBox.setSelectedIndex(0);
+		Sesso_comboBox.setSelectedIndex(-1);
+		dateChooser.setCalendar(null);
+		Nazione_comboBox.setSelectedIndex(-1);
+		Provincia_comboBox.setSelectedIndex(-1);
+		Comune_comboBox.setSelectedIndex(-1);
 	}
 }
+
