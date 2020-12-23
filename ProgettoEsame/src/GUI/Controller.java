@@ -45,27 +45,39 @@ public class Controller {
 	
 	public void InsertAtletaDB(String TempNome, String TempCognome, Sesso TempSesso , Date DataScelta,
 			Nazione TempNazione, Provincia TempProvincia, Comune TempComune, boolean hasProcuratore) {
-
-		try {
-			LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
-			Atleta TempAtleta;
-			TempAtleta = new Atleta(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune,false);
-			ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
-			OggettoConnessione.InsertAtleta(TempAtleta);
-					
-			} catch (Exception e1) {
-				JDialog Dialog = new JDialog(DialogErrori, "dialog Box"); 
-	            JLabel LabelJDialog= new JLabel("Errori di inserimento"); 
+		
+			try {
+				LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
+				Atleta TempAtleta;
+				TempAtleta = new Atleta(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune,false);
+				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
+				OggettoConnessione.InsertAtleta(TempAtleta);
+				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
+	            JLabel LabelJDialog= new JLabel("L'atleta è stato inserito con successo"); 
                 Dialog.add(LabelJDialog); 
                 Dialog.setBounds(400, 56, 100, 200);
-	             Dialog.setVisible(true); 
-				try {
-					F1.SvuotaCampi();
-				} catch (Exception e) {
-					System.out.println("inserire un valore nelle combobox");
-				}
-				
-			}
+	            Dialog.setVisible(true); 
+	            F1.SvuotaCampi();		
+			} catch (EccezioneCF e) {
+				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+	            JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setBounds(400, 56, 100, 200);
+	            Dialog.setVisible(true); 	
+			} catch (SQLException e1) {
+				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+	            JLabel LabelJDialog= new JLabel("Errori ndi connessioe"); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setBounds(400, 56, 100, 200);
+	            Dialog.setVisible(true); 
+			} catch (NullPointerException e) {
+				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+	            JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati"); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setBounds(400, 56, 100, 200);
+	            Dialog.setVisible(true); 
+	        }
+			    
 	}
 	
 	public void GotoHomePageFromInsertAtleta() {
