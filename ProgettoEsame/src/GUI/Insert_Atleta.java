@@ -8,8 +8,6 @@ import java.util.Properties;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.desktop.UserSessionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -19,18 +17,16 @@ import java.time.format.DateTimeFormatter;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextPane;
-import javax.swing.JLabel;
+
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.JTable;
+
 
 import java.util.Iterator;
-import com.toedter.calendar.JCalendar;
+
+
 import com.toedter.calendar.JDateChooser;
 
 import Controller.ControllerQuery;
@@ -39,11 +35,6 @@ import Entità.*;
 import ImplementationDAO.ImplementationDAO;
 
 import java.awt.event.ActionEvent;
-import com.toedter.components.JLocaleChooser;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 
 public class Insert_Atleta extends JFrame {
 	
@@ -56,23 +47,23 @@ public class Insert_Atleta extends JFrame {
 	private JComboBox<Nazione> Nazione_comboBox;
 	private JComboBox<Provincia> Provincia_comboBox;
 	private JComboBox<Comune>Comune_comboBox;
-	Controller Controller;
+	static Controller Controller;
 
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) throws SQLException {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					Insert_Atleta frame = new Insert_Atleta();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	public static void main(String[] args) throws SQLException {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Insert_Atleta frame = new Insert_Atleta(Controller);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the frame.

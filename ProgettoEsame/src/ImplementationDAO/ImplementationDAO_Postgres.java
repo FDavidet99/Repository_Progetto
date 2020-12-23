@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +24,11 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetComuniByProvincia = Connection.prepareStatement("SELECT * FROM Comune Where lower(NomeProvincia)= lower(?)");
 		StmInsertProcuratoreSportivo=Connection.prepareStatement("Insert into ProcuratoreSportivo values (?,?,?,?,?,?,?,?);");
 		StmInsertAtleta=Connection.prepareStatement("Insert into atleta values (?,?,?,?,?,?,?,?,?);");
+		StmGetAtleti = Connection.prepareStatement("Select * from atleta;");
 		
-	
+		StmGetComuneByCodiceCatastale = Connection.prepareStatement("Select * from comune where codicecatastale like ?;");
+		StmGetNazioneByCodiceAt = Connection.prepareStatement("Select * from nazione where codiceat like ?;");
+		StmGetProvinciaByNome = Connection.prepareStatement("Select * from provincia where nomeprovincia like ?;");
 	}
 
 	@Override
@@ -108,6 +112,64 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			
 		int RigheAggiunte=StmInsertProcuratoreSportivo.executeUpdate();
 		}
+
+	@Override
+	public Nazione getNazioneByCodiceAt(String codiceAt) throws SQLException {
+		StmGetNazioneByCodiceAt.setString(1, codiceAt);
+		ResultSet rs=StmGetNazioneByCodiceAt.executeQuery();
+		rs.next();
+		Nazione nazione = new Nazione(rs.getString("codiceat"), rs.getString("nomenazione"));
+		
+		rs.close();
+		return nazione;
+	}
+
+	@Override
+	public Provincia getProvinciaByNome(String nome) throws SQLException {
+		StmGetProvinciaByNome.setString(1, nome);
+		ResultSet rs=StmGetProvinciaByNome.executeQuery();
+		rs.next();
+		Provincia provincia = new Provincia( rs.getString("nomeprovincia"), rs.getString("siglaprovincia"),
+						getNazioneByCodiceAt(rs.getString("codicenazione")));
+		rs.close();
+		return provincia;
+	}
+
+	@Override
+	public Comune getComuneByCodiceCatastale(String codiceCatastale) throws SQLException {
+		StmGetComuneByCodiceCatastale.setString(1, codiceCatastale);
+		ResultSet rs=StmGetComuneByCodiceCatastale.executeQuery();
+		rs.next();
+		Comune comune = new Comune( rs.getString("codicecatastale"), rs.getString("nomecomune"),
+						getProvinciaByNome((rs.getString("nomeprovincia"))));
+		rs.close();
+		return comune;
+	}
+
+	@Override
+	public List<Atleta> getAtleti() throws SQLException, EccezioneCF {
+		ResultSet rs=StmGetAtleti.executeQuery();
+		ArrayList<Atleta> atleti=new ArrayList<Atleta>();
+		while(rs.next()) {
+			Nazione nazione = getNazioneByCodiceAt(rs.getString("nazionenascita"));
+			Comune comune = getComuneByCodiceCatastale(rs.getString("comunenascita"));
+			Provincia provincia = getProvinciaByNome(rs.getString("provincianascita"));
+			
+			Sesso sesso = Sesso.F;
+			if(rs.getString("sesso").equals("M"))sesso = Sesso.M;
+			
+			String nome = rs.getString("nome");
+			String cognome = rs.getString("cognome");
+			LocalDate dataNascita =  LocalDate.parse(rs.getString("datanascita"));
+			boolean hasProcuratore =  rs.getBoolean("hasprocuratore");
+			Atleta tmpAtleta=new Atleta(nome,cognome,sesso,dataNascita,
+						nazione,provincia,comune,hasProcuratore);
+			atleti.add(tmpAtleta);
+		}
+		rs.close();
+		return atleti;
+		
+	}
 
 	
 	

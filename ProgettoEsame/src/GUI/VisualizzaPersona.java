@@ -11,6 +11,7 @@ import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
@@ -22,6 +23,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerQuery;
+import EccezioniPersona.EccezioneCF;
+import Entità.Atleta;
+import Entità.Persona;
 import ImplementationDAO.ImplementationDAO;
 
 import javax.swing.border.LineBorder;
@@ -51,6 +55,7 @@ public class VisualizzaPersona extends JFrame {
 	 * Create the frame.
 	 */
 	public VisualizzaPersona() {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 795, 480);
 		contentPane = new JPanel();
@@ -104,12 +109,32 @@ public class VisualizzaPersona extends JFrame {
 	{
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
+			ArrayList<Atleta> persone = new ArrayList<Atleta>();
+			try {
+				persone = (ArrayList<Atleta>) dao.getAtleti();
+			} catch (EccezioneCF e) {
+				
+				e.printStackTrace();
+			}
 			
-			DefaultTableModel model = (DefaultTableModel) tabellaPersone.getModel();
-			for(int i=0;i<100;i++)
-			model.addRow(new Object[] {
-					"CF", "Nome", "Cognome", "Sesso", "Comune", "Provincia", "DataNascita"
-				});
+			try {
+				DefaultTableModel model = (DefaultTableModel) tabellaPersone.getModel();
+				for(int i=0;i<persone.size();i++)
+				{
+					Persona p  =persone.get(i);
+					model.addRow(new Object[] {
+							p.getCF(), p.getNome(),
+							p.getCognome(), p.getSessoPersona(),
+							p.getComuneNascita().getNome(),
+							p.getProvinciaNascita().getNome(),
+							p.getDataNascita()
+						});
+				}
+			} catch (EccezioneCF e) {
+				
+				e.printStackTrace();
+			}
+			
 			
 			
 		} catch (SQLException e) {

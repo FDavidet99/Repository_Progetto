@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 
@@ -36,8 +37,16 @@ public class MainClass {
         connection=dbconn.getConnection();
        
         //	finisce la connessione
-          
-	  
+        ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
+        
+        System.out.println("com "+dao.getNazioneByCodiceAt("Z000"));
+        System.out.println("com "+dao.getProvinciaByNome("Napoli"));
+        System.out.println("com "+dao.getComuneByCodiceCatastale("A019"));
+        
+        
+        ArrayList<Atleta> atleti = (ArrayList<Atleta>) dao.getAtleti();
+        for(Atleta i : atleti)
+        	System.out.println(i);
 //		
 //		Iterator i=obj.GetNazioni().iterator() ;
 //		for(Nazione a:obj.GetNazioni()) {
