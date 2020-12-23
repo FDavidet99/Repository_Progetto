@@ -2,6 +2,7 @@ package GUI;
 
 import java.util.ArrayList;
 
+
 import java.util.Date;
 import java.util.Properties;
 import java.awt.BorderLayout;
@@ -34,7 +35,7 @@ import com.toedter.calendar.JDateChooser;
 
 import Controller.ControllerQuery;
 import EccezioniPersona.EccezioneCF;
-import Entitï¿½.*;
+import Entità.*;
 import ImplementationDAO.ImplementationDAO;
 
 import java.awt.event.ActionEvent;
@@ -54,7 +55,7 @@ public class Insert_Atleta extends JFrame {
 	private JDateChooser dateChooser;
 	private JComboBox<Nazione> Nazione_comboBox;
 	private JComboBox<Provincia> Provincia_comboBox;
-	private JComboBox Comune_comboBox;
+	private JComboBox<Comune>Comune_comboBox;
 	Controller Controller;
 
 	/**
@@ -113,7 +114,7 @@ public class Insert_Atleta extends JFrame {
 		Sesso_textArea.setBounds(10, 58, 45, 22);
 		contentPane.add(Sesso_textArea);
 		
-		JComboBox Sesso_comboBox = new JComboBox(Sesso.values());
+		Sesso_comboBox = new JComboBox(Sesso.values());
 		Sesso_comboBox.setBounds(67, 59, 58, 22);
 		contentPane.add(Sesso_comboBox);
 		
@@ -122,7 +123,7 @@ public class Insert_Atleta extends JFrame {
 		Data_textArea.setBounds(179, 59, 52, 22);
 		contentPane.add(Data_textArea);
 		
-		JDateChooser dateChooser = new JDateChooser();
+		dateChooser = new JDateChooser();
 		dateChooser.setBounds(241, 59, 127, 20);
 		contentPane.add(dateChooser);
 		
@@ -138,7 +139,7 @@ public class Insert_Atleta extends JFrame {
 	     ArrayList sql=new ArrayList();
 	     sql=(ArrayList) OggettoConnessione.GetNazioni();
 		
-    	JComboBox<Nazione> Nazione_comboBox = new JComboBox (sql.toArray());
+    	Nazione_comboBox = new JComboBox (sql.toArray());
     	Nazione_comboBox.setSelectedIndex(-1);
 		Nazione_comboBox.setBounds(100, 91, 113, 20);
     	contentPane.add(Nazione_comboBox);
@@ -149,7 +150,7 @@ public class Insert_Atleta extends JFrame {
 		Provincia_textArea.setBounds(10, 122, 80, 22);
 		contentPane.add(Provincia_textArea);
 		
-		JComboBox<Provincia> Provincia_comboBox=new JComboBox();
+		Provincia_comboBox=new JComboBox();
 		Provincia_comboBox.setBounds(102, 123, 115, 22);
 		contentPane.add(Provincia_comboBox);
 		Provincia_comboBox.setSelectedIndex(-1);
@@ -159,7 +160,7 @@ public class Insert_Atleta extends JFrame {
 		Comune_TextArea.setBounds(10, 155, 58, 22);
 		contentPane.add(Comune_TextArea);
 		
-		JComboBox Comune_comboBox = new JComboBox();
+		Comune_comboBox = new JComboBox();
 		Comune_comboBox.setBounds(102, 156, 113, 22);
 		contentPane.add(Comune_comboBox);
 		
@@ -185,14 +186,14 @@ public class Insert_Atleta extends JFrame {
 		Insert_Button.setBounds(411, 258, 89, 23);
 		contentPane.add(Insert_Button);
 		
-		JButton ReturnMenï¿½Button = new JButton("Men\u00F9");
-		ReturnMenï¿½Button.addActionListener(new ActionListener() {
+		JButton ReturnMenuButton = new JButton("Menu");
+		ReturnMenuButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Controller.GotoHomePageFromInsertAtleta();
 			}
 		});
-		ReturnMenï¿½Button.setBounds(300, 258, 89, 23);
-		contentPane.add(ReturnMenï¿½Button);
+		ReturnMenuButton.setBounds(300, 258, 89, 23);
+		contentPane.add(ReturnMenuButton);
 		btnNewButton_1.setVisible(false);
 		
 		

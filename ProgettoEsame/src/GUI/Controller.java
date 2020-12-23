@@ -1,3 +1,5 @@
+package GUI;
+
 
 import java.awt.EventQueue;
 import java.sql.SQLException;
@@ -11,11 +13,7 @@ import javax.swing.JLabel;
 
 import Controller.ControllerQuery;
 import EccezioniPersona.EccezioneCF;
-import Entitï¿½.Atleta;
-import Entitï¿½.Comune;
-import Entitï¿½.Nazione;
-import Entitï¿½.Provincia;
-import Entitï¿½.Sesso;
+import Entità.*;
 import ImplementationDAO.ImplementationDAO;
 
 public class Controller {
@@ -44,6 +42,7 @@ public class Controller {
 	
 	public void InsertAtletaDB(String TempNome, String TempCognome, Sesso TempSesso , Date DataScelta,
 			Nazione TempNazione, Provincia TempProvincia, Comune TempComune, boolean hasProcuratore) {
+
 		
 			try {
 				LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
@@ -72,11 +71,9 @@ public class Controller {
 			} catch (NullPointerException e) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati"); 
-                Dialog.add(LabelJDialog); 
-                Dialog.setBounds(400, 56, 100, 200);
-	            Dialog.setVisible(true); 
-	        }
-			    
+
+				
+			}
 	}
 	
 	public void GotoHomePageFromInsertAtleta() {
