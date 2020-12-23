@@ -112,12 +112,6 @@ public class VisualizzaPersona extends JFrame {
 			ArrayList<Atleta> persone = new ArrayList<Atleta>();
 			try {
 				persone = (ArrayList<Atleta>) dao.getAtleti();
-			} catch (EccezioneCF e) {
-				
-				e.printStackTrace();
-			}
-			
-			try {
 				DefaultTableModel model = (DefaultTableModel) tabellaPersone.getModel();
 				for(int i=0;i<persone.size();i++)
 				{
