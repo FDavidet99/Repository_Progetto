@@ -69,6 +69,7 @@ public class Controller {
                 Dialog.add(LabelJDialog); 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                 Dialog.setBounds(400, 200, 250, 200);
 	            Dialog.setVisible(true); 	
@@ -76,6 +77,11 @@ public class Controller {
 
 	            F1.SvuotaCampi();		
 
+=======
+                Dialog.setBounds(400, 200, 100, 200);
+	            Dialog.setVisible(true); 
+	            F1.SvuotaCampi();		
+>>>>>>> parent of 0b83fe6... Migliorate eccezioni
 =======
                 Dialog.setBounds(400, 200, 100, 200);
 	            Dialog.setVisible(true); 
@@ -98,8 +104,12 @@ public class Controller {
                 Dialog.add(LabelJDialog); 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 Dialog.setBounds(400, 200, 250, 200);
 
+=======
+                Dialog.setBounds(400, 200, 100, 200);
+>>>>>>> parent of 0b83fe6... Migliorate eccezioni
 =======
                 Dialog.setBounds(400, 200, 100, 200);
 >>>>>>> parent of 0b83fe6... Migliorate eccezioni

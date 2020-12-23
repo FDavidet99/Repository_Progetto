@@ -276,9 +276,12 @@ public class Insert_Atleta extends JFrame {
 		
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 		
 =======
+=======
+>>>>>>> parent of 0b83fe6... Migliorate eccezioni
 =======
 >>>>>>> parent of 0b83fe6... Migliorate eccezioni
 		Insert_Button.addActionListener(new ActionListener() {
@@ -291,6 +294,9 @@ public class Insert_Atleta extends JFrame {
 				}
 			});
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 0b83fe6... Migliorate eccezioni
+=======
 >>>>>>> parent of 0b83fe6... Migliorate eccezioni
 =======
 >>>>>>> parent of 0b83fe6... Migliorate eccezioni
@@ -300,7 +306,10 @@ public class Insert_Atleta extends JFrame {
 	
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 0b83fe6... Migliorate eccezioni
 =======
 >>>>>>> parent of 0b83fe6... Migliorate eccezioni
 =======
