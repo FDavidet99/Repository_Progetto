@@ -37,8 +37,7 @@ public class MainClass {
        
         //	finisce la connessione
           
-	   ImplementationDAO obj = ControllerQuery.getInstance().getDAO();
-	   obj.InsertAtleta(p2);
+	  
 //		
 //		Iterator i=obj.GetNazioni().iterator() ;
 //		for(Nazione a:obj.GetNazioni()) {

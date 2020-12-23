@@ -33,7 +33,7 @@ import java.util.Iterator;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
-import Controller.ControllerQuery;
+
 import EccezioniPersona.EccezioneCF;
 import Entità.*;
 import ImplementationDAO.ImplementationDAO;
@@ -44,6 +44,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import DatabaseUtility.*;
 
 public class Insert_Atleta extends JFrame {
 	
@@ -289,11 +290,14 @@ public class Insert_Atleta extends JFrame {
 			}
 		});
 		
+
 		
 			
 	}
+
 	
-	public void SvuotaCampi()  {
+
+	public void SvuotaCampi() {
 		Nome_textField.setText(null);
 		Cognome_textField.setText(null);
 		Cf_textField.setText(null);

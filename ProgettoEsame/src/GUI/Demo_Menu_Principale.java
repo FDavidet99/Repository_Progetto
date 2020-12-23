@@ -50,7 +50,12 @@ public class Demo_Menu_Principale extends JFrame {
 		JButton InsertAtleti_Button = new JButton("Inserire nuovo atleta");
 		InsertAtleti_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PrimoController.GotoFrameInsertAtleta();
+				try {
+					PrimoController.GotoFrameInsertAtleta();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		InsertAtleti_Button.setBounds(32, 59, 264, 23);

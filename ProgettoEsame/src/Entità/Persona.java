@@ -2,13 +2,13 @@ package Entità;
 
 import java.sql.Connection;
 
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import Controller.ControllerQuery;
 import EccezioniPersona.*;
 import ImplementationDAO.*;
 import DatabaseUtility.*;
