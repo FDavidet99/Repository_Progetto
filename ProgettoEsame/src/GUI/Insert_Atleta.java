@@ -34,7 +34,7 @@ import com.toedter.calendar.JDateChooser;
 
 import Controller.ControllerQuery;
 import EccezioniPersona.EccezioneCF;
-import Entità.*;
+import Entitï¿½.*;
 import ImplementationDAO.ImplementationDAO;
 
 import java.awt.event.ActionEvent;
@@ -185,14 +185,14 @@ public class Insert_Atleta extends JFrame {
 		Insert_Button.setBounds(411, 258, 89, 23);
 		contentPane.add(Insert_Button);
 		
-		JButton ReturnMenùButton = new JButton("Men\u00F9");
-		ReturnMenùButton.addActionListener(new ActionListener() {
+		JButton ReturnMenï¿½Button = new JButton("Men\u00F9");
+		ReturnMenï¿½Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Controller.GotoHomePageFromInsertAtleta();
 			}
 		});
-		ReturnMenùButton.setBounds(300, 258, 89, 23);
-		contentPane.add(ReturnMenùButton);
+		ReturnMenï¿½Button.setBounds(300, 258, 89, 23);
+		contentPane.add(ReturnMenï¿½Button);
 		btnNewButton_1.setVisible(false);
 		
 		
@@ -282,18 +282,12 @@ public class Insert_Atleta extends JFrame {
 				
 				}
 			});
-<<<<<<< HEAD
 		
 
 	
 	}
 	
 
-=======
-			
-	}
-	
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
 	public void SvuotaCampi() {
 		Nome_textField.setText(null);
 		Cognome_textField.setText(null);
