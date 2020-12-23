@@ -274,19 +274,10 @@ public class Insert_Atleta extends JFrame {
 			}
 		});
 		
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
 		
-=======
-=======
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
+
 		Insert_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Date DataScelta=dateChooser.getDate();
@@ -296,33 +287,7 @@ public class Insert_Atleta extends JFrame {
 				
 				}
 			});
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-			
-	}
 
-	
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
 	public void SvuotaCampi() {
 		Nome_textField.setText(null);
 		Cognome_textField.setText(null);

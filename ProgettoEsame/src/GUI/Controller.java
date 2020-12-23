@@ -63,14 +63,11 @@ public class Controller {
 				Atleta TempAtleta;
 				TempAtleta = new Atleta(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune,false);
 				//ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
-				OggettoConnessione.InsertAtleta(TempAtleta);
+				//OggettoConnessione.InsertAtleta(TempAtleta);
 				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
 	            JLabel LabelJDialog= new JLabel("L'atleta è stato inserito con successo"); 
                 Dialog.add(LabelJDialog); 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
                 Dialog.setBounds(400, 200, 250, 200);
 	            Dialog.setVisible(true); 	
@@ -78,26 +75,27 @@ public class Controller {
 
 	            F1.SvuotaCampi();		
 
-=======
+
                 Dialog.setBounds(400, 200, 100, 200);
 	            Dialog.setVisible(true); 
 	            F1.SvuotaCampi();		
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
+
                 Dialog.setBounds(400, 200, 100, 200);
 	            Dialog.setVisible(true); 
 	            F1.SvuotaCampi();		
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
+
                 Dialog.setBounds(400, 200, 100, 200);
 	            Dialog.setVisible(true); 
 	            F1.SvuotaCampi();		
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
+
                 Dialog.setBounds(400, 200, 100, 200);
 	            Dialog.setVisible(true); 
 	            F1.SvuotaCampi();		
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
+
+                Dialog.setBounds(400, 200, 100, 200);
+	            Dialog.setVisible(true); 
+	            F1.SvuotaCampi();		
+
 			} catch (EccezioneCF e) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
@@ -108,24 +106,19 @@ public class Controller {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Errori ndi connessioe"); 
                 Dialog.add(LabelJDialog); 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
                 Dialog.setBounds(400, 200, 250, 200);
 
-=======
+
                 Dialog.setBounds(400, 200, 100, 200);
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
+
                 Dialog.setBounds(400, 200, 100, 200);
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
+
                 Dialog.setBounds(400, 200, 100, 200);
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
-=======
+      Dialog.setBounds(400, 200, 100, 200);
+
                 Dialog.setBounds(400, 200, 100, 200);
->>>>>>> parent of 0b83fe6... Migliorate eccezioni
+
 	            Dialog.setVisible(true); 
 			} catch (NullPointerException e) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
