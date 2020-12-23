@@ -39,7 +39,19 @@ public class Controller {
 	public void GotoFrameInsertAtleta() throws SQLException {
 
 		HomePage.setVisible(false);
+<<<<<<< HEAD
 		F1=new Insert_Atleta(this);
+=======
+		try {
+			F1=new Insert_Atleta(this);
+		} catch (SQLException e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errori ndi connessioe"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 200, 100, 200);
+            Dialog.setVisible(true); 
+		}
+>>>>>>> parent of 0b83fe6... Migliorate eccezioni
 		F1.setVisible(true);
 	}
 	
@@ -55,20 +67,32 @@ public class Controller {
 				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
 	            JLabel LabelJDialog= new JLabel("L'atleta è stato inserito con successo"); 
                 Dialog.add(LabelJDialog); 
+<<<<<<< HEAD
                 Dialog.setBounds(400, 56, 100, 200);
+=======
+                Dialog.setBounds(400, 200, 100, 200);
+>>>>>>> parent of 0b83fe6... Migliorate eccezioni
 	            Dialog.setVisible(true); 
 	            F1.SvuotaCampi();		
 			} catch (EccezioneCF e) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
                 Dialog.add(LabelJDialog); 
+<<<<<<< HEAD
                 Dialog.setBounds(400, 56, 100, 200);
+=======
+                Dialog.setBounds(400, 200, 100, 200);
+>>>>>>> parent of 0b83fe6... Migliorate eccezioni
 	            Dialog.setVisible(true); 	
 			} catch (SQLException e1) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Errori ndi connessioe"); 
                 Dialog.add(LabelJDialog); 
+<<<<<<< HEAD
                 Dialog.setBounds(400, 56, 100, 200);
+=======
+                Dialog.setBounds(400, 200, 100, 200);
+>>>>>>> parent of 0b83fe6... Migliorate eccezioni
 	            Dialog.setVisible(true); 
 			} catch (NullPointerException e) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
