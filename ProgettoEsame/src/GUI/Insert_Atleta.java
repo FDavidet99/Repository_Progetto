@@ -22,6 +22,7 @@ import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
+import javax.imageio.plugins.tiff.GeoTIFFTagSet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -54,7 +55,7 @@ public class Insert_Atleta extends JFrame {
 	private JDateChooser dateChooser;
 	private JComboBox<Nazione> Nazione_comboBox;
 	private JComboBox<Provincia> Provincia_comboBox;
-	private JComboBox Comune_comboBox;
+	private JComboBox<Comune> Comune_comboBox;
 	Controller Controller;
 
 	/**
@@ -113,7 +114,8 @@ public class Insert_Atleta extends JFrame {
 		Sesso_textArea.setBounds(10, 58, 45, 22);
 		contentPane.add(Sesso_textArea);
 		
-		JComboBox Sesso_comboBox = new JComboBox(Sesso.values());
+		Sesso_comboBox = new JComboBox(Sesso.values());
+		Sesso_comboBox.setSelectedIndex(-1);
 		Sesso_comboBox.setBounds(67, 59, 58, 22);
 		contentPane.add(Sesso_comboBox);
 		
@@ -122,7 +124,7 @@ public class Insert_Atleta extends JFrame {
 		Data_textArea.setBounds(179, 59, 52, 22);
 		contentPane.add(Data_textArea);
 		
-		JDateChooser dateChooser = new JDateChooser();
+		dateChooser = new JDateChooser();
 		dateChooser.setBounds(241, 59, 127, 20);
 		contentPane.add(dateChooser);
 		
@@ -133,23 +135,20 @@ public class Insert_Atleta extends JFrame {
 		Nazione_textArea.setBounds(10, 89, 80, 22);
 		contentPane.add(Nazione_textArea);
 		
+	    ArrayList sql=new ArrayList();
+	    sql=(ArrayList) OggettoConnessione.GetNazioni();
 		
-		
-	     ArrayList sql=new ArrayList();
-	     sql=(ArrayList) OggettoConnessione.GetNazioni();
-		
-    	JComboBox<Nazione> Nazione_comboBox = new JComboBox (sql.toArray());
+    	Nazione_comboBox = new JComboBox (sql.toArray());
     	Nazione_comboBox.setSelectedIndex(-1);
 		Nazione_comboBox.setBounds(100, 91, 113, 20);
     	contentPane.add(Nazione_comboBox);
-		
 		
 		JTextArea Provincia_textArea = new JTextArea();
 		Provincia_textArea.setText("Provincia\r\n");
 		Provincia_textArea.setBounds(10, 122, 80, 22);
 		contentPane.add(Provincia_textArea);
 		
-		JComboBox<Provincia> Provincia_comboBox=new JComboBox();
+		Provincia_comboBox=new JComboBox();
 		Provincia_comboBox.setBounds(102, 123, 115, 22);
 		contentPane.add(Provincia_comboBox);
 		Provincia_comboBox.setSelectedIndex(-1);
@@ -159,7 +158,7 @@ public class Insert_Atleta extends JFrame {
 		Comune_TextArea.setBounds(10, 155, 58, 22);
 		contentPane.add(Comune_TextArea);
 		
-		JComboBox Comune_comboBox = new JComboBox();
+		Comune_comboBox = new JComboBox();
 		Comune_comboBox.setBounds(102, 156, 113, 22);
 		contentPane.add(Comune_comboBox);
 		
@@ -182,17 +181,34 @@ public class Insert_Atleta extends JFrame {
 		contentPane.add(btnNewButton_1);
 		
 		JButton Insert_Button = new JButton("Inserisci");
+		Insert_Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Date DataScelta=dateChooser.getDate();
+				Controller.InsertAtletaDB(Nome_textField.getText(), Cognome_textField.getText(), (Sesso)Sesso_comboBox.getSelectedItem(),
+						dateChooser.getDate(), (Nazione) Nazione_comboBox.getSelectedItem(), (Provincia)Provincia_comboBox.getSelectedItem(), (Comune)Comune_comboBox.getSelectedItem(), false);
+				
+				}
+			});
 		Insert_Button.setBounds(411, 258, 89, 23);
 		contentPane.add(Insert_Button);
 		
-		JButton ReturnMenùButton = new JButton("Men\u00F9");
-		ReturnMenùButton.addActionListener(new ActionListener() {
+		JButton ReturnMenuButton = new JButton("Menu");
+		ReturnMenuButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Controller.GotoHomePageFromInsertAtleta();
 			}
 		});
-		ReturnMenùButton.setBounds(300, 258, 89, 23);
-		contentPane.add(ReturnMenùButton);
+		ReturnMenuButton.setBounds(207, 258, 89, 23);
+		contentPane.add(ReturnMenuButton);
+		
+		JButton ResetCampiButton = new JButton("Reset");
+		ResetCampiButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SvuotaCampi();
+			}
+		});
+		ResetCampiButton.setBounds(312, 258, 89, 23);
+		contentPane.add(ResetCampiButton);
 		btnNewButton_1.setVisible(false);
 		
 		
@@ -273,26 +289,21 @@ public class Insert_Atleta extends JFrame {
 			}
 		});
 		
-		Insert_Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Date DataScelta=dateChooser.getDate();
-				
-				Controller.InsertAtletaDB(Nome_textField.getText(), Cognome_textField.getText(), (Sesso)Sesso_comboBox.getSelectedItem(),
-						dateChooser.getDate(), (Nazione) Nazione_comboBox.getSelectedItem(), (Provincia)Provincia_comboBox.getSelectedItem(), (Comune)Comune_comboBox.getSelectedItem(), false);
-				
-				}
-			});
+		
 			
 	}
 	
-	public void SvuotaCampi() {
+	public void SvuotaCampi()  {
 		Nome_textField.setText(null);
 		Cognome_textField.setText(null);
 		Cf_textField.setText(null);
-		Sesso_comboBox.setSelectedIndex(0);
-		dateChooser.removeAll();
-		Nazione_comboBox.setSelectedIndex(0);
-		Provincia_comboBox.setSelectedIndex(0);
-		Comune_comboBox.setSelectedIndex(0);
+		Sesso_comboBox.setSelectedIndex(-1);
+		dateChooser.setCalendar(null);
+		Nazione_comboBox.setSelectedIndex(-1);
+	    Provincia_comboBox.setSelectedIndex(-1);
+	    Comune_comboBox.setSelectedIndex(-1);
+	   
+		
 	}
 }
+

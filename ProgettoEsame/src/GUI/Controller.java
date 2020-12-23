@@ -45,7 +45,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errori ndi connessioe"); 
             Dialog.add(LabelJDialog); 
-            Dialog.setBounds(400, 200, 100, 200);
+            Dialog.setBounds(400, 200, 250, 200);
             Dialog.setVisible(true); 
 		}
 		F1.setVisible(true);
@@ -60,29 +60,30 @@ public class Controller {
 				TempAtleta = new Atleta(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune,false);
 				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
 				OggettoConnessione.InsertAtleta(TempAtleta);
+				F1.SvuotaCampi();
 				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
 	            JLabel LabelJDialog= new JLabel("L'atleta è stato inserito con successo"); 
                 Dialog.add(LabelJDialog); 
-                Dialog.setBounds(400, 200, 100, 200);
-	            Dialog.setVisible(true); 
-	            F1.SvuotaCampi();		
+                Dialog.setBounds(400, 200, 250, 200);
+	            Dialog.setVisible(true); 	
+	            
 			} catch (EccezioneCF e) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
                 Dialog.add(LabelJDialog); 
-                Dialog.setBounds(400, 200, 100, 200);
+                Dialog.setBounds(400, 200, 250, 200);
 	            Dialog.setVisible(true); 	
 			} catch (SQLException e1) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-	            JLabel LabelJDialog= new JLabel("Errori ndi connessioe"); 
+	            JLabel LabelJDialog= new JLabel("Errore di connessioe"); 
                 Dialog.add(LabelJDialog); 
-                Dialog.setBounds(400, 200, 100, 200);
+                Dialog.setBounds(400, 200, 250, 200);
 	            Dialog.setVisible(true); 
 			} catch (NullPointerException e) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati"); 
                 Dialog.add(LabelJDialog); 
-                Dialog.setBounds(400, 56, 100, 200);
+                Dialog.setBounds(400, 56, 250, 200);
 	            Dialog.setVisible(true); 
 	        }
 			    
