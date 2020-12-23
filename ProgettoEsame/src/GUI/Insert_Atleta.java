@@ -282,12 +282,9 @@ public class Insert_Atleta extends JFrame {
 				
 				}
 			});
-		
-
-	
+			
 	}
 	
-
 	public void SvuotaCampi() {
 		Nome_textField.setText(null);
 		Cognome_textField.setText(null);
