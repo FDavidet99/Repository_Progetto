@@ -62,6 +62,7 @@ public class Controller {
 				LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
 				Atleta TempAtleta;
 				TempAtleta = new Atleta(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune,false);
+<<<<<<< HEAD
 				//ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
 				//OggettoConnessione.InsertAtleta(TempAtleta);
 				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
@@ -96,6 +97,16 @@ public class Controller {
 	            Dialog.setVisible(true); 
 	            F1.SvuotaCampi();		
 
+=======
+				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
+				OggettoConnessione.InsertAtleta(TempAtleta);
+				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
+	            JLabel LabelJDialog= new JLabel("L'atleta è stato inserito con successo"); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setBounds(400, 200, 100, 200);
+	            Dialog.setVisible(true); 
+	            F1.SvuotaCampi();		
+>>>>>>> parent of 0b83fe6... Migliorate eccezioni
 			} catch (EccezioneCF e) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
@@ -106,6 +117,7 @@ public class Controller {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Errori ndi connessioe"); 
                 Dialog.add(LabelJDialog); 
+<<<<<<< HEAD
 
                 Dialog.setBounds(400, 200, 250, 200);
 
@@ -119,6 +131,9 @@ public class Controller {
 
                 Dialog.setBounds(400, 200, 100, 200);
 
+=======
+                Dialog.setBounds(400, 200, 100, 200);
+>>>>>>> parent of 0b83fe6... Migliorate eccezioni
 	            Dialog.setVisible(true); 
 			} catch (NullPointerException e) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 

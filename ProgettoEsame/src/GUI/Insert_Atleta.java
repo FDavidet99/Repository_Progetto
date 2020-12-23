@@ -275,9 +275,6 @@ public class Insert_Atleta extends JFrame {
 		});
 		
 
-
-		
-
 		Insert_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Date DataScelta=dateChooser.getDate();
@@ -287,6 +284,10 @@ public class Insert_Atleta extends JFrame {
 				
 				}
 			});
+
+			
+	}
+	
 
 	public void SvuotaCampi() {
 		Nome_textField.setText(null);
