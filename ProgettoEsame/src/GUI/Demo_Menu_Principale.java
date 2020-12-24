@@ -4,9 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
@@ -15,24 +18,6 @@ public class Demo_Menu_Principale extends JFrame {
 
 	private JPanel contentPane;
 	Controller PrimoController;
-
-	/**
-	 * Launch the application.
-	 */
-//Ci deve essere solo il main del controller	
-	
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					Demo_Menu_Principale frame = new Demo_Menu_Principale();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the frame.
@@ -53,8 +38,11 @@ public class Demo_Menu_Principale extends JFrame {
 				try {
 					PrimoController.GotoFrameInsertAtleta();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JDialog Dialog = new JDialog(); 
+		            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+		            Dialog.add(LabelJDialog); 
+	                Dialog.setBounds(400, 150, 250, 200);
+		            Dialog.setVisible(true);
 				}
 			}
 		});
@@ -62,6 +50,19 @@ public class Demo_Menu_Principale extends JFrame {
 		contentPane.add(InsertAtleti_Button);
 		
 		JButton btnNewButton_1 = new JButton("Inserire nuovo procuratore\r\n");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					PrimoController.GotoFrameInsertProcuratore();
+				} catch (SQLException e1) {
+					JDialog Dialog = new JDialog(); 
+		            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+		            Dialog.add(LabelJDialog); 
+	                Dialog.setBounds(400, 150, 250, 200);
+		            Dialog.setVisible(true);
+				}
+			}
+		});
 		btnNewButton_1.setBounds(32, 25, 264, 23);
 		contentPane.add(btnNewButton_1);
 		

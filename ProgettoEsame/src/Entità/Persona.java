@@ -131,11 +131,12 @@ public class Persona {
 		String out = "[";
 		try {
 			out+="CF: "+getCF()+", ";
-		} catch (EccezioneCF e) {} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (EccezioneCF e) {
+			System.out.println("Dati non compatibili");
+		} catch (SQLException e) {
+			System.out.println("DConnessione non riuscita");
 			e.printStackTrace();
 		}
-		
 		out+="Nome: "+ Nome +", ";
 		out+="Cognome: "+ Cognome +", ";
 		out+="Sesso: "+ SessoPersona+", ";
@@ -153,19 +154,8 @@ public class Persona {
 		return out;
 	}
 	
-	
-	//METODI CODICE FISCALE//////////////////////////////////////
-	
 	private String calcolaCF(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
 			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws EccezioneCF, SQLException {
-		
-		
-		//solo per ora metto qua la connessione che andra nel main alla fine
-		    DatabaseConnection dbconn = null;
-	        Connection connection = null;
-	        dbconn=DatabaseConnection.getInstance();
-	        connection=dbconn.getConnection();
-		//finisce la connessione
 	        
 		nome = nome.toLowerCase();
 		cognome = cognome.toLowerCase();
@@ -261,11 +251,11 @@ public class Persona {
     }
 	
 	private boolean isConsonante(char c) {
-		return (c!='a' && c!= 'i' && c!='e' && c!='o' && c!='u');
+		return (c!='a' && c!= 'e' && c!='i' && c!='o' && c!='u');
 	}
 	
 	private boolean isVocale(char c) {
-		return (c=='a' || c=='i' || c=='e' || c=='o' || c=='u');
+		return (c=='a' || c=='e' || c=='i' || c=='o' || c=='u');
 	}
 	
 	private String getConsonanti(String s) {

@@ -2,7 +2,6 @@ package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -21,17 +20,22 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
 import Controller.ControllerQuery;
 import EccezioniPersona.EccezioneCF;
-import Entità.*;
+import Entità.Comune;
+import Entità.Nazione;
+import Entità.Persona;
+import Entità.Provincia;
+import Entità.Sesso;
 import ImplementationDAO.ImplementationDAO;
+import javax.swing.UIManager;
+import java.awt.SystemColor;
 
-public class InsertAtleta extends JFrame {
+public class InsertProcuratoreSportivo extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField Nome_textField;
@@ -44,29 +48,11 @@ public class InsertAtleta extends JFrame {
 	private JComboBox<Comune>Comune_comboBox;
 	Controller Controller;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					InsertAtleta frame = new InsertAtleta();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
-	/**
-	 * Create the frame.
-	 */
-	public InsertAtleta(Controller c) throws SQLException {
+	public InsertProcuratoreSportivo(Controller c) throws SQLException {
 		Controller=c;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 541, 331);
+		setBounds(100, 100, 551, 331);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -75,8 +61,8 @@ public class InsertAtleta extends JFrame {
 		JTextArea TitoloTextArea = new JTextArea();
 		TitoloTextArea.setEditable(false);
 		TitoloTextArea.setBackground(UIManager.getColor("Panel.background"));
-		TitoloTextArea.setText("Inserire i dati del nuovo atleta");
-		TitoloTextArea.setBounds(10, 6, 267, 22);
+		TitoloTextArea.setText("Inserire i dati del nuovo procuratore sportivo");
+		TitoloTextArea.setBounds(10, 6, 373, 22);
 		contentPane.add(TitoloTextArea);
 		
 		Nome_textField = new JTextField();
@@ -143,6 +129,7 @@ public class InsertAtleta extends JFrame {
 		Nazione_comboBox.setBounds(100, 105, 113, 20);
     	contentPane.add(Nazione_comboBox);
 		
+		
 		JTextArea Provincia_textArea = new JTextArea();
 		Provincia_textArea.setBackground(UIManager.getColor("Panel.background"));
 		Provincia_textArea.setText("Provincia");
@@ -188,8 +175,8 @@ public class InsertAtleta extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Date DataScelta=dateChooser.getDate();
 				
-				Controller.InsertAtletaInDB(Nome_textField.getText(), Cognome_textField.getText(), (Sesso)Sesso_comboBox.getSelectedItem(),
-						dateChooser.getDate(), (Nazione) Nazione_comboBox.getSelectedItem(), (Provincia)Provincia_comboBox.getSelectedItem(), (Comune)Comune_comboBox.getSelectedItem(), false);
+				Controller.InsertProcuratoreInDB(Nome_textField.getText(), Cognome_textField.getText(), (Sesso)Sesso_comboBox.getSelectedItem(),
+						dateChooser.getDate(), (Nazione) Nazione_comboBox.getSelectedItem(), (Provincia)Provincia_comboBox.getSelectedItem(), (Comune)Comune_comboBox.getSelectedItem());
 				
 				}
 			});
@@ -199,7 +186,7 @@ public class InsertAtleta extends JFrame {
 		JButton ReturnMenuButton = new JButton("Menu");
 		ReturnMenuButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Controller.GotoHomePageFromInsertAtleta();
+				Controller.GotoHomePageFromInsertProcuratoreSportivo();
 			}
 		});
 		ReturnMenuButton.setBounds(241, 258, 89, 23);
@@ -279,7 +266,7 @@ public class InsertAtleta extends JFrame {
 					}
 			}
 		});
-						
+		
 		CalcolaCf_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -307,7 +294,7 @@ public class InsertAtleta extends JFrame {
 		            SvuotaCampi();
 				} catch (SQLException e2) {
 					JDialog Dialog = new JDialog(); 
-		            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+		            JLabel LabelJDialog= new JLabel("connessione assente"); 
 		            Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 150, 250, 200);
 		            Dialog.setVisible(true);
