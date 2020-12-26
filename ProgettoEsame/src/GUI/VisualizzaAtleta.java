@@ -11,6 +11,7 @@ import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
@@ -22,11 +23,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerQuery;
+import EccezioniPersona.EccezioneCF;
+import Entità.Atleta;
+import Entità.Persona;
 import ImplementationDAO.ImplementationDAO;
 
 import javax.swing.border.LineBorder;
 
-public class VisualizzaPersona extends JFrame {
+public class VisualizzaAtleta extends JFrame {
 
 	private JPanel contentPane;
 	private JTable tabellaPersone;
@@ -38,7 +42,7 @@ public class VisualizzaPersona extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VisualizzaPersona frame = new VisualizzaPersona();
+					VisualizzaAtleta frame = new VisualizzaAtleta();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,7 +54,8 @@ public class VisualizzaPersona extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VisualizzaPersona() {
+	public VisualizzaAtleta() {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 795, 480);
 		contentPane = new JPanel();
@@ -77,13 +82,15 @@ public class VisualizzaPersona extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"CF", "Nome", "Cognome", "Sesso", "Comune", "Provincia", "DataNascita"
+				"CF","Nome","Cognome","Sesso","DataNascita","Nazione", 
+//				"Provincia","Comune" 
 			}
 			
 		) {private static final long serialVersionUID = 1L;
 		public boolean isCellEditable(int r,int c) {return false;}});
 		
-		tabellaPersone.getColumnModel().getColumn(1).setPreferredWidth(112);
+		tabellaPersone.getColumnModel().getColumn(0).setPreferredWidth(150);
+		tabellaPersone.getColumnModel().getColumn(1).setPreferredWidth(120);
 		tabellaPersone.getColumnModel().getColumn(2).setPreferredWidth(81);
 		tabellaPersone.getColumnModel().getColumn(3).setPreferredWidth(44);
 		
@@ -100,23 +107,31 @@ public class VisualizzaPersona extends JFrame {
 		popolaTabellaPersone();
 		
 	}
-	public void popolaTabellaPersone()
-	{
+	public void popolaTabellaPersone() {
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
-			
-			DefaultTableModel model = (DefaultTableModel) tabellaPersone.getModel();
-			for(int i=0;i<100;i++)
-			model.addRow(new Object[] {
-					"CF", "Nome", "Cognome", "Sesso", "Comune", "Provincia", "DataNascita"
-				});
-			
-			
+			ArrayList<Atleta> persone = new ArrayList<Atleta>();
+			try {
+				persone = (ArrayList<Atleta>) dao.getAtleti();
+				DefaultTableModel model = (DefaultTableModel) tabellaPersone.getModel();
+				for(int i=0;i<persone.size();i++){
+					Persona p  =persone.get(i);
+					model.addRow(new Object[] {
+							p.getCF(), p.getNome(),
+							p.getCognome(), p.getSessoPersona(),
+							p.getDataNascita(),p.getNazioneNascita().getNomeNazione(),
+//							p.getProvinciaNascita().getNome(),
+//							p.getComuneNascita().getNome(),
+						});
+				}
+			} catch (EccezioneCF e) {
+				e.printStackTrace();
+			} catch (NullPointerException e1) {
+				e1.printStackTrace();
+			}
+				
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
-		
-		
 	}
-}
+ }
