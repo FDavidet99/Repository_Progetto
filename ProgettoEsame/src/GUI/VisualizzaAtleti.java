@@ -9,6 +9,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,33 +31,35 @@ import Entità.Persona;
 import ImplementationDAO.ImplementationDAO;
 
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.UIManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
 public class VisualizzaAtleti extends JFrame {
 
 	private JPanel contentPane;
 	private JTable tabellaPersone;
 	Controller Controller;
+	ArrayList<Atleta> listaPersoneVisualizzate = new ArrayList<Atleta>();
 
 //	/**
 //	 * Launch the application.
 //	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					VisualizzaAtleti frame = new VisualizzaAtleti();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					VisualizzaAtleti frame = new VisualizzaAtleti(new Controller());
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the frame.
@@ -109,6 +113,27 @@ public class VisualizzaAtleti extends JFrame {
 		js.setVisible(true);
 		panel.add(js);
 		
+		tabellaPersone.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+//	        	String text = "Selezionato: ";
+//	        	for(int i=0;i<tabellaPersone.getColumnCount();i++)
+//	        		text+=tabellaPersone.getValueAt(tabellaPersone.getSelectedRow(), i)+" ";
+	        	try
+	        	{
+	        		int i = tabellaPersone.getSelectedRow();
+	        		if(i==-1)return;
+		        	Persona personaSelezionata = listaPersoneVisualizzate.get(i);
+		        	JOptionPane.showMessageDialog(panel,personaSelezionata);  
+		        	
+	        	}
+	        	catch (IndexOutOfBoundsException e) {
+	        		
+	        		e.printStackTrace();
+				}
+	        	tabellaPersone.clearSelection(); // deseleziona
+	            //System.out.println(tabellaPersone.getValueAt(tabellaPersone.getSelectedRow(), 0).toString());
+	        }
+	    });
 		JButton HomeButton = new JButton("Home");
 		HomeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -124,12 +149,12 @@ public class VisualizzaAtleti extends JFrame {
 	public void popolaTabellaPersone() {
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
-			ArrayList<Atleta> persone = new ArrayList<Atleta>();
+			
 			try {
-				persone = (ArrayList<Atleta>) dao.GetAtleti();
+				listaPersoneVisualizzate = (ArrayList<Atleta>) dao.GetAtleti();
 				DefaultTableModel model = (DefaultTableModel) tabellaPersone.getModel();
-				for(int i=0;i<persone.size();i++){
-					Persona p  =persone.get(i);
+				for(int i=0;i<listaPersoneVisualizzate.size();i++){
+					Persona p  =listaPersoneVisualizzate.get(i);
 					
 					String provincia  = "Estero"; 
 					String comune= "Estero";
