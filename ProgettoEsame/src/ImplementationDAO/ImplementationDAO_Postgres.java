@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import EccezioniPersona.EccezioneCF;
+import Eccezioni.EccezioneCF;
 import Entità.*;
 
 

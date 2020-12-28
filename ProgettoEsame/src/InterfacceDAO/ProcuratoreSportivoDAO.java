@@ -2,7 +2,7 @@ package InterfacceDAO;
 
 import java.sql.SQLException;
 
-import EccezioniPersona.EccezioneCF;
+import Eccezioni.EccezioneCF;
 import Entità.ProcuratoreSportivo;
 
 public interface ProcuratoreSportivoDAO {

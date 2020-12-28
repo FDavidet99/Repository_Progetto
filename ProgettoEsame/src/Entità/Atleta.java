@@ -2,13 +2,15 @@ package Entità;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
-
-import EccezioniPersona.EccezioneCF;
+import Eccezioni.EccezioneCF;
 
 public class Atleta extends Persona {
-
+	
+	private List<Ingaggio> IngaggioProcuratore;
 	private boolean HasProcuratore;
+	private List<Presenza> Presenze;
 
 	public Atleta(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
 			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita, boolean hasProcuratore) throws SQLException {
@@ -23,7 +25,7 @@ public class Atleta extends Persona {
 	public void setHasProcuratore(boolean hasProcuratore) {
 		HasProcuratore = hasProcuratore;
 	}
-
+	
 	@Override
 	public String toString()  {
 		try {
@@ -41,7 +43,11 @@ public class Atleta extends Persona {
 		}
 	}
 
-	
+	public void AddIngaggioProcuratore(Ingaggio ingaggio) {
+		ingaggio.setAtleta(this); //non serve 
+		IngaggioProcuratore.add(ingaggio);
+		
+	}
 
 	
 	

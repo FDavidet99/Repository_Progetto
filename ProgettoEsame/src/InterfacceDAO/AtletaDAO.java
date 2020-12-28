@@ -3,7 +3,7 @@ package InterfacceDAO;
 import java.sql.SQLException;
 import java.util.List;
 
-import EccezioniPersona.EccezioneCF;
+import Eccezioni.EccezioneCF;
 import Entità.Atleta;
 
 public interface AtletaDAO {

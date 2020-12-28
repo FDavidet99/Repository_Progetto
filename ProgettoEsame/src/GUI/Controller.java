@@ -12,7 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 import Controller.ControllerQuery;
-import EccezioniPersona.EccezioneCF;
+import Eccezioni.EccezioneCF;
 import Entità.*;
 import ImplementationDAO.ImplementationDAO;
 
@@ -21,6 +21,7 @@ public class Controller {
 	Demo_Menu_Principale HomePage;
 	InsertAtleta PageInsertAtleta;
 	InsertProcuratoreSportivo PageInsertProcuratore;
+	VisualizzaAtleti PageViewAtleti;
 	FrameForJDialog DialogErrori;
 	
 	public static void main(String[] args) throws SQLException {
@@ -128,5 +129,15 @@ public class Controller {
 		HomePage.setVisible(true);
 	}
 	
+	public void GoToPageViewAtleti() {
+		HomePage.setVisible(false);
+		PageViewAtleti=new VisualizzaAtleti(this);
+		PageViewAtleti.setVisible(true);
+	}
+	
+	public void GotoHomePageFromPageViewAtleti() {
+		PageViewAtleti.setVisible(false);
+		HomePage.setVisible(true);
+	}
 
 }

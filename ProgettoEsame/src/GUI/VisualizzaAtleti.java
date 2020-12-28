@@ -23,43 +23,49 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerQuery;
-import EccezioniPersona.EccezioneCF;
+import Eccezioni.EccezioneCF;
 import Entità.Atleta;
 import Entità.Persona;
 import ImplementationDAO.ImplementationDAO;
 
 import javax.swing.border.LineBorder;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.UIManager;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class VisualizzaAtleta extends JFrame {
+public class VisualizzaAtleti extends JFrame {
 
 	private JPanel contentPane;
 	private JTable tabellaPersone;
+	Controller Controller;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VisualizzaAtleta frame = new VisualizzaAtleta();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					VisualizzaAtleti frame = new VisualizzaAtleti();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
-	public VisualizzaAtleta() {
-		
+	public VisualizzaAtleti(Controller controller) {
+		Controller=controller;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 795, 480);
+		setBounds(100, 100, 795, 410);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
+		contentPane.setBackground(UIManager.getColor("ComboBox.disabledBackground"));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -69,10 +75,9 @@ public class VisualizzaAtleta extends JFrame {
 		lblTitolo.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTitolo.setBounds(311, 10, 158, 33);
 		contentPane.add(lblTitolo);
-
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 52, 761, 292);
+		panel.setBounds(10, 52, 761, 275);
 		contentPane.add(panel);
 		
 		tabellaPersone = new JTable();
@@ -104,6 +109,15 @@ public class VisualizzaAtleta extends JFrame {
 		js.setVisible(true);
 		panel.add(js);
 		
+		JButton HomeButton = new JButton("Home");
+		HomeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Controller.GotoHomePageFromPageViewAtleti();
+			}
+		});
+		HomeButton.setBounds(542, 338, 89, 23);
+		contentPane.add(HomeButton);
+		
 		popolaTabellaPersone();
 		
 	}
@@ -125,13 +139,25 @@ public class VisualizzaAtleta extends JFrame {
 						});
 				}
 			} catch (EccezioneCF e) {
-				e.printStackTrace();
+				JDialog Dialog = new JDialog(); 
+	            JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili"); 
+	            Dialog.getContentPane().add(LabelJDialog); 
+                Dialog.setBounds(400, 150, 240, 150);
+	            Dialog.setVisible(true);
 			} catch (NullPointerException e1) {
-				e1.printStackTrace();
+				JDialog Dialog = new JDialog(); 
+	            JLabel LabelJDialog= new JLabel("Non è stato trovato nulla"); 
+	            Dialog.getContentPane().add(LabelJDialog); 
+                Dialog.setBounds(400, 150, 240, 150);
+	            Dialog.setVisible(true);
 			}
 				
 		} catch (SQLException e) {
-			e.printStackTrace();
+			JDialog Dialog = new JDialog(); 
+			JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setBounds(400, 150, 250, 200);
+			Dialog.setVisible(true);
 		}
 	}
  }

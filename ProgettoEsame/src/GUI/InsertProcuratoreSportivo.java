@@ -25,7 +25,7 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import Controller.ControllerQuery;
-import EccezioniPersona.EccezioneCF;
+import Eccezioni.EccezioneCF;
 import Entità.Comune;
 import Entità.Nazione;
 import Entità.Persona;
@@ -183,14 +183,14 @@ public class InsertProcuratoreSportivo extends JFrame {
 		Insert_Button.setBounds(426, 258, 89, 23);
 		contentPane.add(Insert_Button);
 		
-		JButton ReturnMenuButton = new JButton("Menu");
-		ReturnMenuButton.addActionListener(new ActionListener() {
+		JButton ReturnHomeButton = new JButton("Home");
+		ReturnHomeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Controller.GotoHomePageFromInsertProcuratoreSportivo();
 			}
 		});
-		ReturnMenuButton.setBounds(241, 258, 89, 23);
-		contentPane.add(ReturnMenuButton);
+		ReturnHomeButton.setBounds(241, 258, 89, 23);
+		contentPane.add(ReturnHomeButton);
 		
 		JButton RestoreButton = new JButton("Cancella");
 		RestoreButton.addActionListener(new ActionListener() {

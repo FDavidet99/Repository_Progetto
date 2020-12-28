@@ -40,7 +40,7 @@ public class Demo_Menu_Principale extends JFrame {
 				} catch (SQLException e1) {
 					JDialog Dialog = new JDialog(); 
 		            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
-		            Dialog.add(LabelJDialog); 
+		            Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 150, 250, 200);
 		            Dialog.setVisible(true);
 				}
@@ -49,7 +49,7 @@ public class Demo_Menu_Principale extends JFrame {
 		InsertAtleti_Button.setBounds(32, 59, 264, 23);
 		contentPane.add(InsertAtleti_Button);
 		
-		JButton btnNewButton_1 = new JButton("Inserire nuovo procuratore\r\n");
+		JButton btnNewButton_1 = new JButton("Inserire nuovo procuratore");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -57,7 +57,7 @@ public class Demo_Menu_Principale extends JFrame {
 				} catch (SQLException e1) {
 					JDialog Dialog = new JDialog(); 
 		            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
-		            Dialog.add(LabelJDialog); 
+		            Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 150, 250, 200);
 		            Dialog.setVisible(true);
 				}
@@ -65,6 +65,15 @@ public class Demo_Menu_Principale extends JFrame {
 		});
 		btnNewButton_1.setBounds(32, 25, 264, 23);
 		contentPane.add(btnNewButton_1);
+		
+		JButton VisualizzaAtletiButton = new JButton("Visualizza atleti\r\n");
+		VisualizzaAtletiButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PrimoController.GoToPageViewAtleti();
+			}
+		});
+		VisualizzaAtletiButton.setBounds(32, 93, 264, 23);
+		contentPane.add(VisualizzaAtletiButton);
 		
 	}
 }

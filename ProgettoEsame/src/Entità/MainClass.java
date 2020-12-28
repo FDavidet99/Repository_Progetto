@@ -12,7 +12,7 @@ import java.util.ListIterator;
 
 import Controller.ControllerQuery;
 import DatabaseUtility.DatabaseConnection;
-import EccezioniPersona.EccezioneCF;
+import Eccezioni.EccezioneCF;
 import ImplementationDAO.ImplementationDAO;
 import ImplementationDAO.ImplementationDAO_Postgres;
 
