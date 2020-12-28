@@ -40,26 +40,27 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 public class VisualizzaAtleti extends JFrame {
 
-	private JPanel contentPane;
-	private JTable tabellaPersone;
-	Controller Controller;
-	ArrayList<Atleta> listaPersoneVisualizzate = new ArrayList<Atleta>();
+	protected JPanel contentPane;
+	protected JTable tabellaPersone;
+	protected Controller Controller;
+	protected JLabel labelTitolo;
+	private ArrayList<Atleta> listaPersoneVisualizzate = new ArrayList<Atleta>();
 
 //	/**
 //	 * Launch the application.
 //	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VisualizzaAtleti frame = new VisualizzaAtleti(new Controller());
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					VisualizzaAtleti frame = new VisualizzaAtleti(new Controller());
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -74,11 +75,11 @@ public class VisualizzaAtleti extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitolo = new JLabel("Elenco persone");
-		lblTitolo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitolo.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblTitolo.setBounds(311, 10, 158, 33);
-		contentPane.add(lblTitolo);
+		labelTitolo = new JLabel("Elenco Atleti");
+		labelTitolo.setHorizontalAlignment(SwingConstants.CENTER);
+		labelTitolo.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		labelTitolo.setBounds(311, 10, 250, 33);
+		contentPane.add(labelTitolo);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 52, 761, 275);
@@ -118,19 +119,7 @@ public class VisualizzaAtleti extends JFrame {
 //	        	String text = "Selezionato: ";
 //	        	for(int i=0;i<tabellaPersone.getColumnCount();i++)
 //	        		text+=tabellaPersone.getValueAt(tabellaPersone.getSelectedRow(), i)+" ";
-	        	try
-	        	{
-	        		int i = tabellaPersone.getSelectedRow();
-	        		if(i==-1)return;
-		        	Persona personaSelezionata = listaPersoneVisualizzate.get(i);
-		        	JOptionPane.showMessageDialog(panel,personaSelezionata);  
-		        	
-	        	}
-	        	catch (IndexOutOfBoundsException e) {
-	        		
-	        		e.printStackTrace();
-				}
-	        	tabellaPersone.clearSelection(); // deseleziona
+	        	personaSelezionata();
 	            //System.out.println(tabellaPersone.getValueAt(tabellaPersone.getSelectedRow(), 0).toString());
 	        }
 	    });
@@ -145,6 +134,22 @@ public class VisualizzaAtleti extends JFrame {
 		
 		popolaTabellaPersone();
 		
+	}
+	public void personaSelezionata()
+	{
+		try
+    	{
+    		int i = tabellaPersone.getSelectedRow();
+    		if(i==-1)return;
+        	Persona personaSelezionata = listaPersoneVisualizzate.get(i);
+        	JOptionPane.showMessageDialog(contentPane,personaSelezionata);  
+        	
+    	}
+    	catch (IndexOutOfBoundsException e) {
+    		
+    		e.printStackTrace();
+		}
+    	tabellaPersone.clearSelection(); // deseleziona
 	}
 	public void popolaTabellaPersone() {
 		try {
