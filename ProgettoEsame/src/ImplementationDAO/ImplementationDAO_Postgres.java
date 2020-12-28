@@ -29,6 +29,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmInsertAtleta=Connection.prepareStatement("Insert into atleta values (?,?,?,?,?,?,?,?,?)");
 		StmGetAtleti = Connection.prepareStatement("Select * from atleta;");
 		StmGetProcuratori = Connection.prepareStatement("Select * from ProcuratoreSportivo;");
+		StmInsertIngaggio=Connection.prepareStatement("Insert into Ingaggio values (?,?,?,?,?);");
 	
 	}
 
@@ -189,13 +190,22 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			String nome = rs.getString("nome");
 			String cognome = rs.getString("cognome");
 			LocalDate dataNascita =  LocalDate.parse(rs.getString("datanascita"));
-			boolean hasProcuratore =  rs.getBoolean("hasprocuratore");
 			ProcuratoreSportivo TmpProcuratore=new ProcuratoreSportivo(nome,cognome,sesso,dataNascita,
 						nazione,provincia,comune);
 			Procuratori.add(TmpProcuratore);
 		}
 		rs.close();
 		return Procuratori;
+	}
+
+	@Override
+	public void InsertIngaggio(Ingaggio ingaggio) throws SQLException, EccezioneCF {
+		StmInsertIngaggio.setString(1,ingaggio.getProcuratore().getCF());
+		StmInsertIngaggio.setString(2,ingaggio.getAtleta().getCF());
+		StmInsertIngaggio.setObject(3,ingaggio.getDataInizio());
+		StmInsertIngaggio.setObject(4,ingaggio.getDataFine());
+		StmInsertIngaggio.setObject(5,ingaggio.getStipendioProcuratore());
+		StmInsertIngaggio.executeUpdate();
 	}
 }
 	

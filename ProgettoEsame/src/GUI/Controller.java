@@ -23,6 +23,7 @@ public class Controller {
 	InsertProcuratoreSportivo PageInsertProcuratore;
 	VisualizzaAtleti PageViewAtleti;
 	FrameForJDialog DialogErrori;
+	InsertIngaggio PageIngaggio;
 	
 	public static void main(String[] args) throws SQLException {
 		Controller controller=new Controller();
@@ -139,5 +140,22 @@ public class Controller {
 		PageViewAtleti.setVisible(false);
 		HomePage.setVisible(true);
 	}
+	
+	public void InsertIngaggio(Ingaggio ingaggio) {
+		try {
+			ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
+			OggettoConnessione.InsertIngaggio(ingaggio);
+			
+		} catch (Exception e) { //gestire tutte le ex
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
+	public void GoToInsertIngaggio() throws Exception, SQLException {
+		HomePage.setVisible(false);
+		PageIngaggio=new InsertIngaggio(this);
+		PageIngaggio.setVisible(true);
+		
+	}
 }

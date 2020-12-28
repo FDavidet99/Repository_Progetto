@@ -17,14 +17,14 @@ import java.awt.event.ActionEvent;
 public class Demo_Menu_Principale extends JFrame {
 
 	private JPanel contentPane;
-	Controller PrimoController;
+	Controller controller;
 
 	/**
 	 * Create the frame.
 	 * @param controller 
 	 */
-	public Demo_Menu_Principale(Controller controller) {
-		PrimoController=controller;
+	public Demo_Menu_Principale(Controller c) {
+		controller=c;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 349);
 		contentPane = new JPanel();
@@ -36,7 +36,7 @@ public class Demo_Menu_Principale extends JFrame {
 		InsertAtleti_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					PrimoController.GotoFrameInsertAtleta();
+					controller.GotoFrameInsertAtleta();
 				} catch (SQLException e1) {
 					JDialog Dialog = new JDialog(); 
 		            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
@@ -53,7 +53,7 @@ public class Demo_Menu_Principale extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					PrimoController.GotoFrameInsertProcuratore();
+					controller.GotoFrameInsertProcuratore();
 				} catch (SQLException e1) {
 					JDialog Dialog = new JDialog(); 
 		            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
@@ -69,11 +69,28 @@ public class Demo_Menu_Principale extends JFrame {
 		JButton VisualizzaAtletiButton = new JButton("Visualizza atleti\r\n");
 		VisualizzaAtletiButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PrimoController.GoToPageViewAtleti();
+				controller.GoToPageViewAtleti();
 			}
 		});
 		VisualizzaAtletiButton.setBounds(32, 93, 264, 23);
 		contentPane.add(VisualizzaAtletiButton);
+		
+		JButton InsertIngaggioButton = new JButton("Aggiungi Ingaggio");
+		InsertIngaggioButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					controller.GoToInsertIngaggio();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		InsertIngaggioButton.setBounds(32, 140, 264, 23);
+		contentPane.add(InsertIngaggioButton);
 		
 	}
 }

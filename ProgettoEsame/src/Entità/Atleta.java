@@ -41,6 +41,7 @@ public class Atleta extends Persona {
 		} catch (EccezioneCF | SQLException e) {
 			return "errore";
 		}
+		
 	}
 
 	public void AddIngaggioProcuratore(Ingaggio ingaggio) {
