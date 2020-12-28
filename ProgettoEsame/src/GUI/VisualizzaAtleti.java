@@ -88,7 +88,7 @@ public class VisualizzaAtleti extends JFrame {
 			},
 			new String[] {
 				"CF","Nome","Cognome","Sesso","DataNascita","Nazione", 
-//				"Provincia","Comune" 
+				"Provincia","Comune" 
 			}
 			
 		) {private static final long serialVersionUID = 1L;
@@ -98,7 +98,7 @@ public class VisualizzaAtleti extends JFrame {
 		tabellaPersone.getColumnModel().getColumn(1).setPreferredWidth(120);
 		tabellaPersone.getColumnModel().getColumn(2).setPreferredWidth(81);
 		tabellaPersone.getColumnModel().getColumn(3).setPreferredWidth(44);
-		
+		tabellaPersone.getColumnModel().getColumn(4).setPreferredWidth(100);
 		
 		tabellaPersone.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
@@ -130,12 +130,17 @@ public class VisualizzaAtleti extends JFrame {
 				DefaultTableModel model = (DefaultTableModel) tabellaPersone.getModel();
 				for(int i=0;i<persone.size();i++){
 					Persona p  =persone.get(i);
+					
+					String provincia  = "Estero"; 
+					String comune= "Estero";
+					if(p.getProvinciaNascita()!=null)provincia = p.getProvinciaNascita().getNome();
+					if(p.getComuneNascita()!=null) comune = p.getComuneNascita().getNome();
 					model.addRow(new Object[] {
 							p.getCF(), p.getNome(),
 							p.getCognome(), p.getSessoPersona(),
 							p.getDataNascita(),p.getNazioneNascita().getNomeNazione(),
-//							p.getProvinciaNascita().getNome(),
-//							p.getComuneNascita().getNome(),
+							provincia,
+							comune,
 						});
 				}
 			} catch (EccezioneCF e) {
@@ -143,14 +148,14 @@ public class VisualizzaAtleti extends JFrame {
 	            JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili"); 
 	            Dialog.getContentPane().add(LabelJDialog); 
                 Dialog.setBounds(400, 150, 240, 150);
-	            Dialog.setVisible(true);
-			} catch (NullPointerException e1) {
-				JDialog Dialog = new JDialog(); 
-	            JLabel LabelJDialog= new JLabel("Non è stato trovato nulla"); 
-	            Dialog.getContentPane().add(LabelJDialog); 
-                Dialog.setBounds(400, 150, 240, 150);
-	            Dialog.setVisible(true);
-			}
+	            Dialog.setVisible(true);}
+//			} catch (NullPointerException e1) {
+//				JDialog Dialog = new JDialog(); 
+//	            JLabel LabelJDialog= new JLabel("Non è stato trovato nulla"); 
+//	            Dialog.getContentPane().add(LabelJDialog); 
+//                Dialog.setBounds(400, 150, 240, 150);
+//	            Dialog.setVisible(true);
+			
 				
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(); 
