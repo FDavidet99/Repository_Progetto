@@ -126,7 +126,7 @@ public class VisualizzaAtleti extends JFrame {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
 			ArrayList<Atleta> persone = new ArrayList<Atleta>();
 			try {
-				persone = (ArrayList<Atleta>) dao.getAtleti();
+				persone = (ArrayList<Atleta>) dao.GetAtleti();
 				DefaultTableModel model = (DefaultTableModel) tabellaPersone.getModel();
 				for(int i=0;i<persone.size();i++){
 					Persona p  =persone.get(i);

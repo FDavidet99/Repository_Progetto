@@ -7,13 +7,14 @@ import java.util.List;
 import Eccezioni.EccezioneCF;
 
 public class ProcuratoreSportivo extends Persona {
-	private List<Contratto> Contratti;
 	private List<Ingaggio> IngaggioDaAtleta;
+	private List<Contratto> Contratti;
+	
 
 	public ProcuratoreSportivo(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
-			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita, List<Contratto> contratti) throws SQLException {
+			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws SQLException {
 		super(nome, cognome, sessoPersona, dataNascita, nazioneNascita, provinciaNascita, comuneNascita);
-		Contratti = contratti;
+		
 	}
 	
 	public String toString() {

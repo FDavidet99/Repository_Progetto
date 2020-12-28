@@ -94,7 +94,7 @@ public class Controller {
 			try {
 				LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
 				ProcuratoreSportivo TempProcuratore;
-				TempProcuratore = new ProcuratoreSportivo(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune,null);
+				TempProcuratore = new ProcuratoreSportivo(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune);
 				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
 				OggettoConnessione.InsertProcuratoreSportivo(TempProcuratore);
 				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 

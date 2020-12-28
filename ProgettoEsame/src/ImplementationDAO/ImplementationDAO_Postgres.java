@@ -28,6 +28,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmInsertProcuratoreSportivo=Connection.prepareStatement("Insert into ProcuratoreSportivo values (?,?,?,?,?,?,?,?)");
 		StmInsertAtleta=Connection.prepareStatement("Insert into atleta values (?,?,?,?,?,?,?,?,?)");
 		StmGetAtleti = Connection.prepareStatement("Select * from atleta;");
+		StmGetProcuratori = Connection.prepareStatement("Select * from ProcuratoreSportivo;");
 	
 	}
 
@@ -146,12 +147,13 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		else {
 			StmInsertProcuratoreSportivo.setString(7,null); 
 			StmInsertProcuratoreSportivo.setString(8,null);
-		}
-			
-		int RigheAggiunte=StmInsertProcuratoreSportivo.executeUpdate();
-		}
+		}	
+		
+		StmInsertProcuratoreSportivo.executeUpdate();
+	}
+	
 	@Override
-	public List<Atleta> getAtleti() throws SQLException, EccezioneCF {
+	public List<Atleta> GetAtleti() throws SQLException, EccezioneCF {
 		ResultSet rs=StmGetAtleti.executeQuery();
 		ArrayList<Atleta> atleti=new ArrayList<Atleta>();
 		while(rs.next()) {
@@ -165,16 +167,36 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			String cognome = rs.getString("cognome");
 			LocalDate dataNascita =  LocalDate.parse(rs.getString("datanascita"));
 			boolean hasProcuratore =  rs.getBoolean("hasprocuratore");
-			Atleta tmpAtleta=new Atleta(nome,cognome,sesso,dataNascita,
+			Atleta TmpAtleta=new Atleta(nome,cognome,sesso,dataNascita,
 						nazione,provincia,comune,hasProcuratore);
-			atleti.add(tmpAtleta);
+			atleti.add(TmpAtleta);
 		}
 		rs.close();
 		return atleti;
 	}
-	
-	
-	
-	
-	
+
+	@Override
+	public List<ProcuratoreSportivo> GetProcuratori() throws SQLException, EccezioneCF {
+		ResultSet rs=StmGetProcuratori.executeQuery();
+		ArrayList<ProcuratoreSportivo> Procuratori=new ArrayList<ProcuratoreSportivo>();
+		while(rs.next()) {
+			Nazione nazione = GetNazioneByCodiceAt(rs.getString("nazionenascita"));
+			Provincia provincia = GetProvinciaByNome(rs.getString("provincianascita"));
+			Comune comune = GetComuneByCodiceCatastale(rs.getString("comunenascita"));
+			Sesso sesso = Sesso.F;
+			if(rs.getString("sesso").equals("M"))
+				sesso = Sesso.M;
+			String nome = rs.getString("nome");
+			String cognome = rs.getString("cognome");
+			LocalDate dataNascita =  LocalDate.parse(rs.getString("datanascita"));
+			boolean hasProcuratore =  rs.getBoolean("hasprocuratore");
+			ProcuratoreSportivo TmpProcuratore=new ProcuratoreSportivo(nome,cognome,sesso,dataNascita,
+						nazione,provincia,comune);
+			Procuratori.add(TmpProcuratore);
+		}
+		rs.close();
+		return Procuratori;
+	}
 }
+	
+
