@@ -1,7 +1,7 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Label;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,8 +19,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
@@ -38,27 +38,11 @@ public class InsertAtleta extends JFrame {
 	private JTextField Cognome_textField;
 	private JTextField Cf_textField;
 	private JComboBox Sesso_comboBox;
-	private JDateChooser dateChooser;
+	private JDateChooser DataNascitaDateChooser;
 	private JComboBox<Nazione> Nazione_comboBox;
 	private JComboBox<Provincia> Provincia_comboBox;
 	private JComboBox<Comune>Comune_comboBox;
 	Controller Controller;
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					InsertAtleta frame = new InsertAtleta();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the frame.
@@ -72,12 +56,12 @@ public class InsertAtleta extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JTextArea TitoloTextArea = new JTextArea();
-		TitoloTextArea.setEditable(false);
-		TitoloTextArea.setBackground(UIManager.getColor("Panel.background"));
-		TitoloTextArea.setText("Inserire i dati del nuovo atleta");
-		TitoloTextArea.setBounds(10, 6, 267, 22);
-		contentPane.add(TitoloTextArea);
+		Label TitoloLabel = new Label();
+		TitoloLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		TitoloLabel.setBackground(UIManager.getColor("Panel.background"));
+		TitoloLabel.setText("Inserire i dati del nuovo atleta");
+		TitoloLabel.setBounds(10, 6, 267, 22);
+		contentPane.add(TitoloLabel);
 		
 		Nome_textField = new JTextField();
 		Nome_textField.setBounds(57, 37, 86, 20);
@@ -85,55 +69,57 @@ public class InsertAtleta extends JFrame {
 		Nome_textField.setColumns(10);
 		
 		
-		JTextArea Nome_textArea = new JTextArea();
-		Nome_textArea.setBackground(UIManager.getColor("Panel.background"));
-		Nome_textArea.setText("Nome");
-		Nome_textArea.setEditable(false);
-		Nome_textArea.setBounds(10, 37, 37, 22);
-		contentPane.add(Nome_textArea);
+		Label NomeLabel = new Label();
+		NomeLabel.setBackground(UIManager.getColor("Panel.background"));
+		NomeLabel.setText("Nome");
+		NomeLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		NomeLabel.setBounds(10, 37, 37, 22);
+		contentPane.add(NomeLabel);
 		
-		JTextArea Cognome_textArea = new JTextArea();
-		Cognome_textArea.setBackground(UIManager.getColor("Panel.background"));
-		Cognome_textArea.setEditable(false);
-		Cognome_textArea.setText("Cognome\r\n");
-		Cognome_textArea.setBounds(172, 37, 68, 22);
-		contentPane.add(Cognome_textArea);
+		Label CognomeLabel = new Label();
+		CognomeLabel.setBackground(UIManager.getColor("Panel.background"));
+		CognomeLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		CognomeLabel.setText("Cognome\r\n");
+		CognomeLabel.setBounds(172, 37, 68, 22);
+		contentPane.add(CognomeLabel);
 		
 		Cognome_textField = new JTextField();
 		Cognome_textField.setBounds(240, 37, 86, 20);
 		contentPane.add(Cognome_textField);
 		Cognome_textField.setColumns(10);
 		
-		JTextArea Sesso_textArea = new JTextArea();
-		Sesso_textArea.setBackground(UIManager.getColor("Panel.background"));
-		Sesso_textArea.setEditable(false);
-		Sesso_textArea.setText("Sesso");
-		Sesso_textArea.setBounds(10, 72, 45, 22);
-		contentPane.add(Sesso_textArea);
+		Label SessoLabel = new Label();
+		SessoLabel.setBackground(UIManager.getColor("Panel.background"));
+		SessoLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		SessoLabel.setText("Sesso");
+		SessoLabel.setBounds(10, 72, 45, 22);
+		contentPane.add(SessoLabel);
 		
 		Sesso_comboBox = new JComboBox(Sesso.values());
 		Sesso_comboBox.setSelectedIndex(-1);
 		Sesso_comboBox.setBounds(57, 70, 58, 22);
 		contentPane.add(Sesso_comboBox);
 		
-		dateChooser = new JDateChooser();
-		dateChooser.setBounds(257, 69, 115, 20);
-		contentPane.add(dateChooser);
+		Label DataLabel = new Label();
+		DataLabel.setText("Data di nascita");
+		DataLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		DataLabel.setBackground(SystemColor.menu);
+		DataLabel.setBounds(170, 70, 125, 22);
+		contentPane.add(DataLabel);
 		
-		JTextArea DatetextArea = new JTextArea();
-		DatetextArea.setText("Data di nascita");
-		DatetextArea.setEditable(false);
-		DatetextArea.setBackground(SystemColor.menu);
-		DatetextArea.setBounds(170, 70, 125, 22);
-		contentPane.add(DatetextArea);
+		DataNascitaDateChooser = new JDateChooser();
+		DataNascitaDateChooser.setBounds(301, 68, 115, 20);
+		DataNascitaDateChooser.setDateFormatString("YYYY/MM/dd");
+		contentPane.add(DataNascitaDateChooser);
 		
 		ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
 		
-		JTextArea Nazione_textArea = new JTextArea();
-		Nazione_textArea.setBackground(UIManager.getColor("Panel.background"));
-		Nazione_textArea.setText("Nazione");
-		Nazione_textArea.setBounds(10, 103, 80, 22);
-		contentPane.add(Nazione_textArea);
+		Label NazioneLabel = new Label();
+		NazioneLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		NazioneLabel.setBackground(UIManager.getColor("Panel.background"));
+		NazioneLabel.setText("Nazione");
+		NazioneLabel.setBounds(10, 103, 80, 22);
+		contentPane.add(NazioneLabel);
 	
 	     ArrayList sql=new ArrayList();
 	     sql=(ArrayList) OggettoConnessione.GetNazioni();
@@ -143,22 +129,24 @@ public class InsertAtleta extends JFrame {
 		Nazione_comboBox.setBounds(100, 105, 113, 20);
     	contentPane.add(Nazione_comboBox);
 		
-		JTextArea Provincia_textArea = new JTextArea();
-		Provincia_textArea.setBackground(UIManager.getColor("Panel.background"));
-		Provincia_textArea.setText("Provincia");
-		Provincia_textArea.setBounds(10, 136, 80, 22);
-		contentPane.add(Provincia_textArea);
+		Label ProvinciaLabel = new Label();
+		ProvinciaLabel.setBackground(UIManager.getColor("Panel.background"));
+		ProvinciaLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		ProvinciaLabel.setText("Provincia");
+		ProvinciaLabel.setBounds(10, 136, 80, 22);
+		contentPane.add(ProvinciaLabel);
 		
 		Provincia_comboBox=new JComboBox();
 		Provincia_comboBox.setBounds(100, 137, 115, 22);
 		contentPane.add(Provincia_comboBox);
 		Provincia_comboBox.setSelectedIndex(-1);
 		
-		JTextArea Comune_TextArea = new JTextArea();
-		Comune_TextArea.setBackground(UIManager.getColor("Panel.background"));
-		Comune_TextArea.setText("Comune");
-		Comune_TextArea.setBounds(10, 169, 58, 22);
-		contentPane.add(Comune_TextArea);
+		Label ComuneLabel = new Label();
+		ComuneLabel.setBackground(UIManager.getColor("Panel.background"));
+		ComuneLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		ComuneLabel.setText("Comune");
+		ComuneLabel.setBounds(10, 170, 58, 22);
+		contentPane.add(ComuneLabel);
 		
 		Comune_comboBox = new JComboBox();
 		Comune_comboBox.setBounds(100, 170, 113, 22);
@@ -186,10 +174,10 @@ public class InsertAtleta extends JFrame {
 		JButton Insert_Button = new JButton("Inserisci");
 		Insert_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Date DataScelta=dateChooser.getDate();
+				Date DataScelta=DataNascitaDateChooser.getDate();
 				
 				Controller.InsertAtletaInDB(Nome_textField.getText(), Cognome_textField.getText(), (Sesso)Sesso_comboBox.getSelectedItem(),
-						dateChooser.getDate(), (Nazione) Nazione_comboBox.getSelectedItem(), (Provincia)Provincia_comboBox.getSelectedItem(), (Comune)Comune_comboBox.getSelectedItem(), false);
+						DataNascitaDateChooser.getDate(), (Nazione) Nazione_comboBox.getSelectedItem(), (Provincia) Provincia_comboBox.getSelectedItem(), (Comune) Comune_comboBox.getSelectedItem(), false);
 				
 				}
 			});
@@ -221,7 +209,7 @@ public class InsertAtleta extends JFrame {
 							ArrayList sql2=new ArrayList();
 							sql2=(ArrayList) OggettoConnessione.GetProvinceByNazione(Nazione_comboBox.getItemAt(Nazione_comboBox.getSelectedIndex()));
 							JComboBox<Provincia> Tempo_Provincia=new JComboBox(sql2.toArray());
-							Provincia_textArea.setVisible(true);
+							ProvinciaLabel.setVisible(true);
 							Provincia_comboBox.setVisible(true);
 							Tempo_Provincia.setSelectedIndex(-1);
 							Provincia_comboBox.removeAllItems();
@@ -235,7 +223,7 @@ public class InsertAtleta extends JFrame {
 									try {
 										sql3=(ArrayList) OggettoConnessione.GetComuniByProvincia(Provincia_comboBox.getItemAt(Provincia_comboBox.getSelectedIndex()));
 										JComboBox<Comune> Tempo_Comune=new JComboBox(sql3.toArray());
-										Comune_TextArea.setVisible(true);
+										ComuneLabel.setVisible(true);
 										Comune_comboBox.setVisible(true);
 										Tempo_Comune.setSelectedIndex(-1);
 										Comune_comboBox.removeAllItems();
@@ -244,13 +232,13 @@ public class InsertAtleta extends JFrame {
 											Comune_comboBox.addItem((Comune) i.next());
 										} catch (SQLException e1) {
 												JDialog Dialog = new JDialog(); 
-												JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+												JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 												Dialog.getContentPane().add(LabelJDialog); 
 												Dialog.setBounds(400, 150, 250, 200);
 												Dialog.setVisible(true);
 										} catch (NullPointerException e1) {
 												JDialog Dialog = new JDialog(); 
-												JLabel LabelJDialog= new JLabel("Inserire una provincia"); 
+												JLabel LabelJDialog= new JLabel("Inserire una provincia",SwingConstants.CENTER); 
 												Dialog.getContentPane().add(LabelJDialog); 
 												Dialog.setBounds(400, 150, 250, 200);
 												Dialog.setVisible(true);
@@ -258,21 +246,21 @@ public class InsertAtleta extends JFrame {
 								}
 							});
 						} else {
-							Provincia_textArea.setVisible(false);
+							ProvinciaLabel.setVisible(false);
 							Provincia_comboBox.setVisible(false);
-							Comune_TextArea.setVisible(false);
+							ComuneLabel.setVisible(false);
 							Comune_comboBox.setVisible(false);
 							ProvinciaButton.setVisible(false);
 						}
 					} catch (SQLException e1) {
 						JDialog Dialog = new JDialog(); 
-			            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+			            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			            Dialog.getContentPane().add(LabelJDialog); 
 		                Dialog.setBounds(400, 150, 250, 200);
 			            Dialog.setVisible(true);
 					} catch (NullPointerException e1) {
 						JDialog Dialog = new JDialog(); 
-						JLabel LabelJDialog= new JLabel("   Inserire una Nazione");
+						JLabel LabelJDialog= new JLabel("   Inserire una Nazione",SwingConstants.CENTER);
 						Dialog.getContentPane().add(LabelJDialog); 
 						Dialog.setBounds(400, 150, 150, 70);
 						Dialog.setVisible(true);
@@ -286,7 +274,7 @@ public class InsertAtleta extends JFrame {
 					String TempNome=Nome_textField.getText();
 					String TempCognome=Cognome_textField.getText();
 					Sesso TempSesso= (Sesso)Sesso_comboBox.getSelectedItem();
-					Date DataScelta=dateChooser.getDate();
+					Date DataScelta=DataNascitaDateChooser.getDate();
 					LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 					TempDate.format(formatter);
@@ -300,20 +288,20 @@ public class InsertAtleta extends JFrame {
 					
 				} catch (EccezioneCF  e1) {
 					JDialog Dialog = new JDialog(); 
-		            JLabel LabelJDialog= new JLabel("Caratteri incompatibili col sistema"); 
+		            JLabel LabelJDialog= new JLabel("Caratteri incompatibili col sistema",SwingConstants.CENTER); 
 		            Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 150, 240, 150);
 		            Dialog.setVisible(true);
 		            SvuotaCampi();
 				} catch (SQLException e2) {
 					JDialog Dialog = new JDialog(); 
-		            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+		            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 		            Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 150, 250, 200);
 		            Dialog.setVisible(true);
 				} catch (NullPointerException e3) {
 					JDialog Dialog = new JDialog(); 
-		            JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati"); 
+		            JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati",SwingConstants.CENTER); 
 		            Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 150, 230, 150);
 		            Dialog.setVisible(true);
@@ -328,7 +316,7 @@ public class InsertAtleta extends JFrame {
 		Cognome_textField.setText(null);
 		Cf_textField.setText(null);
 		Sesso_comboBox.setSelectedIndex(-1);
-		dateChooser.setCalendar(null);
+		DataNascitaDateChooser.setCalendar(null);
 		Nazione_comboBox.setSelectedIndex(-1);
 		Provincia_comboBox.setSelectedIndex(-1);
 		Comune_comboBox.setSelectedIndex(-1);

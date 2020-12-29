@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
-public class Demo_Menu_Principale extends JFrame {
+public class HomePage extends JFrame {
 
 	private JPanel contentPane;
 	Controller controller;
@@ -23,7 +23,7 @@ public class Demo_Menu_Principale extends JFrame {
 	 * Create the frame.
 	 * @param controller 
 	 */
-	public Demo_Menu_Principale(Controller c) {
+	public HomePage(Controller c) {
 		controller=c;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 349);
@@ -35,15 +35,7 @@ public class Demo_Menu_Principale extends JFrame {
 		JButton InsertAtleti_Button = new JButton("Inserire nuovo atleta");
 		InsertAtleti_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					controller.GotoFrameInsertAtleta();
-				} catch (SQLException e1) {
-					JDialog Dialog = new JDialog(); 
-		            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
-		            Dialog.getContentPane().add(LabelJDialog); 
-	                Dialog.setBounds(400, 150, 250, 200);
-		            Dialog.setVisible(true);
-				}
+				controller.GotoFrameInsertAtleta();
 			}
 		});
 		InsertAtleti_Button.setBounds(32, 59, 264, 23);
@@ -52,21 +44,13 @@ public class Demo_Menu_Principale extends JFrame {
 		JButton btnNewButton_1 = new JButton("Inserire nuovo procuratore");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					controller.GotoFrameInsertProcuratore();
-				} catch (SQLException e1) {
-					JDialog Dialog = new JDialog(); 
-		            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
-		            Dialog.getContentPane().add(LabelJDialog); 
-	                Dialog.setBounds(400, 150, 250, 200);
-		            Dialog.setVisible(true);
-				}
+				controller.GotoFrameInsertProcuratore();
 			}
 		});
 		btnNewButton_1.setBounds(32, 25, 264, 23);
 		contentPane.add(btnNewButton_1);
 		
-		JButton VisualizzaAtletiButton = new JButton("Visualizza atleti\r\n");
+		JButton VisualizzaAtletiButton = new JButton("Visualizza atleti");
 		VisualizzaAtletiButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.GoToPageViewAtleti();
@@ -78,19 +62,20 @@ public class Demo_Menu_Principale extends JFrame {
 		JButton InsertIngaggioButton = new JButton("Aggiungi Ingaggio");
 		InsertIngaggioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					controller.GoToInsertIngaggio();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+					controller.GoToInsertIngaggio();	
 			}
 		});
-		InsertIngaggioButton.setBounds(32, 140, 264, 23);
+		InsertIngaggioButton.setBounds(32, 161, 264, 23);
 		contentPane.add(InsertIngaggioButton);
+		
+		JButton btnNewButton = new JButton("Visualizza Procuratori");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.GoToViewProcuratori();
+			}
+		});
+		btnNewButton.setBounds(32, 127, 264, 23);
+		contentPane.add(btnNewButton);
 		
 	}
 }

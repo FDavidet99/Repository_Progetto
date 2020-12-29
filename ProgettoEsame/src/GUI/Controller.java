@@ -18,29 +18,38 @@ import ImplementationDAO.ImplementationDAO;
 
 public class Controller {
 	
-	Demo_Menu_Principale HomePage;
+	HomePage HomePage;
 	InsertAtleta PageInsertAtleta;
 	InsertProcuratoreSportivo PageInsertProcuratore;
 	VisualizzaAtleti PageViewAtleti;
 	FrameForJDialog DialogErrori;
-	InsertIngaggio PageIngaggio;
+	InsertIngaggio PageInsertIngaggio;
+	VisualizzaProcuratori PageViewProcuratori;
 	
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) {
 		Controller controller=new Controller();
 	}
 
 	public Controller() {
 		super();
-		HomePage=new Demo_Menu_Principale(this);
+		HomePage=new HomePage(this);
 		HomePage.setVisible(true);
 		
 	}
 	
-	public void GotoFrameInsertAtleta() throws SQLException {
+	public void GotoFrameInsertAtleta() {
 
-		HomePage.setVisible(false);
-		PageInsertAtleta=new InsertAtleta(this);
-		PageInsertAtleta.setVisible(true);
+		try {
+			HomePage.setVisible(false);
+			PageInsertAtleta=new InsertAtleta(this);
+			PageInsertAtleta.setVisible(true);
+		} catch (SQLException e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessioe"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 350, 250, 200);
+            Dialog.setVisible(true); 
+		}
 	}
 	
 	public void InsertAtletaInDB(String TempNome, String TempCognome, Sesso TempSesso , Date DataScelta,
@@ -84,10 +93,19 @@ public class Controller {
 		HomePage.setVisible(true);
 	}
 	
-	public void GotoFrameInsertProcuratore() throws SQLException {
-		HomePage.setVisible(false);
-		PageInsertProcuratore=new InsertProcuratoreSportivo(this);
-		PageInsertProcuratore.setVisible(true);
+	public void GotoFrameInsertProcuratore() {
+		try {
+			HomePage.setVisible(false);
+			PageInsertProcuratore=new InsertProcuratoreSportivo(this);
+			PageInsertProcuratore.setVisible(true);		
+		} catch (SQLException e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessioe"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 350, 250, 200);
+            Dialog.setVisible(true); 
+		}
+		
 	}
 	
 	public void InsertProcuratoreInDB(String TempNome, String TempCognome, Sesso TempSesso , Date DataScelta,
@@ -141,21 +159,78 @@ public class Controller {
 		HomePage.setVisible(true);
 	}
 	
-	public void InsertIngaggio(Ingaggio ingaggio) {
-		try {
-			ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
-			OggettoConnessione.InsertIngaggio(ingaggio);
-			
-		} catch (Exception e) { //gestire tutte le ex
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void InsertIngaggio(ProcuratoreSportivo procuratore,Atleta atleta, Date dataInizio, Date dataFine, double stipendioProcuratore) {
+		try {			
+			LocalDate TempDateInizio=LocalDate.ofInstant(dataInizio.toInstant(), ZoneId.systemDefault());
+			LocalDate TempDateFine=LocalDate.ofInstant(dataFine.toInstant(), ZoneId.systemDefault());
+			ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();	
+			Ingaggio TmpIngaggio=new Ingaggio(procuratore,atleta,TempDateInizio, TempDateFine,stipendioProcuratore);
+			OggettoConnessione.InsertIngaggio(TmpIngaggio);
+			JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
+            JLabel LabelJDialog= new JLabel("Il procuratore è stato ingaggiato"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400,250, 270, 200);
+            Dialog.setVisible(true); 
+			PageInsertIngaggio.SvuotaCampi();
+		} catch (EccezioneCF e1) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 250, 250, 200);
+            Dialog.setVisible(true);
+		} catch (SQLException e2) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessioe"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 350, 250, 200);
+            Dialog.setVisible(true); 
+		} catch (NullPointerException | IndexOutOfBoundsException e3) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 150, 230, 150);
+            Dialog.setVisible(true);
+		}  
 	}
 
-	public void GoToInsertIngaggio() throws Exception, SQLException {
+	public void GoToViewProcuratori () {
 		HomePage.setVisible(false);
-		PageIngaggio=new InsertIngaggio(this);
-		PageIngaggio.setVisible(true);
+		PageViewProcuratori= new VisualizzaProcuratori(this);
+		PageViewProcuratori.setVisible(true);
 		
 	}
+	
+	public void GotoHomePageFromViewProcuratori() {
+		PageViewProcuratori.setVisible(false);
+		HomePage.setVisible(true);
+	}
+	
+	public void GoToInsertIngaggio() {
+		try {
+			HomePage.setVisible(false);
+			PageInsertIngaggio=new InsertIngaggio(this);
+			PageInsertIngaggio.setVisible(true);
+		} catch (EccezioneCF e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 250, 250, 200);
+            Dialog.setVisible(true); 			
+		} catch (SQLException e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessioe"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 350, 250, 200);
+            Dialog.setVisible(true); 
+		} 
+	}
+
+	public void GotoHomePageFromInsertIngaggio() {
+		PageInsertIngaggio.setVisible(false);
+		HomePage.setVisible(true);
+	}
+
+
+
 }
+

@@ -2,7 +2,6 @@ package GUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,20 +26,20 @@ import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerQuery;
 import Eccezioni.EccezioneCF;
-import Entità.Atleta;
 import Entità.Persona;
 import Entità.ProcuratoreSportivo;
 import ImplementationDAO.ImplementationDAO;
 
 public class VisualizzaProcuratori extends JFrame {
 	private static final long serialVersionUID = 1L;
-	protected JPanel contentPane;
-	protected JTable tabellaPersone;
-	protected Controller Controller;
-	protected JLabel labelTitolo;
-	private ArrayList<ProcuratoreSportivo> listaPersoneVisualizzate = new ArrayList<ProcuratoreSportivo>();
-	public VisualizzaProcuratori(Controller controller) {
-		Controller=controller;
+	private JPanel contentPane;
+	private JTable tabellaProcuratori;
+	private Controller controller;
+	private JLabel labelTitolo;
+	private ArrayList<ProcuratoreSportivo> ListaProcuratoriVisualizzati = new ArrayList<ProcuratoreSportivo>();
+	
+	public VisualizzaProcuratori(Controller c) {
+		controller=c;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 795, 410);
 		contentPane = new JPanel();
@@ -59,10 +58,10 @@ public class VisualizzaProcuratori extends JFrame {
 		panel.setBounds(10, 52, 761, 275);
 		contentPane.add(panel);
 		
-		tabellaPersone = new JTable();
-		panel.add(tabellaPersone);
-		tabellaPersone.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		tabellaPersone.setModel(new DefaultTableModel(
+		tabellaProcuratori = new JTable();
+		panel.add(tabellaProcuratori);
+		tabellaProcuratori.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		tabellaProcuratori.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -73,101 +72,95 @@ public class VisualizzaProcuratori extends JFrame {
 		) {private static final long serialVersionUID = 1L;
 		public boolean isCellEditable(int r,int c) {return false;}});
 		
-		tabellaPersone.getColumnModel().getColumn(0).setPreferredWidth(150);
-		tabellaPersone.getColumnModel().getColumn(1).setPreferredWidth(120);
-		tabellaPersone.getColumnModel().getColumn(2).setPreferredWidth(81);
-		tabellaPersone.getColumnModel().getColumn(3).setPreferredWidth(44);
-		tabellaPersone.getColumnModel().getColumn(4).setPreferredWidth(100);
+		tabellaProcuratori.getColumnModel().getColumn(0).setPreferredWidth(150);
+		tabellaProcuratori.getColumnModel().getColumn(1).setPreferredWidth(120);
+		tabellaProcuratori.getColumnModel().getColumn(2).setPreferredWidth(81);
+		tabellaProcuratori.getColumnModel().getColumn(3).setPreferredWidth(44);
+		tabellaProcuratori.getColumnModel().getColumn(4).setPreferredWidth(100);
 		
-		tabellaPersone.setBorder(new LineBorder(new Color(0, 0, 0)));
+		tabellaProcuratori.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
-		tabellaPersone.setPreferredScrollableViewportSize(new Dimension(670, 240));
-        tabellaPersone.setFillsViewportHeight(true);
+		tabellaProcuratori.setPreferredScrollableViewportSize(new Dimension(670, 240));
+        tabellaProcuratori.setFillsViewportHeight(true);
 		
-		JScrollPane js=new JScrollPane(tabellaPersone);
+		JScrollPane js=new JScrollPane(tabellaProcuratori);
 		js.setVisible(true);
 		panel.add(js);
 		
-		tabellaPersone.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+		tabellaProcuratori.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
-//	        	String text = "Selezionato: ";
-//	        	for(int i=0;i<tabellaPersone.getColumnCount();i++)
-//	        		text+=tabellaPersone.getValueAt(tabellaPersone.getSelectedRow(), i)+" ";
-	        	personaSelezionata();
-	            //System.out.println(tabellaPersone.getValueAt(tabellaPersone.getSelectedRow(), 0).toString());
+	        	ProcuratoreSelezionato();
 	        }
 	    });
 		JButton HomeButton = new JButton("Home");
 		HomeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Controller.GotoHomePageFromPageViewAtleti();
+				controller.GotoHomePageFromViewProcuratori();
 			}
 		});
 		HomeButton.setBounds(542, 338, 89, 23);
 		contentPane.add(HomeButton);
 		
-		popolaTabellaPersone();
+		popolaTabellaProcuratori();
 		
 	}
 	
-	public void popolaTabellaPersone() {
+	public void popolaTabellaProcuratori() {
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
-			
-			try {
-				listaPersoneVisualizzate = (ArrayList<ProcuratoreSportivo>) dao.GetProcuratori();
-				DefaultTableModel model = (DefaultTableModel) tabellaPersone.getModel();
-				for(int i=0;i<listaPersoneVisualizzate.size();i++){
-					Persona p  =listaPersoneVisualizzate.get(i);
-					
-					String provincia  = "Estero"; 
-					String comune= "Estero";
-					if(p.getProvinciaNascita()!=null)provincia = p.getProvinciaNascita().getNome();
-					if(p.getComuneNascita()!=null) comune = p.getComuneNascita().getNome();
-					model.addRow(new Object[] {
-							p.getCF(), p.getNome(),
-							p.getCognome(), p.getSessoPersona(),
-							p.getDataNascita(),p.getNazioneNascita().getNomeNazione(),
-							provincia,
-							comune,
-						});
-				}
-			} catch (EccezioneCF e) {
-				JDialog Dialog = new JDialog(); 
-	            JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili"); 
-	            Dialog.getContentPane().add(LabelJDialog); 
-                Dialog.setBounds(400, 150, 240, 150);
-	            Dialog.setVisible(true);}
-//			} catch (NullPointerException e1) {
-//				JDialog Dialog = new JDialog(); 
-//	            JLabel LabelJDialog= new JLabel("Non è stato trovato nulla"); 
-//	            Dialog.getContentPane().add(LabelJDialog); 
-//                Dialog.setBounds(400, 150, 240, 150);
-//	            Dialog.setVisible(true);
-			
-				
+			ListaProcuratoriVisualizzati = (ArrayList<ProcuratoreSportivo>) dao.GetProcuratori();
+			DefaultTableModel model = (DefaultTableModel) tabellaProcuratori.getModel();
+			for(int i=0;i<ListaProcuratoriVisualizzati.size();i++){
+				Persona p  =ListaProcuratoriVisualizzati.get(i);		
+				String provincia  = "Estero"; 
+				String comune= "Estero";
+				if(p.getProvinciaNascita()!=null)
+					provincia = p.getProvinciaNascita().getNome();
+				if(p.getComuneNascita()!=null)
+					comune = p.getComuneNascita().getNome();
+				model.addRow(new Object[] {
+					p.getCF(), p.getNome(),
+					p.getCognome(), p.getSessoPersona(),
+					p.getDataNascita(),p.getNazioneNascita().getNomeNazione(),
+					provincia,comune,
+				});
+			}
+		} catch (EccezioneCF e) {
+			JDialog Dialog = new JDialog(); 
+	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
+	        Dialog.getContentPane().add(LabelJDialog); 
+            Dialog.setBounds(400, 150, 240, 150);
+	        Dialog.setVisible(true);
+		} catch (NullPointerException e1) {
+			JDialog Dialog = new JDialog(); 
+	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
+	        Dialog.getContentPane().add(LabelJDialog); 
+            Dialog.setBounds(400, 150, 240, 150);
+	        Dialog.setVisible(true);
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}
 	}
-	public void personaSelezionata() {
-		try
-    	{
-    		int i = tabellaPersone.getSelectedRow();
+	
+	public void ProcuratoreSelezionato() {
+		try {
+    		int i = tabellaProcuratori.getSelectedRow();
     		if(i==-1)return;
-        	Persona personaSelezionata = listaPersoneVisualizzate.get(i);
+        	Persona personaSelezionata = ListaProcuratoriVisualizzati.get(i);
         	JOptionPane.showMessageDialog(contentPane,personaSelezionata);  
-        	
-    	}
-    	catch (IndexOutOfBoundsException e) {
-    		
-    		e.printStackTrace();
+    	} catch (IndexOutOfBoundsException e) {
+    		JDialog Dialog = new JDialog(); 
+			JLabel LabelJDialog= new JLabel("Selezionare Procuratore",SwingConstants.CENTER); 
+			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setBounds(400, 150, 250, 100);
+			Dialog.setVisible(true);
 		}
-    	tabellaPersone.clearSelection(); // deseleziona
+    	tabellaProcuratori.clearSelection(); // deseleziona
 	}
 	
 }
+

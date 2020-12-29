@@ -1,7 +1,6 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Label;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -9,10 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextArea;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
+
 import com.toedter.calendar.JDateChooser;
 
 import Controller.ControllerQuery;
@@ -23,35 +24,25 @@ import Entità.ProcuratoreSportivo;
 import ImplementationDAO.ImplementationDAO;
 
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.UIManager;
-import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.Color;
 
 public class InsertIngaggio extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField StipendioProvatextField;
-	Controller controller;
 	private List<ProcuratoreSportivo> QueryProcuratori;
 	private List<Atleta> QueryAtleti;
-
-//	/**
-//	 * Launch the application.
-//	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					InsertIngaggio frame = new InsertIngaggio();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	private JComboBox ProcuratoreComboBox;
+	private JComboBox AtletaComboBox;
+	private JDateChooser DataInizioDateChooser;
+	private JDateChooser DataFineDateChooser;
+	Controller controller;
 
 	/**
 	 * Create the frame.
@@ -69,35 +60,36 @@ public class InsertIngaggio extends JFrame {
 		
 		ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
 		
-		JTextArea ProcuratoreTextArea = new JTextArea();
-		ProcuratoreTextArea.setEditable(false);
-		ProcuratoreTextArea.setBackground(UIManager.getColor("Button.background"));
-		ProcuratoreTextArea.setText("Procuratore");
-		ProcuratoreTextArea.setBounds(37, 39, 93, 22);
-		contentPane.add(ProcuratoreTextArea);
+		Label ProcuratoreLabel = new Label();
+		ProcuratoreLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		ProcuratoreLabel.setBackground(UIManager.getColor("Button.background"));
+		ProcuratoreLabel.setText("Procuratore");
+		ProcuratoreLabel.setBounds(37, 39, 93, 22);
+		contentPane.add(ProcuratoreLabel);
 		
-		JTextArea AtletaTextArea = new JTextArea();
-		AtletaTextArea.setEditable(false);
-		AtletaTextArea.setBackground(UIManager.getColor("Button.background"));
-		AtletaTextArea.setText("Atleta");
-		AtletaTextArea.setBounds(341, 39, 53, 22);
-		contentPane.add(AtletaTextArea);
+		Label AtletaLabel = new Label();
+		AtletaLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		AtletaLabel.setBackground(UIManager.getColor("Button.background"));
+		AtletaLabel.setText("Atleta");
+		AtletaLabel.setBounds(341, 39, 53, 22);
+		contentPane.add(AtletaLabel);
 		
-		JTextArea txtrDataInizio = new JTextArea();
-		txtrDataInizio.setEditable(false);
-		txtrDataInizio.setBackground(UIManager.getColor("Button.background"));
-		txtrDataInizio.setText("Data Inizio");
-		txtrDataInizio.setBounds(33, 92, 118, 22);
-		contentPane.add(txtrDataInizio);
+		Label DataInizioLabel = new Label();
+		DataInizioLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		DataInizioLabel.setBackground(UIManager.getColor("Button.background"));
+		DataInizioLabel.setText("Data Inizio");
+		DataInizioLabel.setBounds(37, 94, 93, 22);
+		contentPane.add(DataInizioLabel);
 		
 		QueryProcuratori=new ArrayList <ProcuratoreSportivo>();
 	    QueryProcuratori=(ArrayList) OggettoConnessione.GetProcuratori();
 	    ArrayList<String> nomiProcuratori = new ArrayList<String>();
 		for(ProcuratoreSportivo a:QueryProcuratori)
 			nomiProcuratori.add(a.getNome()+" "+a.getCognome());
-		
-		JComboBox ProcuratoreComboBox = new JComboBox(nomiProcuratori.toArray());
+	
+		ProcuratoreComboBox = new JComboBox(nomiProcuratori.toArray());
 		ProcuratoreComboBox.setBounds(151, 40, 100, 22);
+		ProcuratoreComboBox.setSelectedIndex(-1);
 		contentPane.add(ProcuratoreComboBox);
 		
 		QueryAtleti=new ArrayList();
@@ -106,25 +98,26 @@ public class InsertIngaggio extends JFrame {
 		for(Atleta a:QueryAtleti)
 			nomiAtleti.add(a.getNome()+" "+a.getCognome());
 		
-		JComboBox AtletaComboBox = new JComboBox(nomiAtleti.toArray());
-		AtletaComboBox.setBounds(404, 40, 100, 22);
+		AtletaComboBox = new JComboBox(nomiAtleti.toArray());
+		AtletaComboBox.setBounds(400, 40, 100, 22);
+		AtletaComboBox.setSelectedIndex(-1);
 		contentPane.add(AtletaComboBox);
 		
-		JDateChooser DataInizioDateChooser = new JDateChooser();
-		DataInizioDateChooser.setBounds(161, 94, 100, 20);
+		DataInizioDateChooser = new JDateChooser();
+		DataInizioDateChooser.setBounds(136, 96, 100, 20);
 		DataInizioDateChooser.setDateFormatString("YYYY/MM/dd");
 		contentPane.add(DataInizioDateChooser);
 		
+		Label DataFineLabel = new Label();
+		DataFineLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		DataFineLabel.setBackground(UIManager.getColor("Button.background"));
+		DataFineLabel.setText("Data Fine");
+		DataFineLabel.setBounds(293, 94, 86, 22);
+		contentPane.add(DataFineLabel);
 		
-		JTextArea txtrDataFine = new JTextArea();
-		txtrDataFine.setEditable(false);
-		txtrDataFine.setBackground(UIManager.getColor("Button.background"));
-		txtrDataFine.setText("Data Fine");
-		txtrDataFine.setBounds(293, 98, 86, 22);
-		contentPane.add(txtrDataFine);
-		
-		JDateChooser DataFineDateChooser = new JDateChooser();
-		DataFineDateChooser.setBounds(389, 136, 100, 20);
+		DataFineDateChooser = new JDateChooser();
+		DataFineDateChooser.setBounds(385, 94, 100, 20);
+		DataFineDateChooser.setDateFormatString("YYYY/MM/dd");
 		contentPane.add(DataFineDateChooser);
 		
 		StipendioProvatextField = new JTextField();
@@ -133,33 +126,67 @@ public class InsertIngaggio extends JFrame {
 		StipendioProvatextField.setColumns(10);
 		
 		JButton HomeButton = new JButton("Home");
+		HomeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.GotoHomePageFromInsertIngaggio();
+			}
+		});
 		HomeButton.setBounds(263, 276, 89, 23);
 		contentPane.add(HomeButton);
 		
 		JButton ResetButton = new JButton("Cancella");
-		ResetButton.setBounds(371, 276, 89, 23);
+		ResetButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SvuotaCampi();
+			}
+		});
+		ResetButton.setBounds(362, 276, 89, 23);
 		contentPane.add(ResetButton);
 		
 		JButton IngaggioButton = new JButton("Registra");
-		IngaggioButton.addActionListener(new ActionListener() {
+		IngaggioButton.addActionListener(new ActionListener()  {
 			public void actionPerformed(ActionEvent e) {
-				LocalDate TempDateInizio=LocalDate.ofInstant(DataInizioDateChooser.getDate().toInstant(), ZoneId.systemDefault());
-				LocalDate TempDateFine=LocalDate.ofInstant(DataFineDateChooser.getDate().toInstant(), ZoneId.systemDefault());
-				int indexProcuratore = ProcuratoreComboBox.getSelectedIndex();
-				int indexAtleta = AtletaComboBox.getSelectedIndex();
+				try {
+					int indexProcuratore = ProcuratoreComboBox.getSelectedIndex();
+					int indexAtleta = AtletaComboBox.getSelectedIndex();
+					controller.InsertIngaggio(QueryProcuratori.get(indexProcuratore),QueryAtleti.get(indexAtleta),
+							DataInizioDateChooser.getDate(), DataFineDateChooser.getDate(),/*Double.parseDouble(StipendioProvatextField.getText())*/ 12);
+				} catch (IndexOutOfBoundsException e1) {	
+					if(ProcuratoreComboBox.getSelectedIndex()==-1) {
+						JDialog Dialog = new JDialog(); 
+						JLabel LabelJDialog= new JLabel("Inserire procuratore interessato",SwingConstants.CENTER); 
+						Dialog.getContentPane().add(LabelJDialog); 
+						Dialog.setBounds(400, 150, 250, 200);
+						Dialog.setVisible(true);
+					} else if( AtletaComboBox.getSelectedIndex()==-1) {
+						JDialog Dialog = new JDialog(); 
+						JLabel LabelJDialog= new JLabel("Inserire atleta interessato",SwingConstants.CENTER); 
+						Dialog.getContentPane().add(LabelJDialog); 
+						Dialog.setBounds(400, 150, 250, 100);
+						Dialog.setVisible(true);
+					} else {
+						JDialog Dialog = new JDialog(); 
+						JLabel LabelJDialog= new JLabel("Inserire procuratore e atleta interessato",SwingConstants.CENTER); 
+						Dialog.getContentPane().add(LabelJDialog); 
+						Dialog.setBounds(400, 150, 250, 200);
+						Dialog.setVisible(true);
+					}
+					
+				}
 				
-				Ingaggio TmpIngaggio=new Ingaggio(QueryProcuratori.get(indexProcuratore),
-						QueryAtleti.get(indexAtleta),
-						TempDateInizio, TempDateFine,Double.parseDouble(StipendioProvatextField.getText()));
-
-				controller.InsertIngaggio(TmpIngaggio);
 			}
 		});
-		IngaggioButton.setBounds(470, 276, 89, 23);
+		IngaggioButton.setBounds(461, 276, 89, 23);
 		contentPane.add(IngaggioButton);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(177, 178, 124, 22);
-		contentPane.add(textArea);
+	}
+	
+	public void SvuotaCampi() {
+		
+		DataInizioDateChooser.setCalendar(null);
+		DataFineDateChooser.setCalendar(null);
+		ProcuratoreComboBox.setSelectedIndex(-1);
+		AtletaComboBox.setSelectedIndex(-1);
+		
 	}
 }
