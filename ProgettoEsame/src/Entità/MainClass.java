@@ -12,7 +12,7 @@ import java.util.ListIterator;
 
 import Controller.ControllerQuery;
 import DatabaseUtility.DatabaseConnection;
-import EccezioniPersona.EccezioneCF;
+import Eccezioni.EccezioneCF;
 import ImplementationDAO.ImplementationDAO;
 import ImplementationDAO.ImplementationDAO_Postgres;
 
@@ -20,7 +20,7 @@ import ImplementationDAO.ImplementationDAO_Postgres;
 public class MainClass {
 
 	public static void main(String[] args) throws SQLException, EccezioneCF {
-		Nazione a=new Nazione("Z100","Albania");
+		Nazione a=new Nazione("Z100","Albania",null);
 		Atleta p2 = new Atleta("Davide", "Ferreri",Sesso.M, LocalDate.of(1985,12,17),a,null,null,false);
 		
 

@@ -4,19 +4,19 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-import EccezioniPersona.EccezioneCF;
+import Eccezioni.EccezioneCF;
 
 public class ProcuratoreSportivo extends Persona {
+	private List<Ingaggio> IngaggioDaAtleta;
 	private List<Contratto> Contratti;
+	
 
 	public ProcuratoreSportivo(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
-			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita, List<Contratto> contratti)
-			throws SQLException {
+			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws SQLException {
 		super(nome, cognome, sessoPersona, dataNascita, nazioneNascita, provinciaNascita, comuneNascita);
-		Contratti = contratti;
+		
 	}
 	
-	@Override
 	public String toString() {
 		try {
 			return "("+this.getCF()+this.getNome()+this.getCognome()+this.getSessoPersona()+this.getDataNascita()+
@@ -29,7 +29,9 @@ public class ProcuratoreSportivo extends Persona {
 		}
 	}
 	
-	
-	
+	public void AddIngaggioDaAtleta(Ingaggio ingaggio) {
+		ingaggio.setProcuratore(this); //non serve
+		IngaggioDaAtleta.add(ingaggio);
+	}
 
 }

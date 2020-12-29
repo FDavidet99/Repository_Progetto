@@ -9,9 +9,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import EccezioniPersona.*;
 import ImplementationDAO.*;
 import DatabaseUtility.*;
+import Eccezioni.*;
 
 public class Persona {
 	private String CodiceFiscale;
@@ -341,7 +341,7 @@ public class Persona {
 			case 'Y':return 24;
 			case 'Z':return 23;
 		}
-		throw new carattereSenzaValoreAssociato();
+		throw new EccezioneCF();
 	}
 	
 	private String getCarPostoPari(String s) {

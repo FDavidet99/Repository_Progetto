@@ -8,8 +8,8 @@ import Entità.Provincia;
 
 public interface NazioneDAO {
 	
-	//public String GetCodiceAt(String NomeNazione) throws SQLException;
 	public List<Nazione> GetNazioni() throws SQLException;
-	public List<Provincia> GetProvinceByNazione(Nazione nazione) throws SQLException; 
+	public List<Provincia> GetProvinceByNazione(Nazione nazione) throws SQLException;
+	public Nazione GetNazioneByCodiceAt(String codiceAt) throws SQLException; 
 	
 }
