@@ -111,7 +111,7 @@ public class InsertProcuratoreSportivo extends JFrame {
 		
 		DataNascitaDateChooser = new JDateChooser();
 		DataNascitaDateChooser.setBounds(301, 68, 115, 20);
-		DataNascitaDateChooser.setDateFormatString("YYYY/MM/dd");
+		DataNascitaDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataNascitaDateChooser);
 		
 		ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
@@ -177,7 +177,6 @@ public class InsertProcuratoreSportivo extends JFrame {
 		Insert_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Date DataScelta=DataNascitaDateChooser.getDate();
-				
 				Controller.InsertProcuratoreInDB(Nome_textField.getText(), Cognome_textField.getText(), (Sesso)Sesso_comboBox.getSelectedItem(),
 						DataNascitaDateChooser.getDate(), (Nazione) Nazione_comboBox.getSelectedItem(), (Provincia)Provincia_comboBox.getSelectedItem(), (Comune)Comune_comboBox.getSelectedItem());
 				
@@ -277,16 +276,18 @@ public class InsertProcuratoreSportivo extends JFrame {
 					String TempCognome=Cognome_textField.getText();
 					Sesso TempSesso= (Sesso)Sesso_comboBox.getSelectedItem();
 					Date DataScelta=DataNascitaDateChooser.getDate();
-					LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-					TempDate.format(formatter);
+					
+					
+					LocalDate TempDate=DataScelta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					
 					Nazione TempNazione=(Nazione) Nazione_comboBox.getSelectedItem();
 					Provincia TempProvincia=(Provincia)Provincia_comboBox.getSelectedItem();
 				    Comune TempComune=(Comune)Comune_comboBox.getSelectedItem();
 					
 				    Persona TempoPersona;
 				    TempoPersona = new Persona(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune);
-					Cf_textField.setText(TempoPersona.getCF());
+					System.out.println(TempoPersona);
+				    Cf_textField.setText(TempoPersona.getCF());
 					
 				} catch (EccezioneCF  e1) {
 					JDialog Dialog = new JDialog(); 

@@ -105,7 +105,7 @@ public class InsertIngaggio extends JFrame {
 		
 		DataInizioDateChooser = new JDateChooser();
 		DataInizioDateChooser.setBounds(136, 96, 100, 20);
-		DataInizioDateChooser.setDateFormatString("YYYY/MM/dd");
+		DataInizioDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataInizioDateChooser);
 		
 		Label DataFineLabel = new Label();
@@ -117,7 +117,7 @@ public class InsertIngaggio extends JFrame {
 		
 		DataFineDateChooser = new JDateChooser();
 		DataFineDateChooser.setBounds(385, 94, 100, 20);
-		DataFineDateChooser.setDateFormatString("YYYY/MM/dd");
+		DataFineDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataFineDateChooser);
 		
 		StipendioProvatextField = new JTextField();
@@ -149,8 +149,15 @@ public class InsertIngaggio extends JFrame {
 				try {
 					int indexProcuratore = ProcuratoreComboBox.getSelectedIndex();
 					int indexAtleta = AtletaComboBox.getSelectedIndex();
-					controller.InsertIngaggio(QueryProcuratori.get(indexProcuratore),QueryAtleti.get(indexAtleta),
-							DataInizioDateChooser.getDate(), DataFineDateChooser.getDate(),/*Double.parseDouble(StipendioProvatextField.getText())*/ 12);
+					
+					ProcuratoreSportivo procuratore = QueryProcuratori.get(indexProcuratore);
+					Atleta atleta = QueryAtleti.get(indexAtleta);
+					LocalDate TempDateInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					LocalDate TempDateFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					double stipendioProcuratore = Double.parseDouble(StipendioProvatextField.getText());
+					Ingaggio ingaggio=new Ingaggio(procuratore,atleta,TempDateInizio, TempDateFine,stipendioProcuratore);
+					System.out.println("ing="+ingaggio);
+					controller.InsertIngaggio(ingaggio);
 				} catch (IndexOutOfBoundsException e1) {	
 					if(ProcuratoreComboBox.getSelectedIndex()==-1) {
 						JDialog Dialog = new JDialog(); 

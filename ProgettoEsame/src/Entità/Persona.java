@@ -145,9 +145,9 @@ public class Persona {
 		if(hasNazioneNascita() && NazioneNascita.getNomeNazione().equalsIgnoreCase("Italia")) {
 			out+=", ";
 			if(hasProviciaNascita()) {
-				out+="Provincia: "+ ProvinciaNascita.getNome() +", ";
+				out+="Provincia: "+ ProvinciaNascita +", ";
 				if(hasComuneNascita())
-					out+="Comune:"+ ComuneNascita.getNome() ;
+					out+="Comune:"+ ComuneNascita ;
 			}
 		}
 		out+="]";

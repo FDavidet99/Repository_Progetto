@@ -56,7 +56,7 @@ public class Controller {
 			Nazione TempNazione, Provincia TempProvincia, Comune TempComune, boolean hasProcuratore) {
 		
 			try {
-				LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
+				LocalDate TempDate=DataScelta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				Atleta TempAtleta;
 				TempAtleta = new Atleta(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune,false);
 				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
@@ -111,7 +111,7 @@ public class Controller {
 	public void InsertProcuratoreInDB(String TempNome, String TempCognome, Sesso TempSesso , Date DataScelta,
 			Nazione TempNazione, Provincia TempProvincia, Comune TempComune) {
 			try {
-				LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
+				LocalDate TempDate=DataScelta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				ProcuratoreSportivo TempProcuratore;
 				TempProcuratore = new ProcuratoreSportivo(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune);
 				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
@@ -159,13 +159,12 @@ public class Controller {
 		HomePage.setVisible(true);
 	}
 	
-	public void InsertIngaggio(ProcuratoreSportivo procuratore,Atleta atleta, Date dataInizio, Date dataFine, double stipendioProcuratore) {
+	public void InsertIngaggio(Ingaggio ingaggio) {
 		try {			
-			LocalDate TempDateInizio=LocalDate.ofInstant(dataInizio.toInstant(), ZoneId.systemDefault());
-			LocalDate TempDateFine=LocalDate.ofInstant(dataFine.toInstant(), ZoneId.systemDefault());
+			
 			ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();	
-			Ingaggio TmpIngaggio=new Ingaggio(procuratore,atleta,TempDateInizio, TempDateFine,stipendioProcuratore);
-			OggettoConnessione.InsertIngaggio(TmpIngaggio);
+			
+			OggettoConnessione.InsertIngaggio(ingaggio);
 			JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
             JLabel LabelJDialog= new JLabel("Il procuratore è stato ingaggiato"); 
             Dialog.add(LabelJDialog); 
@@ -184,6 +183,7 @@ public class Controller {
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
+            e2.printStackTrace();
 		} catch (NullPointerException | IndexOutOfBoundsException e3) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati"); 

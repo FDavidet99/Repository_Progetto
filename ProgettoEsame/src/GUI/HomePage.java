@@ -23,6 +23,9 @@ public class HomePage extends JFrame {
 	 * Create the frame.
 	 * @param controller 
 	 */
+	public static void main(String[] args) {
+		new HomePage(new Controller());
+	}
 	public HomePage(Controller c) {
 		controller=c;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

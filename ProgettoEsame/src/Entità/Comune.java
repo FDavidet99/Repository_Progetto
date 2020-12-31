@@ -39,7 +39,7 @@ public class Comune {
 
 	@Override
 	public String toString() {
-		return NomeComune;
+		return "["+NomeComune+", "+CodiceCatastale+"]";
 	}
 	
 }

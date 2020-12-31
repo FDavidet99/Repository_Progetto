@@ -57,7 +57,7 @@ public class Provincia {
 
 	@Override
 	public String toString() {
-		return NomeProvincia ;
+		return "["+NomeProvincia+", "+Sigla+"]" ;
 	}
 	
 

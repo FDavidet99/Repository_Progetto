@@ -109,7 +109,7 @@ public class InsertAtleta extends JFrame {
 		
 		DataNascitaDateChooser = new JDateChooser();
 		DataNascitaDateChooser.setBounds(301, 68, 115, 20);
-		DataNascitaDateChooser.setDateFormatString("YYYY/MM/dd");
+		DataNascitaDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataNascitaDateChooser);
 		
 		ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
@@ -275,9 +275,7 @@ public class InsertAtleta extends JFrame {
 					String TempCognome=Cognome_textField.getText();
 					Sesso TempSesso= (Sesso)Sesso_comboBox.getSelectedItem();
 					Date DataScelta=DataNascitaDateChooser.getDate();
-					LocalDate TempDate=LocalDate.ofInstant(DataScelta.toInstant(), ZoneId.systemDefault());
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-					TempDate.format(formatter);
+					LocalDate TempDate=DataScelta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 					Nazione TempNazione=(Nazione) Nazione_comboBox.getSelectedItem();
 					Provincia TempProvincia=(Provincia)Provincia_comboBox.getSelectedItem();
 				    Comune TempComune=(Comune)Comune_comboBox.getSelectedItem();

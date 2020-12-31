@@ -62,5 +62,10 @@ public class Ingaggio {
 		Procuratore.AddIngaggioDaAtleta(this);
 		Atleta.AddIngaggioProcuratore(this);
 	}
+	@Override
+	public String toString() {
+		String s ="["+DataInizio +" - "+DataFine+"]";
+		return s;
+	}
 
 }

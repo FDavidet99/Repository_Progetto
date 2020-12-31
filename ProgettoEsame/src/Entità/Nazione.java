@@ -47,7 +47,7 @@ public class Nazione {
 
 	@Override
 	public String toString() {
-		return  NomeNazione;
+		return  "["+NomeNazione+", "+CodiceAt+"]";
 	}
 
 	
