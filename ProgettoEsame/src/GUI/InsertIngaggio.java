@@ -148,16 +148,15 @@ public class InsertIngaggio extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int indexProcuratore = ProcuratoreComboBox.getSelectedIndex();
-					int indexAtleta = AtletaComboBox.getSelectedIndex();
-					
+					int indexAtleta = AtletaComboBox.getSelectedIndex();					
 					ProcuratoreSportivo procuratore = QueryProcuratori.get(indexProcuratore);
 					Atleta atleta = QueryAtleti.get(indexAtleta);
 					LocalDate TempDateInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 					LocalDate TempDateFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 					double stipendioProcuratore = Double.parseDouble(StipendioProvatextField.getText());
 					Ingaggio ingaggio=new Ingaggio(procuratore,atleta,TempDateInizio, TempDateFine,stipendioProcuratore);
-					System.out.println("ing="+ingaggio);
 					controller.InsertIngaggio(ingaggio);
+					
 				} catch (IndexOutOfBoundsException e1) {	
 					if(ProcuratoreComboBox.getSelectedIndex()==-1) {
 						JDialog Dialog = new JDialog(); 
@@ -179,7 +178,13 @@ public class InsertIngaggio extends JFrame {
 						Dialog.setVisible(true);
 					}
 					
-				}
+				} catch (NullPointerException e3) {
+					JDialog Dialog = new JDialog(); 
+					JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati",SwingConstants.CENTER);
+		            Dialog.add(LabelJDialog); 
+		            Dialog.setBounds(400, 150, 230, 150);
+		            Dialog.setVisible(true);
+				} 
 				
 			}
 		});

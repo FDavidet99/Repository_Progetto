@@ -52,15 +52,11 @@ public class Controller {
 		}
 	}
 	
-	public void InsertAtletaInDB(String TempNome, String TempCognome, Sesso TempSesso , Date DataScelta,
-			Nazione TempNazione, Provincia TempProvincia, Comune TempComune, boolean hasProcuratore) {
+	public void InsertAtletaInDB(Atleta atleta) {
 		
 			try {
-				LocalDate TempDate=DataScelta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-				Atleta TempAtleta;
-				TempAtleta = new Atleta(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune,false);
 				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
-				OggettoConnessione.InsertAtleta(TempAtleta);
+				OggettoConnessione.InsertAtleta(atleta);
 				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
 	            JLabel LabelJDialog= new JLabel("L'atleta è stato inserito con successo"); 
                 Dialog.add(LabelJDialog); 
@@ -79,13 +75,7 @@ public class Controller {
                 Dialog.add(LabelJDialog); 
                 Dialog.setBounds(400, 350, 250, 200);
 	            Dialog.setVisible(true); 
-			} catch (NullPointerException e) {
-				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-	            JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati"); 
-	            Dialog.add(LabelJDialog); 
-                Dialog.setBounds(400, 150, 230, 150);
-	            Dialog.setVisible(true);
-			}
+			} 
 	}
 	
 	public void GotoHomePageFromInsertAtleta() {
@@ -108,14 +98,10 @@ public class Controller {
 		
 	}
 	
-	public void InsertProcuratoreInDB(String TempNome, String TempCognome, Sesso TempSesso , Date DataScelta,
-			Nazione TempNazione, Provincia TempProvincia, Comune TempComune) {
+	public void InsertProcuratoreInDB(ProcuratoreSportivo procuratore) {
 			try {
-				LocalDate TempDate=DataScelta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-				ProcuratoreSportivo TempProcuratore;
-				TempProcuratore = new ProcuratoreSportivo(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune);
 				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
-				OggettoConnessione.InsertProcuratoreSportivo(TempProcuratore);
+				OggettoConnessione.InsertProcuratoreSportivo(procuratore);
 				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
 	            JLabel LabelJDialog= new JLabel("Il procuratore è stato inserito con successo"); 
                 Dialog.add(LabelJDialog); 
@@ -134,12 +120,6 @@ public class Controller {
                 Dialog.add(LabelJDialog); 
                 Dialog.setBounds(400, 350, 250, 200);
 	            Dialog.setVisible(true); 
-			} catch (NullPointerException e) {
-				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-	            JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati"); 
-	            Dialog.add(LabelJDialog); 
-                Dialog.setBounds(400, 150, 230, 150);
-	            Dialog.setVisible(true);
 			}
 	}
 	
@@ -183,13 +163,6 @@ public class Controller {
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
-            e2.printStackTrace();
-		} catch (NullPointerException | IndexOutOfBoundsException e3) {
-			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati"); 
-            Dialog.add(LabelJDialog); 
-            Dialog.setBounds(400, 150, 230, 150);
-            Dialog.setVisible(true);
 		}  
 	}
 

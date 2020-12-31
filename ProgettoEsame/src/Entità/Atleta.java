@@ -13,7 +13,7 @@ public class Atleta extends Persona {
 	private List<Presenza> Presenze;
 
 	public Atleta(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
-			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita, boolean hasProcuratore) throws SQLException {
+			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita, boolean hasProcuratore) throws SQLException, EccezioneCF {
 		super(nome, cognome, sessoPersona, dataNascita, nazioneNascita, provinciaNascita, comuneNascita);
 		setHasProcuratore(hasProcuratore);
 	}

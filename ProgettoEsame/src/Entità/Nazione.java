@@ -47,8 +47,12 @@ public class Nazione {
 
 	@Override
 	public String toString() {
-		return  "["+NomeNazione+", "+CodiceAt+"]";
+		return "Nazione [" + (CodiceAt != null ? "CodiceAt=" + CodiceAt + ", " : "")
+				+ (NomeNazione != null ? "NomeNazione=" + NomeNazione + ", " : "")
+				+ (Province != null ? "Province=" + Province : "") + "]";
 	}
+
+	
 
 	
 }

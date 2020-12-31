@@ -24,15 +24,9 @@ public class Persona {
 	private Comune ComuneNascita;
 	
 	public Persona(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
-			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws SQLException{
+			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws SQLException, EccezioneCF{
 		super();
-		
-		try {
-			CodiceFiscale = calcolaCF(nome, cognome, sessoPersona, dataNascita, nazioneNascita, provinciaNascita, comuneNascita);
-		} catch (EccezioneCF e) {
-			System.out.println("Dati non compatibili con il sistema");
-		}
-		
+		CodiceFiscale = calcolaCF(nome, cognome, sessoPersona, dataNascita, nazioneNascita, provinciaNascita, comuneNascita);
 		Nome = nome;
 		Cognome = cognome;
 		SessoPersona = sessoPersona;
@@ -129,14 +123,6 @@ public class Persona {
 	@Override
 	public String toString() {
 		String out = "[";
-		try {
-			out+="CF: "+getCF()+", ";
-		} catch (EccezioneCF e) {
-			System.out.println("Dati non compatibili");
-		} catch (SQLException e) {
-			System.out.println("DConnessione non riuscita");
-			e.printStackTrace();
-		}
 		out+="Nome: "+ Nome +", ";
 		out+="Cognome: "+ Cognome +", ";
 		out+="Sesso: "+ SessoPersona+", ";
@@ -177,7 +163,7 @@ public class Persona {
 		String strGiornoNascita = Integer.toString(giornoNascita);
 		if (strGiornoNascita.length()==1) strGiornoNascita = "0"+strGiornoNascita;
 		CodiceFiscale += strGiornoNascita;
-    	if(nazioneNascita.getNomeNazione().equalsIgnoreCase("Italia"))
+    	if(nazioneNascita.getCodiceAt().equalsIgnoreCase("Z000"))
     		CodiceFiscale += comuneNascita.getCodiceCatastale();
     	else
     		CodiceFiscale += nazioneNascita.getCodiceAt();
