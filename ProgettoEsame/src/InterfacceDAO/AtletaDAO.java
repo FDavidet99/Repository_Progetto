@@ -9,4 +9,5 @@ import Entità.Atleta;
 public interface AtletaDAO {
 	public void InsertAtleta(Atleta atleta) throws SQLException, EccezioneCF;
 	public List<Atleta> GetAtleti() throws SQLException, EccezioneCF;
+	public Atleta GetAtletaByCodiceFiscale (String CodiceFiscaleAtleta) throws SQLException, EccezioneCF;
 }

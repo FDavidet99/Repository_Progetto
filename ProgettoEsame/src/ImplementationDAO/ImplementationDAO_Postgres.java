@@ -19,18 +19,21 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	public ImplementationDAO_Postgres(Connection connection) throws SQLException {
 		super();
 		Connection = connection;
-		StmGetNazioni=Connection.prepareStatement("Select * from Nazione");
-		StmGetProvinceByNazione=Connection.prepareStatement("Select * from Provincia Where lower(Codicenazione)= lower(?)");
+		StmGetNazioni=Connection.prepareStatement("SELECT * FROM Nazione");
+		StmGetProvinceByNazione=Connection.prepareStatement("SELECT * FROM Provincia Where lower(Codicenazione)= lower(?)");
 		StmGetComuniByProvincia = Connection.prepareStatement("SELECT * FROM Comune Where lower(NomeProvincia)= lower(?)");
-		StmGetComuneByCodiceCatastale = Connection.prepareStatement("Select * from comune where codicecatastale like ?");
-		StmGetNazioniByCodiceAt = Connection.prepareStatement("Select * from nazione where codiceat like ?");
-		StmGetProvinciaByNome = Connection.prepareStatement("Select * from provincia where nomeprovincia like ?");
+		StmGetComuneByCodiceCatastale = Connection.prepareStatement("SELECT * FROM comune where codicecatastale like ?");
+		StmGetNazioniByCodiceAt = Connection.prepareStatement("SELECT * FROM nazione where codiceat like ?");
+		StmGetProvinciaByNome = Connection.prepareStatement("SELECT * FROM provincia where nomeprovincia like ?");
 		StmInsertProcuratoreSportivo=Connection.prepareStatement("Insert into ProcuratoreSportivo values (?,?,?,?,?,?,?,?)");
-		StmInsertAtleta=Connection.prepareStatement("Insert into atleta values (?,?,?,?,?,?,?,?,?)");
-		StmGetAtleti = Connection.prepareStatement("Select * from atleta;");
-		StmGetProcuratori = Connection.prepareStatement("Select * from ProcuratoreSportivo;");
-		StmInsertIngaggio=Connection.prepareStatement("Insert into Ingaggio values (?,?,?,?,?);");
-	
+		StmInsertAtleta=Connection.prepareStatement("INSERT INTO atleta values (?,?,?,?,?,?,?,?,?)");
+		StmGetAtleti = Connection.prepareStatement("SELECT * FROM atleta;");
+		StmGetProcuratori = Connection.prepareStatement("SELECT * from ProcuratoreSportivo;");
+		StmInsertIngaggio=Connection.prepareStatement("INSERT INTO Ingaggio values (?,?,?,?,?);");
+		StmGetIngaggiByAtleta=Connection.prepareStatement("SELECT * FROM Ingaggio WHERE CodiceFiscaleAtleta= ?;");
+		StmGetIngaggiByProcuratore=Connection.prepareStatement("SELECT * FROM Ingaggio WHERE CodiceFiscaleProcuratore=?;");
+		StmGetProcuratoreByCodiceFiscale=Connection.prepareStatement("SELECT * FROM ProcuratoreSportivo WHERE CodiceFiscale= ?;");
+		StmGetAtletaByCodiceFiscale=Connection.prepareStatement("SELECT * FROM Atleta WHERE CodiceFiscale= ?;");
 	}
 
 	@Override
@@ -181,21 +184,67 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		ResultSet rs=StmGetProcuratori.executeQuery();
 		ArrayList<ProcuratoreSportivo> Procuratori=new ArrayList<ProcuratoreSportivo>();
 		while(rs.next()) {
-			Nazione nazione = GetNazioneByCodiceAt(rs.getString("nazionenascita"));
-			Provincia provincia = GetProvinciaByNome(rs.getString("provincianascita"));
-			Comune comune = GetComuneByCodiceCatastale(rs.getString("comunenascita"));
+			String nome = rs.getString("nome");
+			String cognome = rs.getString("cognome");
 			Sesso sesso = Sesso.F;
 			if(rs.getString("sesso").equals("M"))
 				sesso = Sesso.M;
-			String nome = rs.getString("nome");
-			String cognome = rs.getString("cognome");
 			LocalDate dataNascita =  LocalDate.parse(rs.getString("datanascita"));
+			Nazione nazione = GetNazioneByCodiceAt(rs.getString("nazionenascita"));
+			Provincia provincia = GetProvinciaByNome(rs.getString("provincianascita"));
+			Comune comune = GetComuneByCodiceCatastale(rs.getString("comunenascita"));
 			ProcuratoreSportivo TmpProcuratore=new ProcuratoreSportivo(nome,cognome,sesso,dataNascita,
 						nazione,provincia,comune);
 			Procuratori.add(TmpProcuratore);
 		}
 		rs.close();
 		return Procuratori;
+	}
+	
+	@Override
+	public ProcuratoreSportivo GetProcuratoreByCodiceFiscale(String CodiceFiscaleProcuratore) throws SQLException, EccezioneCF {
+		StmGetProcuratoreByCodiceFiscale.setString(1, CodiceFiscaleProcuratore);
+		ResultSet rs=StmGetProcuratoreByCodiceFiscale.executeQuery();
+		ProcuratoreSportivo Procuratore=null;
+		while(rs.next()) {
+			String nome = rs.getString("nome");
+			String cognome = rs.getString("cognome");
+			Sesso sesso = Sesso.F;
+			if(rs.getString("sesso").equals("M"))
+				sesso = Sesso.M;
+			LocalDate dataNascita =  LocalDate.parse(rs.getString("datanascita"));
+			Nazione nazione = GetNazioneByCodiceAt(rs.getString("nazionenascita"));
+			Provincia provincia = GetProvinciaByNome(rs.getString("provincianascita"));
+			Comune comune = GetComuneByCodiceCatastale(rs.getString("comunenascita"));
+			
+			Procuratore=new ProcuratoreSportivo(CodiceFiscaleProcuratore,nome,cognome,sesso,dataNascita,
+						nazione,provincia,comune);
+		}
+		rs.close();
+		return Procuratore;
+	}
+	
+	public Atleta GetAtletaByCodiceFiscale (String CodiceFiscaleAtleta) throws SQLException, EccezioneCF {
+		StmGetAtletaByCodiceFiscale.setString(1, CodiceFiscaleAtleta);
+		ResultSet rs=StmGetAtletaByCodiceFiscale.executeQuery();
+		Atleta Atleta=null;
+		while(rs.next()) {
+			String nome = rs.getString("nome");
+			String cognome = rs.getString("cognome");
+			Sesso sesso = Sesso.F;
+			if(rs.getString("sesso").equals("M"))
+				sesso = Sesso.M;
+			LocalDate dataNascita =  LocalDate.parse(rs.getString("datanascita"));
+			Nazione nazione = GetNazioneByCodiceAt(rs.getString("nazionenascita"));
+			Provincia provincia = GetProvinciaByNome(rs.getString("provincianascita"));
+			Comune comune = GetComuneByCodiceCatastale(rs.getString("comunenascita"));
+			Boolean hasprocuratore=rs.getBoolean("hasprocuratore");
+			
+			Atleta=new Atleta(CodiceFiscaleAtleta,nome,cognome,sesso,dataNascita,
+						nazione,provincia,comune,hasprocuratore);
+		}
+		rs.close();
+		return Atleta;
 	}
 
 	@Override
@@ -207,6 +256,43 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmInsertIngaggio.setObject(5,ingaggio.getStipendioProcuratore());
 		StmInsertIngaggio.executeUpdate();
 	}
+
+	@Override
+	public List<Ingaggio> GetIngaggiByAtleta(Atleta atleta) throws SQLException, EccezioneCF {
+		StmGetIngaggiByAtleta.setString(1,atleta.getCF());
+		ResultSet rs= StmGetIngaggiByAtleta.executeQuery();
+		List<Ingaggio> IngaggiAtleta=null;
+		while(rs.next()) {
+			String CodiceFiscaleProcuratore=rs.getString("codicefiscaleprocuratore");
+			LocalDate DataInizio =  LocalDate.parse(rs.getString("datainizio"));
+			LocalDate DataFine =  LocalDate.parse(rs.getString("datafine"));
+			Ingaggio TmpIngaggio=new Ingaggio(GetProcuratoreByCodiceFiscale(CodiceFiscaleProcuratore), atleta, DataInizio, DataFine, rs.getDouble("stipendioprocuratore"));
+			IngaggiAtleta.add(TmpIngaggio);
+		}
+		rs.close();
+		return IngaggiAtleta;
+	}
+
+	@Override
+	public List<Ingaggio> GetIngaggiByProcuratore(ProcuratoreSportivo procuratore) throws EccezioneCF, SQLException {
+		StmGetIngaggiByProcuratore.setString(1,procuratore.getCF());
+		ResultSet rs= StmGetIngaggiByProcuratore.executeQuery();
+		List<Ingaggio> IngaggiProcuratore=null;
+		while(rs.next()) {
+			String CodiceFiscaleAtleta=rs.getString("codicefiscaleatleta");
+			LocalDate DataInizio =  LocalDate.parse(rs.getString("datainizio"));
+			LocalDate DataFine =  LocalDate.parse(rs.getString("datafine"));
+			Ingaggio TmpIngaggio=new Ingaggio(procuratore, GetAtletaByCodiceFiscale(CodiceFiscaleAtleta) , DataInizio, DataFine, rs.getDouble("stipendioprocuratore"));
+			IngaggiProcuratore.add(TmpIngaggio);
+		}
+		rs.close();
+		return IngaggiProcuratore;
+	}
+
+
+	
+
+	
 }
 	
 

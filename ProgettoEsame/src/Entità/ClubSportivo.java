@@ -8,7 +8,7 @@ public class ClubSportivo {
 	private int IdClubSportivo;
 	private String NomeClub;
 	private Provincia SedeLegale;
-	private List<Squadra> ElencoSquadre;
+	private List<Atleta> AtlentiComponenti;
 	
 	public ClubSportivo(int idClubSportivo, String nomeClub, Provincia sedeLegale) {
 		super();
@@ -41,14 +41,6 @@ public class ClubSportivo {
 		SedeLegale = sedeLegale;
 	}
 	
-	public void AddSquadra(Squadra squadra) throws EccezioneNazionale {
-		squadra.setClubAppartenenza(this);
-		ElencoSquadre.add(squadra);
-	}
-	
-	public void RemoveSquadra(Squadra squadra) throws EccezioneNazionale {
-		ElencoSquadre.remove(ElencoSquadre.indexOf(squadra));
-	}
 	
 	
 

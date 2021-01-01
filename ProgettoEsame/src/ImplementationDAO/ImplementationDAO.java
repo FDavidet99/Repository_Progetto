@@ -10,7 +10,10 @@ public abstract class ImplementationDAO implements NazioneDAO,ProvinciaDAO,Comun
 	
 	protected Connection Connection;
     protected PreparedStatement StmGetNazioni,StmGetComuniByProvincia,StmGetProvinceByNazione,StmGetNazioniByCodiceAt,StmGetProvinciaByNome,StmGetComuneByCodiceCatastale,
-                                StmInsertAtleta,StmInsertProcuratoreSportivo,StmGetAtleti,StmGetProcuratori,StmInsertIngaggio;
+                                StmInsertAtleta,StmInsertProcuratoreSportivo,StmGetAtleti,StmGetProcuratori,StmGetProcuratoreByCodiceFiscale,StmGetAtletaByCodiceFiscale,
+                                StmInsertIngaggio,StmGetIngaggiByAtleta,StmGetIngaggiByProcuratore;
+    
+    
     
 	
 	

@@ -36,6 +36,19 @@ public class Persona {
 		ComuneNascita = comuneNascita;
 	}
 	
+	public Persona(String codiceFiscale,String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
+			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws SQLException, EccezioneCF{
+		super();
+		CodiceFiscale=codiceFiscale;
+		Nome = nome;
+		Cognome = cognome;
+		SessoPersona = sessoPersona;
+		DataNascita = dataNascita;
+		NazioneNascita = nazioneNascita;
+		ProvinciaNascita = provinciaNascita;
+		ComuneNascita = comuneNascita;
+	}
+	
 	public String getCF() throws EccezioneCF, SQLException {
 		if(CodiceFiscale!=null)
 			return CodiceFiscale;
