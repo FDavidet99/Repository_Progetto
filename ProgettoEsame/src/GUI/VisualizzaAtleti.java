@@ -157,8 +157,9 @@ public class VisualizzaAtleti extends JFrame {
 		try {
     		int i = tabellaAtleti.getSelectedRow();
     		if(i==-1)return;
-        	Persona personaSelezionata = ListaAtletiVisualizzati.get(i);
-        	JOptionPane.showMessageDialog(contentPane,personaSelezionata);  
+        	Atleta atletaSel = ListaAtletiVisualizzati.get(i);
+        	//JOptionPane.showMessageDialog(contentPane,atletaSel);  
+        	Controller.GotoInfoAtletaFromVisualizzaAtleta(atletaSel);
         	
     	}
     	catch (IndexOutOfBoundsException e) {

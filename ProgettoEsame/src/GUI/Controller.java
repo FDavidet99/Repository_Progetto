@@ -25,7 +25,8 @@ public class Controller {
 	FrameForJDialog DialogErrori;
 	InsertIngaggio PageInsertIngaggio;
 	VisualizzaProcuratori PageViewProcuratori;
-	
+	InfoAtleta PageInfoAtleta;
+	InfoProcuratore PageInfoProcuratore;
 	public static void main(String[] args) {
 		Controller controller=new Controller();
 	}
@@ -202,8 +203,23 @@ public class Controller {
 		PageInsertIngaggio.setVisible(false);
 		HomePage.setVisible(true);
 	}
-
-
-
+	public void GotoInfoAtletaFromVisualizzaAtleta(Atleta atletaSelezionato) {
+		PageViewAtleti.setVisible(false);
+		PageInfoAtleta = new InfoAtleta(this,atletaSelezionato);
+		PageInfoAtleta.setVisible(true);
+	}
+	public void GotoHomeFromInfoAtleta() {
+		PageInfoAtleta.setVisible(false);
+		HomePage.setVisible(true);
+	}
+	public void GotoInfoProcuratoreFromVisualizzaProcuratore(ProcuratoreSportivo proc) {
+		PageViewProcuratori.setVisible(false);
+		PageInfoProcuratore = new InfoProcuratore(this,proc);
+		PageInfoProcuratore.setVisible(true);
+	}
+	public void GotoHomeFromInfoProcuratore() {
+		PageInfoProcuratore.setVisible(false);
+		HomePage.setVisible(true);
+	}
 }
 

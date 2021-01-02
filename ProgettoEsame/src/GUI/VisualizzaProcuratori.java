@@ -150,8 +150,9 @@ public class VisualizzaProcuratori extends JFrame {
 		try {
     		int i = tabellaProcuratori.getSelectedRow();
     		if(i==-1)return;
-        	Persona personaSelezionata = ListaProcuratoriVisualizzati.get(i);
-        	JOptionPane.showMessageDialog(contentPane,personaSelezionata);  
+        	ProcuratoreSportivo procSelezionato = ListaProcuratoriVisualizzati.get(i);
+        	//JOptionPane.showMessageDialog(contentPane,personaSelezionata);  
+        	controller.GotoInfoProcuratoreFromVisualizzaProcuratore(procSelezionato);
     	} catch (IndexOutOfBoundsException e) {
     		JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Selezionare Procuratore",SwingConstants.CENTER); 

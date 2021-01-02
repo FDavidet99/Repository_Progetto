@@ -263,7 +263,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	public List<Ingaggio> GetIngaggiByAtleta(Atleta atleta) throws SQLException, EccezioneCF {
 		StmGetIngaggiByAtleta.setString(1,atleta.getCF());
 		ResultSet rs= StmGetIngaggiByAtleta.executeQuery();
-		List<Ingaggio> IngaggiAtleta=new ArrayList<Ingaggio>();
+		List<Ingaggio> IngaggiAtleta= new ArrayList<Ingaggio>();
 		while(rs.next()) {
 			String CodiceFiscaleProcuratore=rs.getString("codicefiscaleprocuratore");
 			LocalDate DataInizio =  LocalDate.parse(rs.getString("datainizio"));
@@ -292,7 +292,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	}
 
 	@Override
-	public List<ClubSportivo> GetClubSportivi() {
+	public List<ClubSportivo> GetClubSportivi() throws SQLException {
 		ResultSet rs=StmGetClubSportivi.executeQuery();
 		ArrayList<ClubSportivo> ClubSportivi=new ArrayList<ClubSportivo>();
 		while(rs.next()) {
@@ -301,10 +301,10 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			Nazione nazione = GetNazioneByCodiceAt(rs.getString("sedelegale"));
 			boolean IsNazionale =  rs.getBoolean("isnazionale");
 			ClubSportivo TmpClub=new ClubSportivo(IdClub,Nome,nazione,IsNazionale);
-			atleti.add(TmpAtleta);
+			
 		}
 		rs.close();
-		return atleti;
+		return ClubSportivi;
 	}
 
 	@Override
