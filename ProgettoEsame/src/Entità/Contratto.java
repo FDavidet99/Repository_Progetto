@@ -5,11 +5,16 @@ import java.time.format.DateTimeFormatter;
 
 
 public class Contratto {
+	private int IdContratto;
 	private Atleta AtletaSottosritto;
 	private ProcuratoreSportivo ProcuratoreInteressato;
 	private LocalDate DataInizio;
 	private LocalDate DataFine;
-	//POI SI AGGIUnge il resto
+	private TipoContratto Tipo;
+	private ClubSportivo Club=null;
+	private Sponsor Sponsor=null;
+	
+	
 	
 	public Contratto(Atleta atletaSottosritto, ProcuratoreSportivo procuratoreInteressato, LocalDate dataInizio,
 			LocalDate dataFine) {
