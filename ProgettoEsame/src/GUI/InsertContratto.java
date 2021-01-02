@@ -20,6 +20,7 @@ import com.toedter.calendar.JDateChooser;
 import Controller.ControllerQuery;
 import Eccezioni.EccezioneCF;
 import Entità.Atleta;
+import Entità.ClubSportivo;
 import Entità.TipoContratto;
 import ImplementationDAO.ImplementationDAO;
 
@@ -30,6 +31,7 @@ public class InsertContratto extends JFrame {
 	private JTextField CompensoAtletaTextField;
 	private JTextField textField;
 	private List<Atleta> QueryAtleti;
+	private List<ClubSportivo> QueryClub;
 
 	/**
 	 * Launch the application.
@@ -69,16 +71,14 @@ public class InsertContratto extends JFrame {
 		
 		QueryAtleti=new ArrayList();
 	    QueryAtleti=(ArrayList) OggettoConnessione.GetAtleti();
-		ArrayList<String> nomiAtleti = new ArrayList<String>();
+		ArrayList<String> NomiAtleti = new ArrayList<String>();
 		for(Atleta a:QueryAtleti)
-			nomiAtleti.add(a.getNome()+" "+a.getCognome());
+			NomiAtleti.add(a.getNome()+" "+a.getCognome());
 		
-		JComboBox AtletaComboBox = new JComboBox(nomiAtleti.toArray());
+		JComboBox AtletaComboBox = new JComboBox(NomiAtleti.toArray());
 		AtletaComboBox.setBounds(107, 50, 134, 22);
 		AtletaComboBox.setSelectedIndex(-1);
 		contentPane.add(AtletaComboBox);
-		
-		
 		
 		JLabel ClubSportivoLabel = new JLabel("Club");
 		ClubSportivoLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
@@ -104,7 +104,13 @@ public class InsertContratto extends JFrame {
 		SponsorComboBox.setBounds(364, 89, 72, 22);
 		contentPane.add(SponsorComboBox);
 		
-		JComboBox ClubComboBox = new JComboBox();
+		QueryClub=new ArrayList();
+	    QueryClub=(ArrayList) OggettoConnessione.GetClubSportivi();
+		ArrayList<String> NomiClub = new ArrayList<String>();
+		for(ClubSportivo club:QueryClub)
+			NomiClub.add(club.getNomeClub());
+		
+		JComboBox ClubComboBox = new JComboBox(NomiClub.toArray());
 		ClubComboBox.setBounds(88, 89, 93, 22);
 		contentPane.add(ClubComboBox);
 		CompensoLabel.setBounds(24, 185, 125, 22);

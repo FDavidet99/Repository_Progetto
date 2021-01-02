@@ -6,9 +6,9 @@ public class Sponsor {
 	private int IdSponsor;
 	private String NomeSponsor;
 	private String DescrizioneAttivita;
-	private Provincia SedeLegale;
+	private Nazione SedeLegale;
 	
-	public Sponsor(int idSponsor, String nomeSponsor, String descrizioneAttivita, Provincia sedeLegale) {
+	public Sponsor(int idSponsor, String nomeSponsor, String descrizioneAttivita, Nazione sedeLegale) {
 		super();
 		IdSponsor = idSponsor;
 		NomeSponsor = nomeSponsor;
@@ -40,11 +40,11 @@ public class Sponsor {
 		DescrizioneAttivita = descrizioneAttivita;
 	}
 
-	public Provincia getSedeLegale() {
+	public Nazione getSedeLegale() {
 		return SedeLegale;
 	}
 
-	public void setSedeLegale(Provincia sedeLegale) {
+	public void setSedeLegale(Nazione sedeLegale) {
 		SedeLegale = sedeLegale;
 	}
 	
