@@ -292,7 +292,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	}
 
 	@Override
-	public List<ClubSportivo> GetClubSportivi() {
+	public List<ClubSportivo> GetClubSportivi() throws SQLException {
 		ResultSet rs=StmGetClubSportivi.executeQuery();
 		ArrayList<ClubSportivo> ClubSportivi=new ArrayList<ClubSportivo>();
 		while(rs.next()) {
@@ -301,10 +301,10 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			Nazione nazione = GetNazioneByCodiceAt(rs.getString("sedelegale"));
 			boolean IsNazionale =  rs.getBoolean("isnazionale");
 			ClubSportivo TmpClub=new ClubSportivo(IdClub,Nome,nazione,IsNazionale);
-			atleti.add(TmpAtleta);
+			
 		}
 		rs.close();
-		return atleti;
+		return ClubSportivi;
 	}
 
 	@Override
