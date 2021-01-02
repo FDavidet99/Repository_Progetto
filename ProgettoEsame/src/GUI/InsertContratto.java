@@ -22,6 +22,7 @@ import Eccezioni.EccezioneCF;
 import Entità.Atleta;
 import Entità.ClubSportivo;
 import Entità.TipoContratto;
+import Entità.Sponsor;
 import ImplementationDAO.ImplementationDAO;
 
 public class InsertContratto extends JFrame {
@@ -32,6 +33,7 @@ public class InsertContratto extends JFrame {
 	private JTextField textField;
 	private List<Atleta> QueryAtleti;
 	private List<ClubSportivo> QueryClub;
+	private List<Sponsor> QuerySponsor;
 
 	/**
 	 * Launch the application.
@@ -100,7 +102,13 @@ public class InsertContratto extends JFrame {
 		TipoContrattoComboBox.setSelectedIndex(-1);
 		contentPane.add(TipoContrattoComboBox);
 		
-		JComboBox SponsorComboBox = new JComboBox();
+		QuerySponsor=new ArrayList();
+	    QuerySponsor=(ArrayList) OggettoConnessione.GetSponsor();
+		ArrayList<String> NomiSponsor = new ArrayList<String>();
+		for(Sponsor sponsor:QuerySponsor)
+			NomiSponsor.add(sponsor.getNomeSponsor());
+		
+		JComboBox SponsorComboBox = new JComboBox(NomiSponsor.toArray());
 		SponsorComboBox.setBounds(364, 89, 72, 22);
 		contentPane.add(SponsorComboBox);
 		
