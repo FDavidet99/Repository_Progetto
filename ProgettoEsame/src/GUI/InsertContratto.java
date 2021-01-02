@@ -8,8 +8,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
+
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,31 +92,15 @@ public class InsertContratto extends JFrame {
 		JLabel ClubSportivoLabel = new JLabel("Club");
 		ClubSportivoLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		ClubSportivoLabel.setBounds(24, 92, 54, 14);
+		ClubSportivoLabel.setVisible(false);
 		contentPane.add(ClubSportivoLabel);
 		
 		JLabel SponsorLabel = new JLabel("Sponsor");
 		SponsorLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		SponsorLabel.setBounds(266, 92, 93, 14);
+		SponsorLabel.setVisible(false);
 		contentPane.add(SponsorLabel);
-		
-		JLabel TipoContrattoLabel = new JLabel("Parti Contratto");
-		TipoContrattoLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
-		TipoContrattoLabel.setBounds(302, 53, 134, 14);
-		contentPane.add(TipoContrattoLabel);
-		
-		JComboBox TipoContrattoComboBox = new JComboBox(TipoContratto.values());
-		TipoContrattoComboBox.setBounds(446, 50, 61, 22);
-		TipoContrattoComboBox.setSelectedIndex(-1);
-		TipoContrattoComboBox.addItemListener(new ItemListener() {
-            // Listening if a new items of the combo box has been selected.
-			@Override
-			public void itemStateChanged(ItemEvent arg0) {
-				// TODO Auto-generated method stub
-				System.out.println(arg0);
-			}
-        });
-		contentPane.add(TipoContrattoComboBox);
-		
+	
 		QuerySponsor=new ArrayList();
 	    QuerySponsor=(ArrayList) OggettoConnessione.GetSponsor();
 		ArrayList<String> NomiSponsor = new ArrayList<String>();
@@ -120,6 +109,8 @@ public class InsertContratto extends JFrame {
 		
 		JComboBox SponsorComboBox = new JComboBox(NomiSponsor.toArray());
 		SponsorComboBox.setBounds(364, 89, 72, 22);
+		SponsorComboBox.setSelectedIndex(-1);
+		SponsorComboBox.setVisible(false);
 		contentPane.add(SponsorComboBox);
 		
 		QueryClub=new ArrayList();
@@ -130,7 +121,36 @@ public class InsertContratto extends JFrame {
 		
 		JComboBox ClubComboBox = new JComboBox(NomiClub.toArray());
 		ClubComboBox.setBounds(88, 89, 93, 22);
+		ClubComboBox.setSelectedIndex(-1);
+		ClubComboBox.setVisible(false);
 		contentPane.add(ClubComboBox);
+		
+		JLabel TipoContrattoLabel = new JLabel("Parti Contratto");
+		TipoContrattoLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		TipoContrattoLabel.setBounds(302, 53, 134, 14);
+		contentPane.add(TipoContrattoLabel);
+		
+		JComboBox TipoContrattoComboBox = new JComboBox(TipoContratto.values());
+		TipoContrattoComboBox.setBounds(446, 50, 61, 22);
+		TipoContrattoComboBox.setSelectedIndex(-1);
+		TipoContrattoComboBox.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent arg0) {
+				if(TipoContrattoComboBox.getSelectedItem().toString().equals("Club")) {
+					SponsorComboBox.setVisible(false);
+					ClubComboBox.setVisible(true);
+					ClubSportivoLabel.setVisible(true);
+					SponsorLabel.setVisible(false);	
+				}	
+				else {	
+					SponsorComboBox.setVisible(true);
+					ClubComboBox.setVisible(false);
+					ClubSportivoLabel.setVisible(false);
+					SponsorLabel.setVisible(true);
+				}
+		    }
+		});
+		contentPane.add(TipoContrattoComboBox);
+		
 		CompensoLabel.setBounds(24, 185, 125, 22);
 		contentPane.add(CompensoLabel);
 		CompensoLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
@@ -169,5 +189,8 @@ public class InsertContratto extends JFrame {
 		CompensoProcuratoreLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		CompensoProcuratoreLabel.setBounds(266, 185, 170, 22);
 		contentPane.add(CompensoProcuratoreLabel);
+		
+		
+
 	}
 }
