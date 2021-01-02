@@ -35,11 +35,11 @@ public class ClubSportivo {
 		NomeClub = nomeClub;
 	}
 	
-	public Provincia getSedeLegale() {
+	public Nazione getSedeLegale() {
 		return SedeLegale;
 	}
 	
-	public void setSedeLegale(Provincia sedeLegale) {
+	public void setSedeLegale(Nazione sedeLegale) {
 		SedeLegale = sedeLegale;
 	}
 
