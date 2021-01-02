@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +102,14 @@ public class InsertContratto extends JFrame {
 		JComboBox TipoContrattoComboBox = new JComboBox(TipoContratto.values());
 		TipoContrattoComboBox.setBounds(446, 50, 61, 22);
 		TipoContrattoComboBox.setSelectedIndex(-1);
+		TipoContrattoComboBox.addItemListener(new ItemListener() {
+            // Listening if a new items of the combo box has been selected.
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				// TODO Auto-generated method stub
+				System.out.println(arg0);
+			}
+        });
 		contentPane.add(TipoContrattoComboBox);
 		
 		QuerySponsor=new ArrayList();
