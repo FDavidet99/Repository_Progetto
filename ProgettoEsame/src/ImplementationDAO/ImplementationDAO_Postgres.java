@@ -308,9 +308,21 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	}
 
 	@Override
-	public List<Sponsor> GetSponsor() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Sponsor> GetSponsor() throws SQLException {
+		ResultSet rs=StmGetSponsor.executeQuery();
+		ArrayList<Sponsor> sponsorList=new ArrayList<Sponsor>();
+		while(rs.next()) {
+			String nome = rs.getString("nome");
+			String descrizione = rs.getString("descrizioneattivita");
+			int id =Integer.parseInt(rs.getString("idsponsor"));
+			
+			Nazione nazione = GetNazioneByCodiceAt(rs.getString("nazionenascita"));
+			Sponsor sponsor=new Sponsor(id, nome,descrizione,
+						nazione);
+			sponsorList.add(sponsor);
+		}
+		rs.close();
+		return sponsorList;
 	}
 
 
