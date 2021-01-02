@@ -7,14 +7,16 @@ import Eccezioni.EccezioneNazionale;
 public class ClubSportivo {
 	private int IdClubSportivo;
 	private String NomeClub;
-	private Provincia SedeLegale;
+	private Nazione SedeLegale;
+	private boolean IsNazionale;
 	private List<Atleta> AtlentiComponenti;
 	
-	public ClubSportivo(int idClubSportivo, String nomeClub, Provincia sedeLegale) {
+	public ClubSportivo(int idClubSportivo, String nomeClub, Nazione sedeLegale,boolean isNazionale) {
 		super();
 		IdClubSportivo = idClubSportivo;
 		NomeClub = nomeClub;
 		SedeLegale = sedeLegale;
+		IsNazionale=isNazionale;
 	}
 	
 	public int getIdClubSportivo() {
@@ -40,6 +42,16 @@ public class ClubSportivo {
 	public void setSedeLegale(Provincia sedeLegale) {
 		SedeLegale = sedeLegale;
 	}
+
+	public boolean isIsNazionale() {
+		return IsNazionale;
+	}
+
+	public void setIsNazionale(boolean isNazionale) {
+		IsNazionale = isNazionale;
+	}
+	
+	
 	
 	
 	

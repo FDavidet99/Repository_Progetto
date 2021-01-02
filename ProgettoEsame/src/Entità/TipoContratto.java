@@ -1,6 +1,6 @@
 package Entità;
 
 public enum TipoContratto {
-ContrattoClub,
-ContrattoSponsor
+Club,
+Sponsor
 }

@@ -34,6 +34,8 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetIngaggiByProcuratore=Connection.prepareStatement("SELECT * FROM Ingaggio WHERE CodiceFiscaleProcuratore=?;");
 		StmGetProcuratoreByCodiceFiscale=Connection.prepareStatement("SELECT * FROM ProcuratoreSportivo WHERE CodiceFiscale= ?;");
 		StmGetAtletaByCodiceFiscale=Connection.prepareStatement("SELECT * FROM Atleta WHERE CodiceFiscale= ?;");
+		StmGetClubSportivi=Connection.prepareStatement("SELECT * FROM ClubSportivo;");
+		StmGetSponsor=Connection.prepareStatement("SELECT * FROM Sponsor;");
 	}
 
 	@Override
@@ -261,7 +263,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	public List<Ingaggio> GetIngaggiByAtleta(Atleta atleta) throws SQLException, EccezioneCF {
 		StmGetIngaggiByAtleta.setString(1,atleta.getCF());
 		ResultSet rs= StmGetIngaggiByAtleta.executeQuery();
-		List<Ingaggio> IngaggiAtleta=null;
+		List<Ingaggio> IngaggiAtleta=new ArrayList<Ingaggio>();
 		while(rs.next()) {
 			String CodiceFiscaleProcuratore=rs.getString("codicefiscaleprocuratore");
 			LocalDate DataInizio =  LocalDate.parse(rs.getString("datainizio"));
@@ -277,7 +279,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	public List<Ingaggio> GetIngaggiByProcuratore(ProcuratoreSportivo procuratore) throws EccezioneCF, SQLException {
 		StmGetIngaggiByProcuratore.setString(1,procuratore.getCF());
 		ResultSet rs= StmGetIngaggiByProcuratore.executeQuery();
-		List<Ingaggio> IngaggiProcuratore=null;
+		List<Ingaggio> IngaggiProcuratore=new ArrayList<Ingaggio>();
 		while(rs.next()) {
 			String CodiceFiscaleAtleta=rs.getString("codicefiscaleatleta");
 			LocalDate DataInizio =  LocalDate.parse(rs.getString("datainizio"));
@@ -287,6 +289,28 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		}
 		rs.close();
 		return IngaggiProcuratore;
+	}
+
+	@Override
+	public List<ClubSportivo> GetClubSportivi() {
+		ResultSet rs=StmGetClubSportivi.executeQuery();
+		ArrayList<ClubSportivo> ClubSportivi=new ArrayList<ClubSportivo>();
+		while(rs.next()) {
+			int IdClub = rs.getInt("idclub");
+			String Nome=rs.getString("nome");
+			Nazione nazione = GetNazioneByCodiceAt(rs.getString("sedelegale"));
+			boolean IsNazionale =  rs.getBoolean("isnazionale");
+			ClubSportivo TmpClub=new ClubSportivo(IdClub,Nome,nazione,IsNazionale);
+			atleti.add(TmpAtleta);
+		}
+		rs.close();
+		return atleti;
+	}
+
+	@Override
+	public List<Sponsor> GetSponsor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
