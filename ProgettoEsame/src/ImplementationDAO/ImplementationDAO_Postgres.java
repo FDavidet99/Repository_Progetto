@@ -1,12 +1,13 @@
 package ImplementationDAO;
 
 import java.sql.Connection;
-
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLType;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,8 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetClubSportivi=Connection.prepareStatement("SELECT * FROM ClubSportivo;");
 		StmGetSponsor=Connection.prepareStatement("SELECT * FROM Sponsor;");
 		StmInsertContratto=Connection.prepareStatement("INSERT INTO Contratto values (?,?,?,?,?,?,?,?,?,?,?)");
+		StmGetProcuratoreAttivo = Connection.prepareStatement("SELECT * FROM Ingaggio where CodiceFiscaleAtleta= ? and  "
+				+ " ?::date>=datainizio and ?::date <datafine ;");
 	}
 
 	@Override
@@ -348,8 +351,24 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		}
 		StmInsertContratto.setNull(11, Types.DOUBLE);
 		StmInsertContratto.executeUpdate();
-	}	
+	}
 
+
+	@Override
+	public ProcuratoreSportivo GetProcuratoreAttivo(Atleta atleta) throws SQLException, EccezioneCF {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String curDate = formatter.format(new Date(System.currentTimeMillis()));
+		StmGetProcuratoreAttivo.setString(1,atleta.getCF());
+		StmGetProcuratoreAttivo.setString(2,curDate);
+		StmGetProcuratoreAttivo.setString(3,curDate);
+		ResultSet rs=StmGetProcuratoreAttivo.executeQuery();
+		ProcuratoreSportivo procuratore=null;
+		while(rs.next()) {
+			procuratore = GetProcuratoreByCodiceFiscale(rs.getString("codicefiscaleprocuratore"));
+		}
+		rs.close();
+		return procuratore;
+	}	
 	
 }
 	
