@@ -143,9 +143,7 @@ public class Controller {
 	
 	public void InsertIngaggio(Ingaggio ingaggio) {
 		try {			
-			
-			ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();	
-			
+			ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();		
 			OggettoConnessione.InsertIngaggio(ingaggio);
 			JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
             JLabel LabelJDialog= new JLabel("Il procuratore è stato ingaggiato"); 
@@ -204,29 +202,34 @@ public class Controller {
 		PageInsertIngaggio.setVisible(false);
 		HomePage.setVisible(true);
 	}
+	
 	public void GotoInfoAtletaFromVisualizzaAtleta(Atleta atletaSelezionato) {
 		PageViewAtleti.setVisible(false);
 		PageInfoAtleta = new InfoAtleta(this,atletaSelezionato);
 		PageInfoAtleta.setVisible(true);
 	}
+	
 	public void GotoHomeFromInfoAtleta() {
 		PageInfoAtleta.setVisible(false);
 		HomePage.setVisible(true);
 	}
+	
 	public void GotoInfoProcuratoreFromVisualizzaProcuratore(ProcuratoreSportivo proc) {
 		PageViewProcuratori.setVisible(false);
 		PageInfoProcuratore = new InfoProcuratore(this,proc);
 		PageInfoProcuratore.setVisible(true);
 	}
+	
 	public void GotoHomeFromInfoProcuratore() {
 		PageInfoProcuratore.setVisible(false);
 		HomePage.setVisible(true);
 	}
 	
 	public void GoToPageInsertContratto() {
-		HomePage.setVisible(false);
 		try {
+			HomePage.setVisible(false);
 			PageInsertContratto=new InsertContratto(this);
+			PageInsertContratto.setVisible(true);
 		} catch (EccezioneCF e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errore inserimento dati"); 
@@ -240,12 +243,37 @@ public class Controller {
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
 		}
-		PageInsertContratto.setVisible(true);
 	}
 	
 	public void GotoHomeFromPageInsertContratto() {
 		PageInsertContratto.setVisible(false);
 		HomePage.setVisible(true);
 	}
+
+	public void InsertContratto(Contratto contratto) {
+		try {			
+			ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();		
+			OggettoConnessione.InsertContratto(contratto);
+			JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
+            JLabel LabelJDialog= new JLabel("Il Contratto è stato registrato"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400,250, 270, 200);
+            Dialog.setVisible(true); 
+			PageInsertIngaggio.SvuotaCampi();
+		} catch (EccezioneCF e1) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 250, 250, 200);
+            Dialog.setVisible(true);
+		} catch (SQLException e2) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 350, 250, 200);
+            Dialog.setVisible(true); 
+		}  
+	}
 }
+
 

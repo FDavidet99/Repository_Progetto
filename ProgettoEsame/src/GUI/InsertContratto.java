@@ -240,25 +240,25 @@ public class InsertContratto extends JFrame {
 				if(IndexClub!=-1)
 					club = QueryClub.get(IndexClub);
 				Contratto TmpContratto;
-				try {
-					TmpContratto = new Contratto(OggettoConnessione.GetProcuratoreAttivo(QueryAtleti.get(IndexAtleta)),QueryAtleti.get(IndexAtleta), 
-							TempDateInizio, TempDateFine, (TipoContratto) TipoContrattoComboBox.getSelectedItem(),club,sponsor,
-							10.00, 10.00);
-					OggettoConnessione.InsertContratto(TmpContratto);
-				} catch (EccezioneCF e1) {
-					JDialog Dialog = new JDialog(); 
-			        JLabel LabelJDialog= new JLabel("Errore di inserimento dati",SwingConstants.CENTER); 
-			        Dialog.getContentPane().add(LabelJDialog); 
-		            Dialog.setBounds(400, 150, 240, 150);
-			        Dialog.setVisible(true);
-				} catch (SQLException e1) {
-					JDialog Dialog = new JDialog(); 
-			        JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			        Dialog.getContentPane().add(LabelJDialog); 
-		            Dialog.setBounds(400, 150, 240, 150);
-			        Dialog.setVisible(true);
-				} 
-				
+			    try {
+			    	TmpContratto = new Contratto(OggettoConnessione.GetProcuratoreAttivo(QueryAtleti.get(IndexAtleta)),QueryAtleti.get(IndexAtleta), 
+			    			TempDateInizio, TempDateFine, (TipoContratto) TipoContrattoComboBox.getSelectedItem(),club,sponsor,
+			    			10.00, 10.00);
+			    	controller.InsertContratto(TmpContratto);
+			    } catch (EccezioneCF e1) {
+			    	JDialog Dialog = new JDialog(); 
+		            JLabel LabelJDialog= new JLabel("Errore di inserimento dati",SwingConstants.CENTER); 
+		            Dialog.getContentPane().add(LabelJDialog); 
+	                Dialog.setBounds(400, 150, 250, 200);
+		            Dialog.setVisible(true);
+			    	e1.printStackTrace();
+			    } catch (SQLException e1) {
+			    	JDialog Dialog = new JDialog(); 
+		            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+		            Dialog.getContentPane().add(LabelJDialog); 
+	                Dialog.setBounds(400, 150, 250, 200);
+		            Dialog.setVisible(true);
+			    }	
 			}
 		});
 		RegistraButton.setBounds(443, 235, 89, 23);
