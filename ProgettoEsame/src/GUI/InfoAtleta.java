@@ -42,6 +42,7 @@ public class InfoAtleta extends JFrame {
 	private Atleta atleta;
 	private JPanel contentPane;
 	private JTable tabellaProcuratoriHistory;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -117,6 +118,23 @@ public class InfoAtleta extends JFrame {
 		contentPane.add(lblNewLabel);
 		contentPane.add(js);
 		contentPane.add(HomeButton);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+			},
+			new String[] {
+				"New column", "New column", "New column", "New column", "New column"
+			}
+		));
+		table.setBounds(115, 306, 672, 181);
+		contentPane.add(table);
 		popolaTabellaHistoryProcuratori();
 	}
 	public void popolaTabellaHistoryProcuratori() {
@@ -165,5 +183,4 @@ public class InfoAtleta extends JFrame {
 			Dialog.setVisible(true);
 		}
 	}
-
 }

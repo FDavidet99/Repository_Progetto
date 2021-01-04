@@ -259,7 +259,7 @@ public class Controller {
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400,250, 270, 200);
             Dialog.setVisible(true); 
-			PageInsertIngaggio.SvuotaCampi();
+			PageInsertContratto.SvuotaCampi();
 		} catch (EccezioneCF e1) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 

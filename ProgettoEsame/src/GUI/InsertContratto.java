@@ -43,6 +43,12 @@ public class InsertContratto extends JFrame {
 	private List<Atleta> QueryAtleti;
 	private List<ClubSportivo> QueryClub;
 	private List<Sponsor> QuerySponsor;
+	private JComboBox AtletaComboBox;
+	private JComboBox TipoContrattoComboBox;
+	private JComboBox SponsorComboBox;
+	private JComboBox ClubComboBox;
+	private JDateChooser DataInizioDateChooser;
+	private JDateChooser DataFineDateChooser;
 	Controller controller;
 
 //	/**
@@ -83,6 +89,13 @@ public class InsertContratto extends JFrame {
 		contentPane.add(AtletaLabel);
 		
 		CompensoProcuratoreField = new JTextField();
+		CompensoProcuratoreField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//
+				
+				
+			}
+		});
 		CompensoProcuratoreField.setBounds(446, 187, 86, 20);
 		contentPane.add(CompensoProcuratoreField);
 		CompensoProcuratoreField.setColumns(10);
@@ -98,7 +111,7 @@ public class InsertContratto extends JFrame {
 		for(Atleta a:QueryAtleti)
 			NomiAtleti.add(a.getNome()+" "+a.getCognome());
 		
-		JComboBox AtletaComboBox = new JComboBox(NomiAtleti.toArray());
+		AtletaComboBox = new JComboBox(NomiAtleti.toArray());
 		AtletaComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int IndexAtleta=AtletaComboBox.getSelectedIndex();
@@ -150,8 +163,8 @@ public class InsertContratto extends JFrame {
 		for(Sponsor sponsor:QuerySponsor)
 			NomiSponsor.add(sponsor.getNomeSponsor());
 		
-		JComboBox SponsorComboBox = new JComboBox(NomiSponsor.toArray());
-		SponsorComboBox.setBounds(364, 89, 72, 22);
+		SponsorComboBox = new JComboBox(NomiSponsor.toArray());
+		SponsorComboBox.setBounds(364, 89, 134, 22);
 		SponsorComboBox.setSelectedIndex(-1);
 		SponsorComboBox.setVisible(false);
 		contentPane.add(SponsorComboBox);
@@ -162,8 +175,8 @@ public class InsertContratto extends JFrame {
 		for(ClubSportivo club:QueryClub)
 			NomiClub.add(club.getNomeClub());
 		
-		JComboBox ClubComboBox = new JComboBox(NomiClub.toArray());
-		ClubComboBox.setBounds(88, 89, 93, 22);
+		ClubComboBox = new JComboBox(NomiClub.toArray());
+		ClubComboBox.setBounds(88, 89, 153, 22);
 		ClubComboBox.setSelectedIndex(-1);
 		ClubComboBox.setVisible(false);
 		contentPane.add(ClubComboBox);
@@ -173,12 +186,15 @@ public class InsertContratto extends JFrame {
 		TipoContrattoLabel.setBounds(302, 53, 134, 14);
 		contentPane.add(TipoContrattoLabel);
 		
-		JComboBox TipoContrattoComboBox = new JComboBox(TipoContratto.values());
-		TipoContrattoComboBox.setBounds(446, 50, 61, 22);
+		TipoContrattoComboBox = new JComboBox(TipoContratto.values());
+		TipoContrattoComboBox.setBounds(446, 50, 86, 22);
 		TipoContrattoComboBox.setSelectedIndex(-1);
 		TipoContrattoComboBox.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent arg0) {
-				if(TipoContrattoComboBox.getSelectedItem().toString().equals("Club")) {
+		    	TipoContratto tipocontratto=(TipoContratto) TipoContrattoComboBox.getSelectedItem();
+		    	if(tipocontratto==null)
+		    		return;
+				if(tipocontratto.toString().equals("Club")) {
 					SponsorComboBox.setVisible(false);
 					ClubComboBox.setVisible(true);
 					ClubSportivoLabel.setVisible(true);
@@ -199,17 +215,27 @@ public class InsertContratto extends JFrame {
 		CompensoLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		
 		CompensoAtletaTextField = new JTextField();
+		CompensoAtletaTextField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TipoContratto tipocontratto=(TipoContratto) TipoContrattoComboBox.getSelectedItem();
+		    	if(tipocontratto==null)
+		    		return;
+				if(tipocontratto.toString().equals("Club")) {
+					
+				}	
+			}
+		});
 		CompensoAtletaTextField.setBounds(159, 187, 86, 20);
 		contentPane.add(CompensoAtletaTextField);
 		CompensoAtletaTextField.setColumns(10);
 		
-		JDateChooser DataInizioDateChooser = new JDateChooser();
-		DataInizioDateChooser.setBounds(127, 130, 70, 20);
+		DataInizioDateChooser = new JDateChooser();
+		DataInizioDateChooser.setBounds(127, 130, 114, 20);
 		DataInizioDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataInizioDateChooser);
 		
-		JDateChooser DataFineDateChooser = new JDateChooser();
-		DataFineDateChooser.setBounds(353, 130, 70, 20);
+		DataFineDateChooser = new JDateChooser();
+		DataFineDateChooser.setBounds(353, 130, 117, 20);
 		DataFineDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataFineDateChooser);
 		
@@ -223,27 +249,23 @@ public class InsertContratto extends JFrame {
 		lblDataFine.setBounds(266, 136, 77, 14);
 		contentPane.add(lblDataFine);
 		
-		
-		
 		JButton RegistraButton = new JButton("Registra");
 		RegistraButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int IndexAtleta=AtletaComboBox.getSelectedIndex();
-				LocalDate TempDateInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-				LocalDate TempDateFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-				int IndexClub=ClubComboBox.getSelectedIndex();
-				int IndexSponsor=SponsorComboBox.getSelectedIndex();
-				Sponsor sponsor=null;
-				ClubSportivo club=null;
-				if(IndexSponsor!=-1)
-					sponsor = QuerySponsor.get(IndexSponsor);
-				if(IndexClub!=-1)
-					club = QueryClub.get(IndexClub);
-				Contratto TmpContratto;
-			    try {
-			    	TmpContratto = new Contratto(OggettoConnessione.GetProcuratoreAttivo(QueryAtleti.get(IndexAtleta)),QueryAtleti.get(IndexAtleta), 
-			    			TempDateInizio, TempDateFine, (TipoContratto) TipoContrattoComboBox.getSelectedItem(),club,sponsor,
-			    			10.00, 10.00);
+				try {		
+					int IndexAtleta=AtletaComboBox.getSelectedIndex();
+					LocalDate TempDateInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					LocalDate TempDateFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					int IndexClub=ClubComboBox.getSelectedIndex();
+					int IndexSponsor=SponsorComboBox.getSelectedIndex();
+					Sponsor sponsor=null;
+					ClubSportivo club=null;
+					if(IndexSponsor!=-1)
+						sponsor = QuerySponsor.get(IndexSponsor);
+					if(IndexClub!=-1)
+						club = QueryClub.get(IndexClub);
+					Contratto TmpContratto = new Contratto(OggettoConnessione.GetProcuratoreAttivo(QueryAtleti.get(IndexAtleta)),QueryAtleti.get(IndexAtleta), 
+							TempDateInizio, TempDateFine, (TipoContratto) TipoContrattoComboBox.getSelectedItem(),club,sponsor,10.00, 10.00);
 			    	controller.InsertContratto(TmpContratto);
 			    } catch (EccezioneCF e1) {
 			    	JDialog Dialog = new JDialog(); 
@@ -258,10 +280,16 @@ public class InsertContratto extends JFrame {
 		            Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 150, 250, 200);
 		            Dialog.setVisible(true);
-			    }	
+			    } catch (NullPointerException e1) {
+					JDialog Dialog = new JDialog(); 
+					JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati",SwingConstants.CENTER);
+		            Dialog.getContentPane().add(LabelJDialog); 
+		            Dialog.setBounds(400, 150, 230, 150);
+		            Dialog.setVisible(true);
+			    }
 			}
 		});
-		RegistraButton.setBounds(443, 235, 89, 23);
+		RegistraButton.setBounds(480, 235, 89, 23);
 		contentPane.add(RegistraButton);
 		
 		JButton HomeButton = new JButton("Home");
@@ -270,8 +298,28 @@ public class InsertContratto extends JFrame {
 				controller.GotoHomeFromPageInsertContratto();
 			}
 		});
-		HomeButton.setBounds(292, 235, 89, 23);
+		HomeButton.setBounds(282, 235, 89, 23);
 		contentPane.add(HomeButton);
 		
+		JButton RestoreButton = new JButton("Cancella");
+		RestoreButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SvuotaCampi();
+			}
+		});
+		RestoreButton.setBounds(381, 235, 89, 23);
+		contentPane.add(RestoreButton);
+		
+	}
+	
+	public void SvuotaCampi() {
+		AtletaComboBox.setSelectedIndex(-1);
+		DataInizioDateChooser.setCalendar(null);
+		DataFineDateChooser.setCalendar(null);
+		TipoContrattoComboBox.setSelectedIndex(-1);
+		CompensoAtletaTextField.setText(null);
+		CompensoProcuratoreField.setText(null);
+		ClubComboBox.setSelectedIndex(-1);
+		SponsorComboBox.setSelectedIndex(-1);
 	}
 }
