@@ -5,10 +5,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLType;
 import java.sql.Types;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.sun.jdi.Type;
 
 import Eccezioni.EccezioneCF;
 import Entità.*;
@@ -36,6 +39,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetAtletaByCodiceFiscale=Connection.prepareStatement("SELECT * FROM Atleta WHERE CodiceFiscale= ?;");
 		StmGetClubSportivi=Connection.prepareStatement("SELECT * FROM ClubSportivo;");
 		StmGetSponsor=Connection.prepareStatement("SELECT * FROM Sponsor;");
+		StmInsertContratto=Connection.prepareStatement("INSERT INTO Contratto values (?,?,?,?,?,?,?,?,?,?,?)");
 	}
 
 	@Override
@@ -323,8 +327,28 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		return sponsorList;
 	}
 
-
-	
+	@Override
+	public void InsertContratto(Contratto contratto) throws SQLException, EccezioneCF {
+		StmInsertContratto.setInt(1,contratto.getIdContratto());
+		StmInsertContratto.setObject(2,contratto.getDataInizio());
+		StmInsertContratto.setObject(3,contratto.getDataFine());
+		StmInsertContratto.setDouble(4,contratto.getCompensoAtleta());
+		StmInsertContratto.setObject(5,contratto.getTipo(),Types.OTHER);
+		StmInsertContratto.setDouble(6,contratto.getCompensoProcuratore());
+		StmInsertContratto.setString(7,contratto.getProcuratoreInteressato().getCF());
+		StmInsertContratto.setString(8,contratto.getAtletaSottosritto().getCF());
+		
+		if(contratto.getClub() == null) {
+			StmInsertContratto.setInt(9,contratto.getSponsor().getIdSponsor());
+		    StmInsertContratto.setNull(10, Types.JAVA_OBJECT);
+		}
+		else {
+			StmInsertContratto.setNull(9, Types.JAVA_OBJECT);
+			StmInsertContratto.setInt(10,contratto.getClub().getIdClubSportivo());   
+		}
+		StmInsertContratto.setNull(11, Types.DOUBLE);
+		StmInsertContratto.executeUpdate();
+	}	
 
 	
 }
