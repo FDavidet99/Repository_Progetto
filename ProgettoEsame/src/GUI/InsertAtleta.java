@@ -5,6 +5,7 @@ import java.awt.Label;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Closeable;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -23,6 +24,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -123,29 +126,19 @@ public class InsertAtleta extends JFrame {
 		NazioneLabel.setBounds(10, 103, 80, 22);
 		contentPane.add(NazioneLabel);
 	
-	     QueryNazioni=new ArrayList <Nazione>();
-	     QueryNazioni=(ArrayList) OggettoConnessione.GetNazioni();
+	    QueryNazioni=new ArrayList <Nazione>();
+	    QueryNazioni=(ArrayList) OggettoConnessione.GetNazioni();
 	     
-	     ArrayList<String> NomiNazioni = new ArrayList<String>();
-			for(Nazione a:QueryNazioni)
-				NomiNazioni.add(a.getNomeNazione());
-		
-    	NazioneComboBox = new JComboBox (NomiNazioni.toArray());
-    	NazioneComboBox.setSelectedIndex(-1);
-		NazioneComboBox.setBounds(100, 105, 113, 20);
-    	contentPane.add(NazioneComboBox);
+	    ArrayList<String> NomiNazioni = new ArrayList<String>();
+		for(Nazione a:QueryNazioni)
+			NomiNazioni.add(a.getNomeNazione());
 		
 		Label ProvinciaLabel = new Label();
 		ProvinciaLabel.setBackground(UIManager.getColor("Panel.background"));
 		ProvinciaLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		ProvinciaLabel.setText("Provincia");
 		ProvinciaLabel.setBounds(10, 136, 80, 22);
-		contentPane.add(ProvinciaLabel);
-		
-		ProvinciaComboBox=new JComboBox();
-		ProvinciaComboBox.setBounds(100, 137, 115, 22);
-		contentPane.add(ProvinciaComboBox);
-		ProvinciaComboBox.setSelectedIndex(-1);
+		contentPane.add(ProvinciaLabel);	
 		
 		Label ComuneLabel = new Label();
 		ComuneLabel.setBackground(UIManager.getColor("Panel.background"));
@@ -156,7 +149,44 @@ public class InsertAtleta extends JFrame {
 		
 		ComuneComboBox = new JComboBox();
 		ComuneComboBox.setBounds(100, 170, 113, 22);
+		ComuneComboBox.setSelectedIndex(-1);
 		contentPane.add(ComuneComboBox);
+		
+		JButton Nazione_Button = new JButton("Prosegui");
+		Nazione_Button.setBounds(240, 103, 93, 24);
+		contentPane.add(Nazione_Button);
+		
+		JButton ProvinciaButton = new JButton("Prosegui");
+		ProvinciaButton.setBounds(240, 136, 93, 24);
+		contentPane.add(ProvinciaButton);
+		ProvinciaButton.setVisible(false);
+		
+		ProvinciaComboBox=new JComboBox();
+		ProvinciaComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ComuneLabel.setVisible(false);
+				ComuneComboBox.setVisible(false);
+			}
+		});
+		ProvinciaComboBox.setBounds(100, 137, 115, 22);
+		ProvinciaComboBox.setSelectedIndex(-1);
+		contentPane.add(ProvinciaComboBox);	
+		
+		NazioneComboBox = new JComboBox (NomiNazioni.toArray());
+    	NazioneComboBox.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			ProvinciaLabel.setVisible(false);
+    			ProvinciaComboBox.setVisible(false);		
+    			ComuneLabel.setVisible(false);
+    			ComuneComboBox.setVisible(false);
+    			ProvinciaButton.setVisible(false);
+    			
+    		}
+    	});
+    	NazioneComboBox.setSelectedIndex(-1);
+		NazioneComboBox.setBounds(100, 105, 113, 20);
+    	contentPane.add(NazioneComboBox);
+		
 		
 		CfTextField = new JTextField();
 		CfTextField.setEditable(false);
@@ -167,15 +197,6 @@ public class InsertAtleta extends JFrame {
 		JButton CalcolaCf_Button = new JButton("Calcola Codice fiscale");
 		CalcolaCf_Button.setBounds(259, 201, 162, 22);
 		contentPane.add(CalcolaCf_Button);
-		
-		JButton Nazione_Button = new JButton("Prosegui");
-		Nazione_Button.setBounds(240, 103, 93, 24);
-		contentPane.add(Nazione_Button);
-		
-		JButton ProvinciaButton = new JButton("Prosegui");
-		ProvinciaButton.setBounds(240, 136, 93, 24);
-		contentPane.add(ProvinciaButton);
-		ProvinciaButton.setVisible(false);
 		
 		JButton Insert_Button = new JButton("Inserisci");
 		Insert_Button.addActionListener(new ActionListener() {
@@ -200,19 +221,19 @@ public class InsertAtleta extends JFrame {
 				} catch (SQLException e1) {
 					JDialog Dialog = new JDialog(); 
 		            JLabel LabelJDialog= new JLabel("Errore di connessioe",SwingConstants.CENTER); 
-	                Dialog.add(LabelJDialog); 
+	                Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 350, 250, 200);
 		            Dialog.setVisible(true); 
 				} catch (NullPointerException | IndexOutOfBoundsException e2) {
 					JDialog Dialog = new JDialog(); 
 		            JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati",SwingConstants.CENTER); 
-		            Dialog.add(LabelJDialog); 
+		            Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 150, 230, 150);
 		            Dialog.setVisible(true);
 				} catch (EccezioneCF e3) {
 					JDialog Dialog = new JDialog(); 
 		            JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
-	                Dialog.add(LabelJDialog); 
+	                Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 250, 250, 200);
 		            Dialog.setVisible(true); 	
 				}
@@ -248,7 +269,7 @@ public class InsertAtleta extends JFrame {
 							ArrayList<String> NomiProvince= new ArrayList<String>();
 							for(Provincia a:QueryProvince)
 								NomiProvince.add(a.getNome());
-							JComboBox<Provincia> TmpProvincia=new JComboBox(NomiProvince.toArray());
+							JComboBox TmpProvincia=new JComboBox(NomiProvince.toArray());
 							ProvinciaLabel.setVisible(true);
 							ProvinciaComboBox.setVisible(true);
 							TmpProvincia.setSelectedIndex(-1);
@@ -256,6 +277,7 @@ public class InsertAtleta extends JFrame {
 							Iterator i=NomiProvince.iterator();
 							while(i.hasNext())
 								ProvinciaComboBox.addItem(i.next());
+							ProvinciaComboBox.setSelectedIndex(-1);
 							ProvinciaButton.setVisible(true);
 							ProvinciaButton.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
@@ -265,7 +287,7 @@ public class InsertAtleta extends JFrame {
 										ArrayList<String> NomiComuni= new ArrayList<String>();
 										for(Comune comune:QueryComuni)
 											NomiComuni.add(comune.getNome());
-										JComboBox<Comune> TmpComune=new JComboBox(NomiComuni.toArray());
+										JComboBox TmpComune=new JComboBox(NomiComuni.toArray());
 										ComuneLabel.setVisible(true);
 										ComuneComboBox.setVisible(true);
 										TmpComune.setSelectedIndex(-1);
@@ -273,6 +295,7 @@ public class InsertAtleta extends JFrame {
 										Iterator i=NomiComuni.iterator();
 										while(i.hasNext())
 											ComuneComboBox.addItem((i.next()));
+										ComuneComboBox.setSelectedIndex(-1);;
 										} catch (SQLException e1) {
 												JDialog Dialog = new JDialog(); 
 												JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
@@ -310,7 +333,7 @@ public class InsertAtleta extends JFrame {
 					}
 			}
 		});
-						
+								
 		CalcolaCf_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {

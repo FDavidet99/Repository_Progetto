@@ -27,6 +27,7 @@ public class Controller {
 	VisualizzaProcuratori PageViewProcuratori;
 	InfoAtleta PageInfoAtleta;
 	InfoProcuratore PageInfoProcuratore;
+	
 	public static void main(String[] args) {
 		Controller controller=new Controller();
 	}
@@ -53,8 +54,7 @@ public class Controller {
 		}
 	}
 	
-	public void InsertAtletaInDB(Atleta atleta) {
-		
+	public void InsertAtletaInDB(Atleta atleta) {	
 			try {
 				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
 				OggettoConnessione.InsertAtleta(atleta);
