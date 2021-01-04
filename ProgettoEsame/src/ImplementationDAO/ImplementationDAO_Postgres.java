@@ -40,7 +40,10 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetAtletaByCodiceFiscale=Connection.prepareStatement("SELECT * FROM Atleta WHERE CodiceFiscale= ?;");
 		StmGetClubSportivi=Connection.prepareStatement("SELECT * FROM ClubSportivo;");
 		StmGetSponsor=Connection.prepareStatement("SELECT * FROM Sponsor;");
-		StmInsertContratto=Connection.prepareStatement("INSERT INTO Contratto values (?,?,?,?,?,?,?,?,?,?,?)");
+		StmInsertContratto=Connection.prepareStatement("INSERT INTO Contratto (datainizio, datafine,compenso,"
+				+ "tipocontratto,guadagnoprocuratore,codicefiscaleprocuratore,codicefiscaleatleta,sponsor,"
+				+ "club,gettonepresenzanazionale) values (?,?,?,?,?,?,?,?,?,?);");
+		
 		StmGetProcuratoreAttivo = Connection.prepareStatement("SELECT * FROM Ingaggio where CodiceFiscaleAtleta= ? and  "
 				+ " ?::date>=datainizio and ?::date <datafine ;");
 	}
@@ -332,24 +335,28 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 
 	@Override
 	public void InsertContratto(Contratto contratto) throws SQLException, EccezioneCF {
-		StmInsertContratto.setInt(1,contratto.getIdContratto());
-		StmInsertContratto.setObject(2,contratto.getDataInizio());
-		StmInsertContratto.setObject(3,contratto.getDataFine());
-		StmInsertContratto.setDouble(4,contratto.getCompensoAtleta());
-		StmInsertContratto.setObject(5,contratto.getTipo(),Types.OTHER);
-		StmInsertContratto.setDouble(6,contratto.getCompensoProcuratore());
-		StmInsertContratto.setString(7,contratto.getProcuratoreInteressato().getCF());
-		StmInsertContratto.setString(8,contratto.getAtletaSottosritto().getCF());
+		StmInsertContratto.setObject(1,contratto.getDataInizio());
+		StmInsertContratto.setObject(2,contratto.getDataFine());
+		StmInsertContratto.setDouble(3,contratto.getCompensoAtleta());
+		StmInsertContratto.setObject(4,contratto.getTipo(),Types.OTHER);
+		StmInsertContratto.setDouble(5,contratto.getCompensoProcuratore());
+		
+		if(contratto.getProcuratoreInteressato() != null)
+		StmInsertContratto.setString(6,contratto.getProcuratoreInteressato().getCF());
+		else
+			StmInsertContratto.setString(6, null);
+		
+		StmInsertContratto.setString(7,contratto.getAtletaSottosritto().getCF());
 		
 		if(contratto.getClub() == null) {
-			StmInsertContratto.setInt(9,contratto.getSponsor().getIdSponsor());
-		    StmInsertContratto.setNull(10, Types.JAVA_OBJECT);
+			StmInsertContratto.setInt(8,contratto.getSponsor().getIdSponsor());
+		    StmInsertContratto.setObject(9, null);
 		}
 		else {
-			StmInsertContratto.setNull(9, Types.JAVA_OBJECT);
-			StmInsertContratto.setInt(10,contratto.getClub().getIdClubSportivo());   
+			StmInsertContratto.setObject(8, null);
+			StmInsertContratto.setInt(9,contratto.getClub().getIdClubSportivo());   
 		}
-		StmInsertContratto.setNull(11, Types.DOUBLE);
+		StmInsertContratto.setObject(10,null);
 		StmInsertContratto.executeUpdate();
 	}
 

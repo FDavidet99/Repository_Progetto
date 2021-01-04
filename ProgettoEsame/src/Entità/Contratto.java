@@ -11,17 +11,17 @@ public class Contratto {
 	private LocalDate DataInizio;
 	private LocalDate DataFine;
 	private TipoContratto Tipo;
-	private ClubSportivo Club=null;
-	private Sponsor Sponsor=null;
+	private ClubSportivo Club;
+	private Sponsor Sponsor;
 	private double CompensoAtleta;
 	private double CompensoProcuratore;
 	//private double  GettonePresenzaNazionale;
 	
-	public Contratto(int idContratto, ProcuratoreSportivo procuratoreInteressato, Atleta atletaSottosritto,
+	public Contratto(ProcuratoreSportivo procuratoreInteressato, Atleta atletaSottosritto,
 			LocalDate dataInizio, LocalDate dataFine, TipoContratto tipo, ClubSportivo club, Entità.Sponsor sponsor,
 			double compensoAtleta, double compensoProcuratore) {
 		super();
-		IdContratto = idContratto;
+		
 		ProcuratoreInteressato = procuratoreInteressato;
 		AtletaSottosritto = atletaSottosritto;
 		DataInizio = dataInizio;

@@ -27,7 +27,8 @@ public class Controller {
 	VisualizzaProcuratori PageViewProcuratori;
 	InfoAtleta PageInfoAtleta;
 	InfoProcuratore PageInfoProcuratore;
-	
+	InsertContratto PageInsertContratto;
+
 	public static void main(String[] args) {
 		Controller controller=new Controller();
 	}
@@ -47,7 +48,7 @@ public class Controller {
 			PageInsertAtleta.setVisible(true);
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore di connessioe"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
@@ -72,7 +73,7 @@ public class Controller {
 	            Dialog.setVisible(true); 	
 			} catch (SQLException e1) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-	            JLabel LabelJDialog= new JLabel("Errore di connessioe"); 
+	            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
                 Dialog.add(LabelJDialog); 
                 Dialog.setBounds(400, 350, 250, 200);
 	            Dialog.setVisible(true); 
@@ -91,7 +92,7 @@ public class Controller {
 			PageInsertProcuratore.setVisible(true);		
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore di connessioe"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
@@ -117,7 +118,7 @@ public class Controller {
 	            Dialog.setVisible(true); 	
 			} catch (SQLException e1) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-	            JLabel LabelJDialog= new JLabel("Errore di connessioe"); 
+	            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
                 Dialog.add(LabelJDialog); 
                 Dialog.setBounds(400, 350, 250, 200);
 	            Dialog.setVisible(true); 
@@ -160,7 +161,7 @@ public class Controller {
             Dialog.setVisible(true);
 		} catch (SQLException e2) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore di connessioe"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
@@ -192,7 +193,7 @@ public class Controller {
             Dialog.setVisible(true); 			
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore di connessioe"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
@@ -219,6 +220,31 @@ public class Controller {
 	}
 	public void GotoHomeFromInfoProcuratore() {
 		PageInfoProcuratore.setVisible(false);
+		HomePage.setVisible(true);
+	}
+	
+	public void GoToPageInsertContratto() {
+		HomePage.setVisible(false);
+		try {
+			PageInsertContratto=new InsertContratto(this);
+		} catch (EccezioneCF e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errore inserimento dati"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 350, 250, 200);
+            Dialog.setVisible(true); 
+		} catch (SQLException e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 350, 250, 200);
+            Dialog.setVisible(true); 
+		}
+		PageInsertContratto.setVisible(true);
+	}
+	
+	public void GotoHomeFromPageInsertContratto() {
+		PageInsertContratto.setVisible(false);
 		HomePage.setVisible(true);
 	}
 }

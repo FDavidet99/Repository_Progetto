@@ -80,5 +80,14 @@ public class HomePage extends JFrame {
 		btnNewButton.setBounds(32, 127, 264, 23);
 		contentPane.add(btnNewButton);
 		
+		JButton InsertContrattoButton = new JButton("Registra Contratto");
+		InsertContrattoButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.GoToPageInsertContratto();
+			}
+		});
+		InsertContrattoButton.setBounds(32, 195, 264, 23);
+		contentPane.add(InsertContrattoButton);
+		
 	}
 }
