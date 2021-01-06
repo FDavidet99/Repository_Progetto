@@ -15,7 +15,7 @@ public class Contratto {
 	private Sponsor Sponsor;
 	private double CompensoAtleta;
 	private double CompensoProcuratore;
-	private double  GettonePresenzaNazionale;
+	private double GettonePresenzaNazionale;
 	
 	public Contratto(ProcuratoreSportivo procuratoreInteressato, Atleta atletaSottosritto,
 			LocalDate dataInizio, LocalDate dataFine, TipoContratto tipo, ClubSportivo club, Entità.Sponsor sponsor,

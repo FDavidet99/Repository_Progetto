@@ -47,6 +47,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 				+ " ?::date>=datainizio and ?::date <datafine ;");
 		StmGetSponsorById=Connection.prepareStatement("SELECT * FROM Sponsor Where Idsponsor=?;");
 		StmGetClubById=Connection.prepareStatement("SELECT * FROM ClubSportivo Where IdClub=?;");
+		StmGetContratti = Connection.prepareStatement("Select * From contratto;");
 	}
 
 	@Override
@@ -395,6 +396,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 
 	@Override
 	public Sponsor GetSponsorById(int IdSponsor) throws SQLException {
+		StmGetSponsorById.setInt(1, IdSponsor);
 		ResultSet rs=StmGetSponsorById.executeQuery();
 		Sponsor sponsor=null;
 		while(rs.next()) {
@@ -406,6 +408,42 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		rs.close();
 		return sponsor;
 	}	
+	
+	@Override
+	public List<Contratto> getContratti() throws SQLException, EccezioneCF {
+		ResultSet rs=StmGetContratti.executeQuery();
+		ArrayList<Contratto> contratti=new ArrayList<Contratto>();
+		while(rs.next()) {
+			int id =rs.getInt("idcontratto");
+			LocalDate dataInizio =  LocalDate.parse(rs.getString("datainizio"));
+			LocalDate dataFine =  LocalDate.parse(rs.getString("datafine"));
+			double compenso = rs.getDouble("compenso");
+			TipoContratto tipoContratto = TipoContratto.Club;
+			if(rs.getString("tipocontratto").equals("Sponsor"))
+				tipoContratto = tipoContratto.Sponsor;
+			double guadagnoProc = Double.parseDouble(rs.getString("guadagnoprocuratore"));
+			ProcuratoreSportivo proc = 
+					GetProcuratoreByCodiceFiscale(rs.getString("codicefiscaleprocuratore"));
+			Atleta atleta = 
+					GetAtletaByCodiceFiscale(rs.getString("codicefiscaleatleta"));
+			int idClub=rs.getInt("club");
+			int idSponsor=rs.getInt("sponsor");
+			ClubSportivo club = null;
+			Sponsor sponsor=null;
+			if(idClub!=0)
+				club = GetClubById(idClub);
+			if(idSponsor!=0)
+				sponsor = GetSponsorById(idSponsor);
+			double gettone =rs.getDouble("gettonepresenzanazionale");
+			Contratto contratto = new Contratto
+					(proc, atleta, dataInizio, dataFine, 
+						tipoContratto, club, sponsor, compenso, guadagnoProc,gettone);
+			contratto.setIdContratto(id);
+			contratti.add(contratto);
+		}
+		rs.close();
+		return contratti;
+	}
 	
 }
 	
