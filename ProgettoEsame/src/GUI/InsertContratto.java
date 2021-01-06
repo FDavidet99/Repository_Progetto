@@ -147,6 +147,7 @@ public class InsertContratto extends JFrame {
 				if(IndexAtleta==-1)
 					return;
 				try {
+					//TODO 
 					ProcuratoreSportivo ProcuratoreAttivo=OggettoConnessione.GetProcuratoreAttivo(QueryAtleti.get(IndexAtleta));
 					if( ProcuratoreAttivo == null) {
 						CompensoProcuratoreLabel.setVisible(false);

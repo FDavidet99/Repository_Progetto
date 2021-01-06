@@ -1,4 +1,7 @@
+/Controller/
+/DatabaseUtility/
+/Eccezioni/
+/Entità/
 /GUI/
 /ImplementationDAO/
 /InterfacceDAO/
-/Entità/
