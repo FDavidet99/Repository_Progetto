@@ -157,8 +157,7 @@ public class InsertIngaggio extends JFrame {
 					LocalDate TempDateFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 					double stipendioProcuratore = Double.parseDouble(StipendiotextField.getText());
 					Ingaggio ingaggio=new Ingaggio(procuratore,atleta,TempDateInizio, TempDateFine,stipendioProcuratore);
-					controller.InsertIngaggio(ingaggio);
-					
+					controller.InsertIngaggio(ingaggio);	
 				} catch (IndexOutOfBoundsException e1) {	
 					if(ProcuratoreComboBox.getSelectedIndex()==-1) {
 						JDialog Dialog = new JDialog(); 
@@ -186,7 +185,13 @@ public class InsertIngaggio extends JFrame {
 		            Dialog.getContentPane().add(LabelJDialog); 
 		            Dialog.setBounds(400, 150, 230, 150);
 		            Dialog.setVisible(true);
-				} 
+				} catch (NumberFormatException e1) {
+					JDialog Dialog = new JDialog(); 
+					JLabel LabelJDialog= new JLabel("Cifra non compatibile con i dati ",SwingConstants.CENTER);
+		            Dialog.getContentPane().add(LabelJDialog); 
+		            Dialog.setBounds(400, 150, 230, 150);
+		            Dialog.setVisible(true);
+			    }
 				
 			}
 		});

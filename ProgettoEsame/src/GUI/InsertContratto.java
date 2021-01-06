@@ -319,9 +319,19 @@ public class InsertContratto extends JFrame {
 						sponsor = QuerySponsor.get(IndexSponsor);
 					if(IndexClub!=-1)
 						club = QueryClub.get(IndexClub);
+					double CompAtleta=0.0;
+					if(!(CompensoAtletaTextField.getText().isEmpty()))
+						CompAtleta=Double.parseDouble(CompensoAtletaTextField.getText());
+					double ComProcuratore=0.0;
+					if(!(CompensoProcuratoreTextField.getText().isEmpty()))
+						ComProcuratore=Double.parseDouble(CompensoProcuratoreTextField.getText());
+					double GettonePresenzaNazionale=0.0;
+					if(!(GettonePresenzaNazionaleTextField.getText().isEmpty()))
+						GettonePresenzaNazionale=Double.parseDouble(GettonePresenzaNazionaleTextField.getText());
+					
 					Contratto TmpContratto = new Contratto(OggettoConnessione.GetProcuratoreAttivo(QueryAtleti.get(IndexAtleta)),QueryAtleti.get(IndexAtleta), 
 							TempDateInizio, TempDateFine, (TipoContratto) TipoContrattoComboBox.getSelectedItem(),club,sponsor,
-								Double.parseDouble(CompensoAtletaTextField.getText()),Double.parseDouble(CompensoProcuratoreTextField.getText()),Double.parseDouble(GettonePresenzaNazionaleTextField.getText()));
+							CompAtleta,ComProcuratore, GettonePresenzaNazionale);
 			    	controller.InsertContratto(TmpContratto);
 			    } catch (EccezioneCF e1) {
 			    	JDialog Dialog = new JDialog(); 
@@ -339,6 +349,12 @@ public class InsertContratto extends JFrame {
 			    } catch (NullPointerException | IndexOutOfBoundsException e1) {
 					JDialog Dialog = new JDialog(); 
 					JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati",SwingConstants.CENTER);
+		            Dialog.getContentPane().add(LabelJDialog); 
+		            Dialog.setBounds(400, 150, 230, 150);
+		            Dialog.setVisible(true);
+			    } catch (NumberFormatException e1) {
+					JDialog Dialog = new JDialog(); 
+					JLabel LabelJDialog= new JLabel("Cifra non compatibile con i dati ",SwingConstants.CENTER);
 		            Dialog.getContentPane().add(LabelJDialog); 
 		            Dialog.setBounds(400, 150, 230, 150);
 		            Dialog.setVisible(true);
