@@ -15,11 +15,11 @@ public class Contratto {
 	private Sponsor Sponsor;
 	private double CompensoAtleta;
 	private double CompensoProcuratore;
-	//private double  GettonePresenzaNazionale;
+	private double  GettonePresenzaNazionale;
 	
 	public Contratto(ProcuratoreSportivo procuratoreInteressato, Atleta atletaSottosritto,
 			LocalDate dataInizio, LocalDate dataFine, TipoContratto tipo, ClubSportivo club, Entità.Sponsor sponsor,
-			double compensoAtleta, double compensoProcuratore) {
+			double compensoAtleta, double compensoProcuratore,double gettonePresenzaNazionale) {
 		super();
 		
 		ProcuratoreInteressato = procuratoreInteressato;
@@ -31,6 +31,7 @@ public class Contratto {
 		Sponsor = sponsor;
 		CompensoAtleta = compensoAtleta;
 		CompensoProcuratore = compensoProcuratore;
+		GettonePresenzaNazionale=gettonePresenzaNazionale;
 	}
 	
 	public int getIdContratto() {
@@ -111,6 +112,14 @@ public class Contratto {
 	
 	public void setCompensoProcuratore(double compensoProcuratore) {
 		CompensoProcuratore = compensoProcuratore;
+	}
+
+	public double getGettonePresenzaNazionale() {
+		return GettonePresenzaNazionale;
+	}
+
+	public void setGettonePresenzaNazionale(double gettonePresenzaNazionale) {
+		GettonePresenzaNazionale = gettonePresenzaNazionale;
 	}
 	
 }

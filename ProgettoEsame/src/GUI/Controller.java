@@ -2,6 +2,7 @@ package GUI;
 
 
 import java.awt.EventQueue;
+import java.sql.BatchUpdateException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -10,6 +11,7 @@ import java.util.Date;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import Controller.ControllerQuery;
 import Eccezioni.EccezioneCF;
@@ -48,7 +50,7 @@ public class Controller {
 			PageInsertAtleta.setVisible(true);
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
@@ -60,23 +62,32 @@ public class Controller {
 				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
 				OggettoConnessione.InsertAtleta(atleta);
 				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
-	            JLabel LabelJDialog= new JLabel("L'atleta è stato inserito con successo"); 
+	            JLabel LabelJDialog= new JLabel("L'atleta è stato inserito con successo",SwingConstants.CENTER); 
                 Dialog.add(LabelJDialog); 
                 Dialog.setBounds(400,250, 250, 200);
 	            Dialog.setVisible(true); 
 	            PageInsertAtleta.SvuotaCampi();		
 			} catch (EccezioneCF e) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-	            JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
+	            JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
                 Dialog.add(LabelJDialog); 
                 Dialog.setBounds(400, 250, 250, 200);
 	            Dialog.setVisible(true); 	
-			} catch (SQLException e1) {
-				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-	            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
-                Dialog.add(LabelJDialog); 
-                Dialog.setBounds(400, 350, 250, 200);
-	            Dialog.setVisible(true); 
+			} catch (SQLException e1) {	
+				if(Integer.parseInt(e1.getSQLState().toString())== 23505){
+					JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+		            JLabel LabelJDialog= new JLabel("Atleta già presente",SwingConstants.CENTER); 
+	                Dialog.add(LabelJDialog); 
+	                Dialog.setBounds(400, 350, 200, 200);
+		            Dialog.setVisible(true); 
+				}
+				else {
+					JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+		            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+	                Dialog.add(LabelJDialog); 
+	                Dialog.setBounds(400, 350, 200, 200);
+		            Dialog.setVisible(true); 
+				}
 			} 
 	}
 	
@@ -92,7 +103,7 @@ public class Controller {
 			PageInsertProcuratore.setVisible(true);		
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
@@ -105,24 +116,33 @@ public class Controller {
 				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
 				OggettoConnessione.InsertProcuratoreSportivo(procuratore);
 				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
-	            JLabel LabelJDialog= new JLabel("Il procuratore è stato inserito con successo"); 
+	            JLabel LabelJDialog= new JLabel("Il procuratore è stato inserito con successo",SwingConstants.CENTER); 
                 Dialog.add(LabelJDialog); 
                 Dialog.setBounds(400,250, 270, 200);
 	            Dialog.setVisible(true); 
 	            PageInsertProcuratore.SvuotaCampi();		
 			} catch (EccezioneCF e) {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-	            JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
+	            JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
                 Dialog.add(LabelJDialog); 
                 Dialog.setBounds(400, 250, 250, 200);
 	            Dialog.setVisible(true); 	
-			} catch (SQLException e1) {
-				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-	            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
-                Dialog.add(LabelJDialog); 
-                Dialog.setBounds(400, 350, 250, 200);
-	            Dialog.setVisible(true); 
-			}
+			} catch (SQLException e1) {	
+				if(Integer.parseInt(e1.getSQLState().toString())== 23505){
+					JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+		            JLabel LabelJDialog= new JLabel("Procuratore già presente",SwingConstants.CENTER); 
+	                Dialog.add(LabelJDialog); 
+	                Dialog.setBounds(400, 350, 200, 200);
+		            Dialog.setVisible(true); 
+				}
+				else {
+					JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+		            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+	                Dialog.add(LabelJDialog); 
+	                Dialog.setBounds(400, 350, 200, 200);
+		            Dialog.setVisible(true); 
+				}
+			} 
 	}
 	
 	public void GotoHomePageFromInsertProcuratoreSportivo() {
@@ -146,7 +166,7 @@ public class Controller {
 			ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();		
 			OggettoConnessione.InsertIngaggio(ingaggio);
 			JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
-            JLabel LabelJDialog= new JLabel("Il procuratore è stato ingaggiato"); 
+            JLabel LabelJDialog= new JLabel("Il procuratore è stato ingaggiato",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400,250, 270, 200);
             Dialog.setVisible(true); 
@@ -157,13 +177,22 @@ public class Controller {
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 250, 250, 200);
             Dialog.setVisible(true);
-		} catch (SQLException e2) {
-			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
-            Dialog.add(LabelJDialog); 
-            Dialog.setBounds(400, 350, 250, 200);
-            Dialog.setVisible(true); 
-		}  
+		} catch (SQLException e2) {	
+			if(Integer.parseInt(e2.getSQLState().toString())== 23505){
+				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+	            JLabel LabelJDialog= new JLabel("Ingaggio già presente",SwingConstants.CENTER); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setBounds(400, 350, 200, 200);
+	            Dialog.setVisible(true); 
+			}
+			else {
+				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+	            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setBounds(400, 350, 200, 200);
+	            Dialog.setVisible(true); 
+			}
+		} 
 	}
 
 	public void GoToViewProcuratori () {
@@ -185,13 +214,13 @@ public class Controller {
 			PageInsertIngaggio.setVisible(true);
 		} catch (EccezioneCF e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
+            JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 250, 250, 200);
             Dialog.setVisible(true); 			
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
@@ -232,13 +261,13 @@ public class Controller {
 			PageInsertContratto.setVisible(true);
 		} catch (EccezioneCF e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore inserimento dati"); 
+            JLabel LabelJDialog= new JLabel("Errore inserimento dati",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
@@ -255,24 +284,33 @@ public class Controller {
 			ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();		
 			OggettoConnessione.InsertContratto(contratto);
 			JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
-            JLabel LabelJDialog= new JLabel("Il Contratto è stato registrato"); 
+            JLabel LabelJDialog= new JLabel("Il Contratto è stato registrato",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400,250, 270, 200);
             Dialog.setVisible(true); 
 			PageInsertContratto.SvuotaCampi();
 		} catch (EccezioneCF e1) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
+            JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
             Dialog.setBounds(400, 250, 250, 200);
             Dialog.setVisible(true);
-		} catch (SQLException e2) {
-			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore di connessione"); 
-            Dialog.add(LabelJDialog); 
-            Dialog.setBounds(400, 350, 250, 200);
-            Dialog.setVisible(true); 
-		}  
+		} catch (SQLException e2) {	
+			if(Integer.parseInt(e2.getSQLState().toString())== 23505){
+				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+	            JLabel LabelJDialog= new JLabel("Contratto già presente",SwingConstants.CENTER); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setBounds(400, 350, 200, 200);
+	            Dialog.setVisible(true); 
+			}
+			else {
+				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+	            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setBounds(400, 350, 200, 200);
+	            Dialog.setVisible(true); 
+			}
+		} 
 	}
 }
 

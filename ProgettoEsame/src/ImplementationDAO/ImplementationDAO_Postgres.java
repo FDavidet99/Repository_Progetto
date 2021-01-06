@@ -43,9 +43,10 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmInsertContratto=Connection.prepareStatement("INSERT INTO Contratto (datainizio, datafine,compenso,"
 				+ "tipocontratto,guadagnoprocuratore,codicefiscaleprocuratore,codicefiscaleatleta,sponsor,"
 				+ "club,gettonepresenzanazionale) values (?,?,?,?,?,?,?,?,?,?);");
-		
 		StmGetProcuratoreAttivo = Connection.prepareStatement("SELECT * FROM Ingaggio where CodiceFiscaleAtleta= ? and  "
 				+ " ?::date>=datainizio and ?::date <datafine ;");
+		StmGetSponsorById=Connection.prepareStatement("SELECT * FROM Sponsor Where Idsponsor=?;");
+		StmGetClubById=Connection.prepareStatement("SELECT * FROM ClubSportivo Where IdClub=?;");
 	}
 
 	@Override
@@ -356,7 +357,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			StmInsertContratto.setObject(8, null);
 			StmInsertContratto.setInt(9,contratto.getClub().getIdClubSportivo());   
 		}
-		StmInsertContratto.setObject(10,null);
+		StmInsertContratto.setDouble(10,contratto.getGettonePresenzaNazionale());
 		StmInsertContratto.executeUpdate();
 	}
 
@@ -375,6 +376,35 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		}
 		rs.close();
 		return procuratore;
+	}
+
+	@Override
+	public ClubSportivo GetClubById(int IdClub) throws SQLException {
+		StmGetClubById.setInt(1, IdClub);
+		ResultSet rs=StmGetClubById.executeQuery();
+		ClubSportivo club=null;
+		while(rs.next()) {
+			String Nome=rs.getString("nome");
+			Nazione nazione = GetNazioneByCodiceAt(rs.getString("sedelegale"));
+			boolean IsNazionale =  rs.getBoolean("isnazionale");
+			ClubSportivo TmpClub=new ClubSportivo(IdClub,Nome,nazione,IsNazionale);
+		}
+		rs.close();
+		return club;
+	}
+
+	@Override
+	public Sponsor GetSponsorById(int IdSponsor) throws SQLException {
+		ResultSet rs=StmGetSponsorById.executeQuery();
+		Sponsor sponsor=null;
+		while(rs.next()) {
+			String nome = rs.getString("nome");
+			String descrizione = rs.getString("descrizione");	
+			Nazione nazione = GetNazioneByCodiceAt(rs.getString("sedelegale"));
+			sponsor=new Sponsor(IdSponsor,nome,descrizione,nazione);		
+		}
+		rs.close();
+		return sponsor;
 	}	
 	
 }

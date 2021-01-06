@@ -37,7 +37,7 @@ import java.awt.Color;
 public class InsertIngaggio extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField StipendioProvatextField;
+	private JTextField StipendiotextField;
 	private List<ProcuratoreSportivo> QueryProcuratori;
 	private List<Atleta> QueryAtleti;
 	private JComboBox ProcuratoreComboBox;
@@ -66,21 +66,21 @@ public class InsertIngaggio extends JFrame {
 		ProcuratoreLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		ProcuratoreLabel.setBackground(UIManager.getColor("Button.background"));
 		ProcuratoreLabel.setText("Procuratore");
-		ProcuratoreLabel.setBounds(37, 39, 93, 22);
+		ProcuratoreLabel.setBounds(37, 70, 93, 22);
 		contentPane.add(ProcuratoreLabel);
 		
 		Label AtletaLabel = new Label();
 		AtletaLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		AtletaLabel.setBackground(UIManager.getColor("Button.background"));
 		AtletaLabel.setText("Atleta");
-		AtletaLabel.setBounds(341, 39, 53, 22);
+		AtletaLabel.setBounds(293, 70, 53, 22);
 		contentPane.add(AtletaLabel);
 		
 		Label DataInizioLabel = new Label();
 		DataInizioLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		DataInizioLabel.setBackground(UIManager.getColor("Button.background"));
 		DataInizioLabel.setText("Data Inizio");
-		DataInizioLabel.setBounds(37, 94, 93, 22);
+		DataInizioLabel.setBounds(37, 120, 93, 22);
 		contentPane.add(DataInizioLabel);
 		
 		QueryProcuratori=new ArrayList <ProcuratoreSportivo>();
@@ -90,7 +90,7 @@ public class InsertIngaggio extends JFrame {
 			nomiProcuratori.add(a.getNome()+" "+a.getCognome());
 	
 		ProcuratoreComboBox = new JComboBox(nomiProcuratori.toArray());
-		ProcuratoreComboBox.setBounds(151, 40, 100, 22);
+		ProcuratoreComboBox.setBounds(151, 70, 100, 22);
 		ProcuratoreComboBox.setSelectedIndex(-1);
 		contentPane.add(ProcuratoreComboBox);
 		
@@ -101,12 +101,12 @@ public class InsertIngaggio extends JFrame {
 			nomiAtleti.add(a.getNome()+" "+a.getCognome());
 		
 		AtletaComboBox = new JComboBox(nomiAtleti.toArray());
-		AtletaComboBox.setBounds(400, 40, 100, 22);
+		AtletaComboBox.setBounds(385, 70, 100, 22);
 		AtletaComboBox.setSelectedIndex(-1);
 		contentPane.add(AtletaComboBox);
 		
 		DataInizioDateChooser = new JDateChooser();
-		DataInizioDateChooser.setBounds(136, 96, 100, 20);
+		DataInizioDateChooser.setBounds(137, 122, 100, 20);
 		DataInizioDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataInizioDateChooser);
 		
@@ -114,18 +114,18 @@ public class InsertIngaggio extends JFrame {
 		DataFineLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		DataFineLabel.setBackground(UIManager.getColor("Button.background"));
 		DataFineLabel.setText("Data Fine");
-		DataFineLabel.setBounds(293, 94, 86, 22);
+		DataFineLabel.setBounds(293, 120, 86, 22);
 		contentPane.add(DataFineLabel);
 		
 		DataFineDateChooser = new JDateChooser();
-		DataFineDateChooser.setBounds(385, 94, 100, 20);
+		DataFineDateChooser.setBounds(385, 122, 100, 20);
 		DataFineDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataFineDateChooser);
 		
-		StipendioProvatextField = new JTextField();
-		StipendioProvatextField.setBounds(44, 180, 86, 20);
-		contentPane.add(StipendioProvatextField);
-		StipendioProvatextField.setColumns(10);
+		StipendiotextField = new JTextField();
+		StipendiotextField.setBounds(200, 175, 86, 20);
+		contentPane.add(StipendiotextField);
+		StipendiotextField.setColumns(10);
 		
 		JButton HomeButton = new JButton("Home");
 		HomeButton.addActionListener(new ActionListener() {
@@ -155,7 +155,7 @@ public class InsertIngaggio extends JFrame {
 					Atleta atleta = QueryAtleti.get(indexAtleta);
 					LocalDate TempDateInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 					LocalDate TempDateFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-					double stipendioProcuratore = Double.parseDouble(StipendioProvatextField.getText());
+					double stipendioProcuratore = Double.parseDouble(StipendiotextField.getText());
 					Ingaggio ingaggio=new Ingaggio(procuratore,atleta,TempDateInizio, TempDateFine,stipendioProcuratore);
 					controller.InsertIngaggio(ingaggio);
 					
@@ -183,7 +183,7 @@ public class InsertIngaggio extends JFrame {
 				} catch (NullPointerException e3) {
 					JDialog Dialog = new JDialog(); 
 					JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati",SwingConstants.CENTER);
-		            Dialog.add(LabelJDialog); 
+		            Dialog.getContentPane().add(LabelJDialog); 
 		            Dialog.setBounds(400, 150, 230, 150);
 		            Dialog.setVisible(true);
 				} 
@@ -192,6 +192,16 @@ public class InsertIngaggio extends JFrame {
 		});
 		IngaggioButton.setBounds(461, 276, 89, 23);
 		contentPane.add(IngaggioButton);
+		
+		JLabel StipendioLabel = new JLabel("Stipendio mensile");
+		StipendioLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		StipendioLabel.setBounds(37, 175, 136, 18);
+		contentPane.add(StipendioLabel);
+		
+		JLabel TitoloLabel = new JLabel("Inserire un nuovo ingaggio");
+		TitoloLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		TitoloLabel.setBounds(37, 29, 208, 18);
+		contentPane.add(TitoloLabel);
 		
 	}
 	

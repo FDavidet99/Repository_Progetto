@@ -7,5 +7,6 @@ import Entità.Sponsor;
 
 public interface SponsorDAO {
 	public List<Sponsor> GetSponsor() throws SQLException;
+	public Sponsor GetSponsorById(int IdSponsor) throws SQLException;
 
 }

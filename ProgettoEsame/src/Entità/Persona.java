@@ -250,33 +250,36 @@ public class Persona {
     }
 	
 	private boolean isConsonante(char c) {
-		return (c!='a' && c!= 'e' && c!='i' && c!='o' && c!='u');
+		return (c!='a' && c!= 'e' && c!='i' && c!='o' && c!='u' && c!=' ' && c!= '\'');
 	}
 	
 	private boolean isVocale(char c) {
-		return (c=='a' || c=='e' || c=='i' || c=='o' || c=='u');
+		return ((c=='a' || c=='e' || c=='i' || c=='o' || c=='u'));
 	}
 	
-	private String getConsonanti(String s) {
+	private String getConsonanti(String stringa) {
 		String consonanti = "";
-		for(int i=0;i<s.length();i++) {
-			char c = s.charAt(i);
-			if(isConsonante(c)) consonanti+=c;
+		for(int i=0;i<stringa.length();i++) {
+			char carattere = stringa.charAt(i);
+			if(isConsonante(carattere))
+				consonanti+=carattere;
 		}
 		return consonanti;
 	}
 	
-	private String getVocali(String s) {
+	private String getVocali(String stringa) {
 		String vocali = "";
-		for(int i=0;i<s.length();i++) {
-			char c = s.charAt(i);
-			if(isVocale(c)) vocali+=c;
+		for(int i=0;i<stringa.length();i++) {
+			char carattere = stringa.charAt(i);
+			if(isVocale(carattere))
+				vocali+=carattere;
 		}
 		return vocali;
 	}
-	public char carControllo(String cf15) throws EccezioneCF
-	{
-		if(cf15.length()!=15)throw new EccezioneCF();
+	
+	public char carControllo(String cf15) throws EccezioneCF {
+		if(cf15.length()!=15)
+			throw new EccezioneCF();
 		String carPari = getCarPostoPari(cf15);
 		String carDispari = getCarPostoDispari(cf15);
 		int somma = 0;
