@@ -387,7 +387,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			String Nome=rs.getString("nome");
 			Nazione nazione = GetNazioneByCodiceAt(rs.getString("sedelegale"));
 			boolean IsNazionale =  rs.getBoolean("isnazionale");
-			ClubSportivo TmpClub=new ClubSportivo(IdClub,Nome,nazione,IsNazionale);
+			club=new ClubSportivo(IdClub,Nome,nazione,IsNazionale);
 		}
 		rs.close();
 		return club;

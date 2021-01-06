@@ -14,14 +14,6 @@ public abstract class ImplementationDAO implements NazioneDAO,ProvinciaDAO,Comun
                                 StmInsertIngaggio,StmGetIngaggiByAtleta,StmGetIngaggiByProcuratore,
                                 StmGetClubSportivi,StmGetSponsor,StmGetProcuratoreAttivo,StmGetSponsorById,StmGetClubById,
                                 StmInsertContratto;
-    
-    
-    
-	
-	
-    
-    
-	
 	
 	
 
