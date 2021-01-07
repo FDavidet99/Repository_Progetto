@@ -8,9 +8,8 @@ public class Sponsor {
 	private String DescrizioneAttivita;
 	private Nazione SedeLegale;
 	
-	public Sponsor(int idSponsor, String nomeSponsor, String descrizioneAttivita, Nazione sedeLegale) {
+	public Sponsor(String nomeSponsor, String descrizioneAttivita, Nazione sedeLegale) {
 		super();
-		IdSponsor = idSponsor;
 		NomeSponsor = nomeSponsor;
 		DescrizioneAttivita = descrizioneAttivita;
 		SedeLegale = sedeLegale;

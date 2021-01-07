@@ -11,9 +11,8 @@ public class ClubSportivo {
 	private boolean IsNazionale;
 	private List<Atleta> AtlentiComponenti;
 	
-	public ClubSportivo(int idClubSportivo, String nomeClub, Nazione sedeLegale,boolean isNazionale) {
+	public ClubSportivo(String nomeClub, Nazione sedeLegale,boolean isNazionale) {
 		super();
-		IdClubSportivo = idClubSportivo;
 		NomeClub = nomeClub;
 		SedeLegale = sedeLegale;
 		IsNazionale=isNazionale;

@@ -306,33 +306,35 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	@Override
 	public List<ClubSportivo> GetClubSportivi() throws SQLException {
 		ResultSet rs=StmGetClubSportivi.executeQuery();
-		ArrayList<ClubSportivo> ClubSportivi=new ArrayList<ClubSportivo>();
+		ArrayList<ClubSportivo> ClubList=new ArrayList<ClubSportivo>();
 		while(rs.next()) {
 			int IdClub = rs.getInt("idclub");
 			String Nome=rs.getString("nome");
 			Nazione nazione = GetNazioneByCodiceAt(rs.getString("sedelegale"));
 			boolean IsNazionale =  rs.getBoolean("isnazionale");
-			ClubSportivo TmpClub=new ClubSportivo(IdClub,Nome,nazione,IsNazionale);
-			ClubSportivi.add(TmpClub);	
+			ClubSportivo TmpClub=new ClubSportivo(Nome,nazione,IsNazionale);
+			TmpClub.setIdClubSportivo(IdClub);
+			ClubList.add(TmpClub);	
 		}
 		rs.close();
-		return ClubSportivi;
+		return ClubList;
 	}
 
 	@Override
 	public List<Sponsor> GetSponsor() throws SQLException {
 		ResultSet rs=StmGetSponsor.executeQuery();
-		ArrayList<Sponsor> sponsorList=new ArrayList<Sponsor>();
+		ArrayList<Sponsor> SponsorList=new ArrayList<Sponsor>();
 		while(rs.next()) {
+			int idSponsor =rs.getInt("idsponsor");
 			String nome = rs.getString("nome");
-			String descrizione = rs.getString("descrizione");
-			int id =Integer.parseInt(rs.getString("idsponsor"));	
+			String descrizione = rs.getString("descrizione");	
 			Nazione nazione = GetNazioneByCodiceAt(rs.getString("sedelegale"));
-			Sponsor sponsor=new Sponsor(id, nome,descrizione,nazione);
-			sponsorList.add(sponsor);
+			Sponsor TmpSponsor=new Sponsor(nome,descrizione,nazione);
+			TmpSponsor.setIdSponsor(idSponsor);
+			SponsorList.add(TmpSponsor);
 		}
 		rs.close();
-		return sponsorList;
+		return SponsorList;
 	}
 
 	@Override
@@ -383,15 +385,16 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	public ClubSportivo GetClubById(int IdClub) throws SQLException {
 		StmGetClubById.setInt(1, IdClub);
 		ResultSet rs=StmGetClubById.executeQuery();
-		ClubSportivo club=null;
+		ClubSportivo Club=null;
 		while(rs.next()) {
 			String Nome=rs.getString("nome");
 			Nazione nazione = GetNazioneByCodiceAt(rs.getString("sedelegale"));
 			boolean IsNazionale =  rs.getBoolean("isnazionale");
-			club=new ClubSportivo(IdClub,Nome,nazione,IsNazionale);
+			Club=new ClubSportivo(Nome,nazione,IsNazionale);
+			Club.setIdClubSportivo(IdClub);
 		}
 		rs.close();
-		return club;
+		return Club;
 	}
 
 	@Override
@@ -403,7 +406,8 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			String nome = rs.getString("nome");
 			String descrizione = rs.getString("descrizione");	
 			Nazione nazione = GetNazioneByCodiceAt(rs.getString("sedelegale"));
-			sponsor=new Sponsor(IdSponsor,nome,descrizione,nazione);		
+			sponsor=new Sponsor(nome,descrizione,nazione);		
+			sponsor.setIdSponsor(IdSponsor);
 		}
 		rs.close();
 		return sponsor;
@@ -417,15 +421,13 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			int id =rs.getInt("idcontratto");
 			LocalDate dataInizio =  LocalDate.parse(rs.getString("datainizio"));
 			LocalDate dataFine =  LocalDate.parse(rs.getString("datafine"));
-			double compenso = rs.getDouble("compenso");
+			double CompensoAtleta = rs.getDouble("compenso");
 			TipoContratto tipoContratto = TipoContratto.Club;
 			if(rs.getString("tipocontratto").equals("Sponsor"))
 				tipoContratto = tipoContratto.Sponsor;
-			double guadagnoProc = Double.parseDouble(rs.getString("guadagnoprocuratore"));
-			ProcuratoreSportivo proc = 
-					GetProcuratoreByCodiceFiscale(rs.getString("codicefiscaleprocuratore"));
-			Atleta atleta = 
-					GetAtletaByCodiceFiscale(rs.getString("codicefiscaleatleta"));
+			double GuadagnoProcuratore = rs.getDouble("guadagnoprocuratore");
+			ProcuratoreSportivo Procuratore = GetProcuratoreByCodiceFiscale(rs.getString("codicefiscaleprocuratore"));
+			Atleta atleta = GetAtletaByCodiceFiscale(rs.getString("codicefiscaleatleta"));
 			int idClub=rs.getInt("club");
 			int idSponsor=rs.getInt("sponsor");
 			ClubSportivo club = null;
@@ -435,9 +437,8 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			if(idSponsor!=0)
 				sponsor = GetSponsorById(idSponsor);
 			double gettone =rs.getDouble("gettonepresenzanazionale");
-			Contratto contratto = new Contratto
-					(proc, atleta, dataInizio, dataFine, 
-						tipoContratto, club, sponsor, compenso, guadagnoProc,gettone);
+			Contratto contratto = new Contratto (Procuratore, atleta, dataInizio, dataFine, 
+						tipoContratto, club, sponsor, CompensoAtleta, GuadagnoProcuratore,gettone);
 			contratto.setIdContratto(id);
 			contratti.add(contratto);
 		}
