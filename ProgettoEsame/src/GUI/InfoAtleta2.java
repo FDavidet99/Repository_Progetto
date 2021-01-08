@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import Controller.ControllerQuery;
 import Eccezioni.EccezioneCF;
@@ -104,8 +105,6 @@ public class InfoAtleta2 extends JFrame {
 			InfoProcuratoreButton.setVisible(false);
 			NomeProcuratoreLabel.setText("Procuratore Attuale: Nessuno");
 		}
-			
-		Object[] Colonne= {"Id Contratto", "Club/Sponsor", "Entita Stipulante", "Data Fine", "Compenso"};
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 140, 700, 87);
@@ -123,9 +122,16 @@ public class InfoAtleta2 extends JFrame {
 		InfoLabel.setFont(new Font("Monospaced", Font.PLAIN, 15));
 		InfoLabel.setBounds(10, 33, 509, 21);
 		contentPane.add(InfoLabel);
-			
-		TabellaContrattiAttivi = new JTable(PopolaTabellaContrattiAttivi(atleta),Colonne);
+					
+		Object[] Colonne= {"Id Contratto", "Club/Sponsor", "Entita Stipulante", "Data Fine", "Compenso"};
+		TabellaContrattiAttivi = new JTable();
 		scrollPane.setViewportView(TabellaContrattiAttivi);
+		
+		TabellaContrattiAttivi.setModel(new DefaultTableModel(
+				PopolaTabellaContrattiAttivi(atleta),Colonne 
+				) {private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int r,int c) {return false;}});
+	
 		
 		
 //		double SommaGuadagni=0.0;
