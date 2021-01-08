@@ -27,8 +27,8 @@ public class Controller {
 	FrameForJDialog DialogErrori;
 	InsertIngaggio PageInsertIngaggio;
 	VisualizzaProcuratori PageViewProcuratori;
-	InfoAtleta2 PageInfoAtleta;
-	InfoProcuratore2 PageInfoProcuratore;
+	InfoAtleta PageInfoAtleta;
+	InfoProcuratore PageInfoProcuratore;
 	InsertContratto PageInsertContratto;
 
 	public static void main(String[] args) {
@@ -235,7 +235,7 @@ public class Controller {
 	public void GotoInfoAtletaFromVisualizzaAtleta(Atleta atletaSelezionato) {
 		PageViewAtleti.setVisible(false);
 		try {
-			PageInfoAtleta = new InfoAtleta2(this,atletaSelezionato);
+			PageInfoAtleta = new InfoAtleta(this,atletaSelezionato);
 		} catch (SQLException e1) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errori di connessione",SwingConstants.CENTER); 
@@ -259,7 +259,7 @@ public class Controller {
 	
 	public void GotoInfoProcuratoreFromVisualizzaProcuratore(ProcuratoreSportivo proc) {
 		PageViewProcuratori.setVisible(false);
-		PageInfoProcuratore = new InfoProcuratore2(this,proc);
+		PageInfoProcuratore = new InfoProcuratore(this,proc);
 		PageInfoProcuratore.setVisible(true);
 	}
 	
