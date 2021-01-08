@@ -27,8 +27,8 @@ public class Controller {
 	FrameForJDialog DialogErrori;
 	InsertIngaggio PageInsertIngaggio;
 	VisualizzaProcuratori PageViewProcuratori;
-	InfoAtleta PageInfoAtleta;
-	InfoProcuratore PageInfoProcuratore;
+	InfoAtleta2 PageInfoAtleta;
+	InfoProcuratore2 PageInfoProcuratore;
 	InsertContratto PageInsertContratto;
 
 	public static void main(String[] args) {
@@ -234,7 +234,21 @@ public class Controller {
 	
 	public void GotoInfoAtletaFromVisualizzaAtleta(Atleta atletaSelezionato) {
 		PageViewAtleti.setVisible(false);
-		PageInfoAtleta = new InfoAtleta(this,atletaSelezionato);
+		try {
+			PageInfoAtleta = new InfoAtleta2(this,atletaSelezionato);
+		} catch (SQLException e1) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errori di connessione",SwingConstants.CENTER); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 250, 250, 200);
+            Dialog.setVisible(true);
+		} catch (EccezioneCF e1) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errori visualizzazione dati",SwingConstants.CENTER); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 250, 250, 200);
+            Dialog.setVisible(true);
+		}	
 		PageInfoAtleta.setVisible(true);
 	}
 	
@@ -245,7 +259,7 @@ public class Controller {
 	
 	public void GotoInfoProcuratoreFromVisualizzaProcuratore(ProcuratoreSportivo proc) {
 		PageViewProcuratori.setVisible(false);
-		PageInfoProcuratore = new InfoProcuratore(this,proc);
+		PageInfoProcuratore = new InfoProcuratore2(this,proc);
 		PageInfoProcuratore.setVisible(true);
 	}
 	

@@ -216,6 +216,7 @@ public class InsertIngaggio extends JFrame {
 		DataFineDateChooser.setCalendar(null);
 		ProcuratoreComboBox.setSelectedIndex(-1);
 		AtletaComboBox.setSelectedIndex(-1);
+		StipendiotextField.setText(null);
 		
 	}
 }

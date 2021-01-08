@@ -47,7 +47,8 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 				+ " ?::date>=datainizio and ?::date <datafine ;");
 		StmGetSponsorById=Connection.prepareStatement("SELECT * FROM Sponsor Where Idsponsor=?;");
 		StmGetClubById=Connection.prepareStatement("SELECT * FROM ClubSportivo Where IdClub=?;");
-		StmGetContratti = Connection.prepareStatement("Select * From contratto;");
+		StmGetContratti = Connection.prepareStatement("SELECT * From contratto;");
+		StmGetContrattiAttivi = Connection.prepareStatement("SELECT * FROM Contratto where ?::date>=datainizio and ?::date <datafine ;");
 	}
 
 	@Override
@@ -364,7 +365,6 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmInsertContratto.executeUpdate();
 	}
 
-
 	@Override
 	public ProcuratoreSportivo GetProcuratoreAttivo(Atleta atleta) throws SQLException, EccezioneCF {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -414,7 +414,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	}	
 	
 	@Override
-	public List<Contratto> getContratti() throws SQLException, EccezioneCF {
+	public List<Contratto> GetContratti() throws SQLException, EccezioneCF {
 		ResultSet rs=StmGetContratti.executeQuery();
 		ArrayList<Contratto> contratti=new ArrayList<Contratto>();
 		while(rs.next()) {
@@ -444,6 +444,43 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		}
 		rs.close();
 		return contratti;
+	}
+	
+	@Override
+	public List<Contratto> GetContrattiAttivi() throws SQLException, EccezioneCF {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String curDate = formatter.format(new Date(System.currentTimeMillis()));
+		StmGetContrattiAttivi.setString(1,curDate);
+		StmGetContrattiAttivi.setString(2,curDate);
+		ResultSet rs=StmGetContrattiAttivi.executeQuery();
+		ArrayList<Contratto> contrattiAttivi=new ArrayList<Contratto>();
+		while(rs.next()) {
+			int id =rs.getInt("idcontratto");
+			LocalDate dataInizio =  LocalDate.parse(rs.getString("datainizio"));
+			LocalDate dataFine =  LocalDate.parse(rs.getString("datafine"));
+			double CompensoAtleta = rs.getDouble("compenso");
+			TipoContratto tipoContratto = TipoContratto.Club;
+			if(rs.getString("tipocontratto").equals("Sponsor"))
+				tipoContratto = tipoContratto.Sponsor;
+			double GuadagnoProcuratore = rs.getDouble("guadagnoprocuratore");
+			ProcuratoreSportivo Procuratore = GetProcuratoreByCodiceFiscale(rs.getString("codicefiscaleprocuratore"));
+			Atleta atleta = GetAtletaByCodiceFiscale(rs.getString("codicefiscaleatleta"));
+			int idClub=rs.getInt("club");
+			int idSponsor=rs.getInt("sponsor");
+			ClubSportivo club = null;
+			Sponsor sponsor=null;
+			if(idClub!=0)
+				club = GetClubById(idClub);
+			if(idSponsor!=0)
+				sponsor = GetSponsorById(idSponsor);
+			double gettone =rs.getDouble("gettonepresenzanazionale");
+			Contratto contratto = new Contratto (Procuratore, atleta, dataInizio, dataFine, 
+						tipoContratto, club, sponsor, CompensoAtleta, GuadagnoProcuratore,gettone);
+			contratto.setIdContratto(id);
+			contrattiAttivi.add(contratto);
+		}
+		rs.close();
+		return contrattiAttivi;
 	}
 	
 }

@@ -110,7 +110,7 @@ public class InfoProcuratore extends JFrame {
         tabellaAtletiHistory.setFillsViewportHeight(true);
 		
 		JScrollPane js=new JScrollPane(tabellaAtletiHistory);
-		js.setBounds(101, 10, 672, 266);
+		js.setBounds(96, 9, 672, 266);
 		js.setVisible(true);
 		
 		
@@ -165,12 +165,14 @@ public class InfoProcuratore extends JFrame {
 		popolaTabellaHistoryAtleti();
 		popolaTabellaContratti();
 	}
+	
+	
 	public void popolaTabellaContratti()
 	{
 		TableModel model = contrattiProcuratoreTab.getModel();
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
-			ArrayList<Contratto> contratti = (ArrayList<Contratto>) dao.getContratti();
+			ArrayList<Contratto> contratti = (ArrayList<Contratto>) dao.GetContratti();
 			@SuppressWarnings("unchecked")
 			ArrayList<Contratto> contrattiCopy = (ArrayList<Contratto>) contratti.clone();
 			int rimossi=0,i=0;

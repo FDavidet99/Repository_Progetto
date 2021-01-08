@@ -42,6 +42,7 @@ public class InsertContratto extends JFrame {
 	private final JLabel CompensoAtletaLabel = new JLabel("Compenso atleta\r\n");
 	private JTextField CompensoAtletaTextField;
 	private JTextField CompensoProcuratoreTextField;
+	private JTextField GettonePresenzaNazionaleTextField;
 	private List<Atleta> QueryAtleti;
 	private List<ClubSportivo> QueryClub;
 	private List<Sponsor> QuerySponsor;
@@ -111,7 +112,7 @@ public class InsertContratto extends JFrame {
 		contentPane.add(CompensoAtletaTextField);
 		CompensoAtletaTextField.setColumns(10);
 		
-		JTextField GettonePresenzaNazionaleTextField = new JTextField();
+		GettonePresenzaNazionaleTextField = new JTextField();
 		GettonePresenzaNazionaleTextField.setBounds(159, 187, 86, 20);
 		GettonePresenzaNazionaleTextField.setColumns(10);
 		GettonePresenzaNazionaleTextField.setVisible(false);
@@ -144,8 +145,8 @@ public class InsertContratto extends JFrame {
 		AtletaComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int IndexAtleta=AtletaComboBox.getSelectedIndex();
-				if(IndexAtleta==-1)
-					return;
+				if(IndexAtleta!=-1) {
+//					return;
 				try {
 					ProcuratoreSportivo ProcuratoreAttivo=OggettoConnessione.GetProcuratoreAttivo(QueryAtleti.get(IndexAtleta));
 					if( ProcuratoreAttivo == null) {
@@ -171,8 +172,9 @@ public class InsertContratto extends JFrame {
 			        Dialog.getContentPane().add(LabelJDialog); 
 		            Dialog.setBounds(400, 150, 240, 150);
 			        Dialog.setVisible(true);
-				}				
+				}			
 			}
+				}
 		});
 		AtletaComboBox.setBounds(107, 50, 134, 22);
 		AtletaComboBox.setSelectedIndex(-1);
@@ -197,11 +199,6 @@ public class InsertContratto extends JFrame {
 			NomiSponsor.add(sponsor.getNomeSponsor());
 		
 		SponsorComboBox = new JComboBox(NomiSponsor.toArray());
-		SponsorComboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				AtletaComboBox.actionPerformed(e);
-			}
-		});
 		SponsorComboBox.setBounds(364, 89, 134, 22);
 		SponsorComboBox.setSelectedIndex(-1);
 		SponsorComboBox.setVisible(false);
@@ -398,5 +395,6 @@ public class InsertContratto extends JFrame {
 		CompensoProcuratoreTextField.setText(null);
 		ClubComboBox.setSelectedIndex(-1);
 		SponsorComboBox.setSelectedIndex(-1);
+		GettonePresenzaNazionaleTextField.setText(null);
 	}
 }
