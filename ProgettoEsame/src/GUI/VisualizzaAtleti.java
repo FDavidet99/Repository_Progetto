@@ -55,7 +55,7 @@ public class VisualizzaAtleti extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		labelTitolo = new JLabel("Elenco Atleti");
+		labelTitolo = new JLabel("Scegli Atleta");
 		labelTitolo.setHorizontalAlignment(SwingConstants.CENTER);
 		labelTitolo.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		labelTitolo.setBounds(10, 10, 794, 33);
@@ -71,14 +71,14 @@ public class VisualizzaAtleti extends JFrame {
 		scrollPane.setViewportView(TabellaAtleti);
 		
 		TabellaAtleti.setModel(new DefaultTableModel(
-				PopolaTabellaAtleti(),Colonne 
+				PopolaTabellaAtleti(Colonne.length),Colonne 
 		){
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int r,int c) {
 				return false;
 			}
 		});
-		TabellaAtleti.getColumnModel().getColumn(0).setPreferredWidth(120);
+		TabellaAtleti.getColumnModel().getColumn(0).setPreferredWidth(110);
 		
 		TabellaAtleti.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
@@ -99,12 +99,12 @@ public class VisualizzaAtleti extends JFrame {
 
 	}
 
-	public Object[][] PopolaTabellaAtleti() {
+	public Object[][] PopolaTabellaAtleti(int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
 			ArrayList<Atleta> Atleti=(ArrayList<Atleta>) dao.GetAtleti();	
-			Contenutotab=new Object [Atleti.size()][8];		
+			Contenutotab=new Object [Atleti.size()][NumColonne];		
 			for(int i=0;i<Atleti.size();i++){
 					Atleta TmpAtleta=Atleti.get(i);	
 					String provincia  = "Estero"; 
@@ -156,13 +156,7 @@ public class VisualizzaAtleti extends JFrame {
         	Atleta atletaSel = ListaAtletiVisualizzati.get(i);
         	controller.GotoInfoAtletaFromVisualizzaAtleta(atletaSel);
         	
-    	} catch (IndexOutOfBoundsException e) {
-    		JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Selezionare atleta",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 100);
-			Dialog.setVisible(true);
-		} catch (EccezioneCF e) {
+    	} catch (IndexOutOfBoundsException | EccezioneCF e) {
     		JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Selezionare atleta",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
@@ -170,7 +164,7 @@ public class VisualizzaAtleti extends JFrame {
 			Dialog.setVisible(true);
 		} catch (SQLException e) {
     		JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Selezionare atleta",SwingConstants.CENTER); 
+			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
 			Dialog.setBounds(400, 150, 250, 100);
 			Dialog.setVisible(true);

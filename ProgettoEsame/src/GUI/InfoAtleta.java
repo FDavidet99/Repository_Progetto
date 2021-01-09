@@ -33,6 +33,7 @@ import java.awt.Font;
 import java.awt.ScrollPane;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,12 +43,13 @@ import javax.swing.Scrollable;
 import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import com.toedter.calendar.JDateChooser;
 
 public class InfoAtleta extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField ProcuratoreAttivoField;
-	private JTable TabellaContrattiAttivi;
+	private JTable TabellaStatistiche;
 	Controller controller;
 	private JTextField textField;
 
@@ -111,22 +113,19 @@ public class InfoAtleta extends JFrame {
 		scrollPane.setBounds(10, 140, 700, 87);
 		contentPane.add(scrollPane);
 		
-		JButton StoriaProcuratoriButton = new JButton("Storia Procuratori");
-		StoriaProcuratoriButton.setBounds(515, 70, 144, 23);
-		contentPane.add(StoriaProcuratoriButton);
-		
 		JLabel InfoLabel = new JLabel("Informazioni dell'atleta:"+" "+atleta.getNome()+" "+atleta.getCognome());
 		InfoLabel.setFont(new Font("Monospaced", Font.PLAIN, 15));
 		InfoLabel.setBounds(10, 33, 509, 21);
 		contentPane.add(InfoLabel);
 					
-		Object[] Colonne= {"Id Contratto", "Club/Sponsor", "Entita Stipulante", "Data Fine", "Compenso"};
+		Object[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante", "Data Fine", "Compenso"};
+		Object[] ColonneTabStoriaProcuratori= {"Codice Fiscale P.","Nome","Cognome", "Data Inizio", "Data Fine", "Stipendio"};
 		
-		TabellaContrattiAttivi = new JTable();
-		scrollPane.setViewportView(TabellaContrattiAttivi);
+		TabellaStatistiche = new JTable();
+		scrollPane.setViewportView(TabellaStatistiche);
 		
-		TabellaContrattiAttivi.setModel(new DefaultTableModel(
-				PopolaTabellaContrattiAttivi(atleta),Colonne 
+		TabellaStatistiche.setModel(new DefaultTableModel(
+				PopolaTabellaContrattiAttivi(atleta,ColonneTabContratti.length),ColonneTabContratti 
 		){
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int r,int c) {
@@ -137,8 +136,8 @@ public class InfoAtleta extends JFrame {
 		JRadioButton ContrattiAttiviRadioButton = new JRadioButton("Contratti Attivi\r\n");
 		ContrattiAttiviRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TabellaContrattiAttivi.setModel(new DefaultTableModel(
-						PopolaTabellaContrattiAttivi(atleta),Colonne 
+				TabellaStatistiche.setModel(new DefaultTableModel(
+						PopolaTabellaContrattiAttivi(atleta,ColonneTabContratti.length),ColonneTabContratti 
 				){
 					private static final long serialVersionUID = 1L;
 					public boolean isCellEditable(int r,int c) {
@@ -157,8 +156,8 @@ public class InfoAtleta extends JFrame {
 		JRadioButton StoriaContrattiRadioButton = new JRadioButton("Storia Contratti");
 		StoriaContrattiRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TabellaContrattiAttivi.setModel(new DefaultTableModel(
-						PopolaTabellaContratti(atleta),Colonne 
+				TabellaStatistiche.setModel(new DefaultTableModel(
+						PopolaTabellaContratti(atleta,ColonneTabContratti.length),ColonneTabContratti 
 				){
 					private static final long serialVersionUID = 1L;
 					public boolean isCellEditable(int r,int c) {
@@ -167,31 +166,67 @@ public class InfoAtleta extends JFrame {
 				});
 			}
 		});
-		StoriaContrattiRadioButton.setBounds(128, 110, 144, 23);
+		StoriaContrattiRadioButton.setBounds(128, 110, 109, 23);
 		contentPane.add(StoriaContrattiRadioButton);
 		
-		 ButtonGroup group = new ButtonGroup();
-		    group.add(ContrattiAttiviRadioButton);
-		    group.add(StoriaContrattiRadioButton);
-	
+		JRadioButton StoriaProcuratoriRadioButton = new JRadioButton("Storia Procuratori");
+		StoriaProcuratoriRadioButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TabellaStatistiche.setModel(new DefaultTableModel(
+						PopolaTabellaProcuratori(atleta, ColonneTabStoriaProcuratori.length),ColonneTabStoriaProcuratori
+				){
+					private static final long serialVersionUID = 1L;
+					public boolean isCellEditable(int r,int c) {
+						return false;
+					}
+				});
+				TabellaStatistiche.getColumnModel().getColumn(0).setPreferredWidth(100);
+			}
+		});
+	    StoriaProcuratoriRadioButton.setBounds(239, 110, 144, 23);
+	    contentPane.add(StoriaProcuratoriRadioButton);
 		
 		
+	    ButtonGroup GroupTabella = new ButtonGroup();
+		    GroupTabella.add(ContrattiAttiviRadioButton);
+		    GroupTabella.add(StoriaContrattiRadioButton);
+		    GroupTabella.add(StoriaProcuratoriRadioButton);
+		    
+		    JDateChooser dateChooser = new JDateChooser();
+		    dateChooser.setBounds(56, 313, 150, 20);
+		    contentPane.add(dateChooser);
+		    
+		    JDateChooser dateChooser_1 = new JDateChooser();
+		    dateChooser_1.setBounds(262, 313, 144, 20);
+		    contentPane.add(dateChooser_1);
+		    
+//		
 //		double SommaGuadagni=0.0;
-//		tableprova.getRowCount();
-//		for(int i=0;i<tableprova.getRowCount();i++) {
-//			SommaGuadagni+=(Double)tableprova.getValueAt(i,4);
+//		TabellaStatistiche.getRowCount();
+//		List ColonneTabContrattiList = Arrays.asList(ColonneTabContratti);
+//		ArrayList list = new ArrayList();
+//		for(int i=0;i<TabellaStatistiche.getRowCount();i++) {
+//			SommaGuadagni+=(Double)TabellaStatistiche.getValueAt(i,ColonneTabContrattiList.indexOf("Compenso"));
+//			 list.add(TabellaStatistiche.getValueAt(i,ColonneTabContrattiList.indexOf("Compenso")));
 //		}
+//		
+//		for(int i = 0;i<TabellaStatistiche.getRowCount();i++){
+//		    list.add(TabellaStatistiche.getValueAt(i,0)); //get the all row values at column index 0
+//		}
+//		
+//		Integer maxVal = Collections.max(myList); // should return 7
+//		Integer maxIdx = myList.indexOf(maxVal); // should return 2 (position of the value 7)
 //		
 //		textField = new JTextField();
 //		textField.setBounds(525, 273, 86, 20);
 //		contentPane.add(textField);
 //		textField.setColumns(10);
 //		textField.setText(String.valueOf(SommaGuadagni));
-//		
+		
 		
 	}
 	
-	public Object[][] PopolaTabellaContrattiAttivi(Atleta atleta) {
+	public Object[][] PopolaTabellaContrattiAttivi(Atleta atleta, int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
@@ -202,7 +237,7 @@ public class InfoAtleta extends JFrame {
 			        it.remove();
 			    }
 			}
-			Contenutotab=new Object [ContrattiAttivi.size()][5];		
+			Contenutotab=new Object [ContrattiAttivi.size()][NumColonne];		
 			for(int i=0;i<ContrattiAttivi.size();i++){
 					Contratto TmpContratto=ContrattiAttivi.get(i);	
 					String NomeClub_Sponsor;
@@ -243,7 +278,7 @@ public class InfoAtleta extends JFrame {
 		return Contenutotab;
 	}
 	
-	public Object[][] PopolaTabellaContratti(Atleta atleta) {
+	public Object[][] PopolaTabellaContratti(Atleta atleta,int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
@@ -254,7 +289,7 @@ public class InfoAtleta extends JFrame {
 			        it.remove();
 			    }
 			}
-			Contenutotab=new Object [ContrattiAttivi.size()][5];		
+			Contenutotab=new Object [ContrattiAttivi.size()][NumColonne];		
 			for(int i=0;i<ContrattiAttivi.size();i++){
 					Contratto TmpContratto=ContrattiAttivi.get(i);	
 					String NomeClub_Sponsor;
@@ -272,6 +307,45 @@ public class InfoAtleta extends JFrame {
 						Contenutotab[i][2]=NomeClub_Sponsor;
 						Contenutotab[i][3]=TmpContratto.getDataFine();
 						Contenutotab[i][4]=TmpContratto.getCompensoAtleta();
+			}	
+		} catch (EccezioneCF e) {
+			JDialog Dialog = new JDialog(); 
+	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
+	        Dialog.getContentPane().add(LabelJDialog); 
+            Dialog.setBounds(400, 150, 240, 150);
+	        Dialog.setVisible(true);
+		} catch (NullPointerException e1) {
+			JDialog Dialog = new JDialog(); 
+	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
+	        Dialog.getContentPane().add(LabelJDialog); 
+            Dialog.setBounds(400, 150, 240, 150);
+	        Dialog.setVisible(true);
+		} catch (SQLException e) {
+			JDialog Dialog = new JDialog(); 
+			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setBounds(400, 150, 250, 200);
+			Dialog.setVisible(true);
+		}
+		return Contenutotab;
+	}
+
+
+	public Object[][] PopolaTabellaProcuratori(Atleta atleta,int NumColonne) {
+		Object[][] Contenutotab=new Object [0][0];
+		try {
+			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
+			ArrayList<Ingaggio> Ingaggi=(ArrayList<Ingaggio>) dao.GetIngaggiByAtleta(atleta);	
+			Contenutotab=new Object [Ingaggi.size()][NumColonne];		
+			for(int i=0;i<Ingaggi.size();i++){
+					Ingaggio TmpIngaggio=Ingaggi.get(i);	
+
+					Contenutotab[i][0]=TmpIngaggio.getProcuratore().getCF();
+					Contenutotab[i][1]=TmpIngaggio.getProcuratore().getNome();
+					Contenutotab[i][2]=TmpIngaggio.getProcuratore().getCognome();
+					Contenutotab[i][3]=TmpIngaggio.getDataInizio();
+					Contenutotab[i][4]=TmpIngaggio.getDataInizio();
+					Contenutotab[i][5]=TmpIngaggio.getStipendioProcuratore();
 			}	
 		} catch (EccezioneCF e) {
 			JDialog Dialog = new JDialog(); 
