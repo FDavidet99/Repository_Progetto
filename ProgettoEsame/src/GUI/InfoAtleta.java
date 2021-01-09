@@ -92,6 +92,22 @@ public class InfoAtleta extends JFrame {
 		
 		JButton InfoProcuratoreButton = new JButton("Info Procuratore");
 		InfoProcuratoreButton.setBounds(341, 70, 144, 23);
+		InfoProcuratoreButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					
+				try {
+					controller.GotoInfoProcuratoreFromInfoAtleta(
+							DAO.GetProcuratoreAttivo(atleta));
+				} catch (EccezioneCF e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		contentPane.add(InfoProcuratoreButton);
 		
 		ProcuratoreAttivoField = new JTextField();
@@ -223,6 +239,23 @@ public class InfoAtleta extends JFrame {
 //		textField.setColumns(10);
 //		textField.setText(String.valueOf(SommaGuadagni));
 		
+	    JButton HomeButton = new JButton("Home");
+		HomeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.GotoHomeFromInfoAtleta();
+			}
+		});
+		HomeButton.setBounds(510, 313, 89, 23);
+		contentPane.add(HomeButton);
+		
+		JButton indietroBtn = new JButton("Indietro");
+		indietroBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.GotoVisualizzaAtletiFromInfoAtleta();
+			}
+		});
+		indietroBtn.setBounds(610, 313, 89, 23);
+		contentPane.add(indietroBtn);
 		
 	}
 	

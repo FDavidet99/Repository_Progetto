@@ -1,6 +1,7 @@
 package GUI;
 
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.sql.BatchUpdateException;
 import java.sql.SQLException;
@@ -259,7 +260,28 @@ public class Controller {
 	
 	public void GotoInfoProcuratoreFromVisualizzaProcuratore(ProcuratoreSportivo proc) {
 		PageViewProcuratori.setVisible(false);
-		PageInfoProcuratore = new InfoProcuratore(this,proc);
+		try {
+			PageInfoProcuratore = new InfoProcuratore(this,proc);
+		} catch (EccezioneCF e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PageInfoProcuratore.setVisible(true);
+	}
+	public void GotoInfoProcuratoreFromInfoAtleta(ProcuratoreSportivo proc) {
+		PageInfoAtleta.setVisible(false);
+		try {
+			PageInfoProcuratore = new InfoProcuratore(this,proc);
+		} catch (EccezioneCF e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		PageInfoProcuratore.setVisible(true);
 	}
 	
@@ -267,6 +289,17 @@ public class Controller {
 		PageInfoProcuratore.setVisible(false);
 		HomePage.setVisible(true);
 	}
+	
+	public void GotoVisualizzaProcFromInfoProcuratore() {
+		PageInfoProcuratore.setVisible(false);
+		PageViewProcuratori.setVisible(true);
+	}
+	
+	public void GotoVisualizzaAtletiFromInfoAtleta() {
+		PageInfoAtleta.setVisible(false);
+		PageViewAtleti.setVisible(true);
+	}
+	
 	
 	public void GoToPageInsertContratto() {
 		try {

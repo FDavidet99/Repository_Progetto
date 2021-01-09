@@ -39,6 +39,10 @@ public class VisualizzaAtleti extends JFrame {
 
 	private JPanel contentPane;
 	private JTable TabellaAtleti;
+	public JTable getTabellaAtleti() {
+		return TabellaAtleti;
+	}
+
 	private JLabel labelTitolo;
 	private ArrayList<Atleta> ListaAtletiVisualizzati = new ArrayList<Atleta>();
 	Controller controller;
@@ -83,7 +87,6 @@ public class VisualizzaAtleti extends JFrame {
 		TabellaAtleti.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
 	        	AtletaSelezionato(TabellaAtleti,controller);
-	        	TabellaAtleti.setBackground(Color.red);
 	        }
 	    });
 		
@@ -154,7 +157,13 @@ public class VisualizzaAtleti extends JFrame {
     		if(i==-1)
     			return;
         	Atleta atletaSel = ListaAtletiVisualizzati.get(i);
-        	controller.GotoInfoAtletaFromVisualizzaAtleta(atletaSel);
+        	
+        	int dialogButton = 0;
+			int dialogResult = JOptionPane.showConfirmDialog (null, "Vuoi visualizzare le info dell' atleta '"
+					+ atletaSel.getNome()+ " "+atletaSel.getCognome()+"'?","Warning",dialogButton);
+        	if(dialogResult == JOptionPane.YES_OPTION){
+        		controller.GotoInfoAtletaFromVisualizzaAtleta(atletaSel);
+        	}
         	
     	} catch (IndexOutOfBoundsException | EccezioneCF e) {
     		JDialog Dialog = new JDialog(); 
@@ -169,7 +178,6 @@ public class VisualizzaAtleti extends JFrame {
 			Dialog.setBounds(400, 150, 250, 100);
 			Dialog.setVisible(true);
 		}
-		
     	tabellaAtleti.clearSelection(); // deseleziona
 	}
 	
