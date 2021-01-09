@@ -40,6 +40,10 @@ public class VisualizzaProcuratori extends JFrame {
 
 	private JPanel contentPane;
 	private JTable TabellaProcuratori;
+	public JTable getTabellaProcuratori() {
+		return TabellaProcuratori;
+	}
+
 	private JLabel labelTitolo;
 	private ArrayList<Atleta> ListaProcuratoriVisualizzati = new ArrayList<Atleta>();
 	Controller controller;
@@ -84,7 +88,6 @@ public class VisualizzaProcuratori extends JFrame {
 		TabellaProcuratori.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
 	        	ProcuratoreSelezionato(TabellaProcuratori,controller);
-	        	TabellaProcuratori.setBackground(Color.red);
 	        }
 	    });
 		
@@ -155,7 +158,13 @@ public class VisualizzaProcuratori extends JFrame {
     		if(i==-1)
     			return;
         	ProcuratoreSportivo procuratoreSelezionato = ProcuratoriVisualizzati.get(i);
-        	controller.GotoInfoProcuratoreFromVisualizzaProcuratore(procuratoreSelezionato);
+        	int dialogButton = 0;
+			int dialogResult = JOptionPane.showConfirmDialog (null, "Vuoi visualizzare le info del procuratore '"
+					+ procuratoreSelezionato.getNome()+ " "+procuratoreSelezionato.getCognome()+"'?","Warning",dialogButton);
+        	if(dialogResult == JOptionPane.YES_OPTION){
+        		controller.GotoInfoProcuratoreFromVisualizzaProcuratore(procuratoreSelezionato);
+        	}
+        	
         	
     	} catch (IndexOutOfBoundsException | EccezioneCF e) {
     		JDialog Dialog = new JDialog(); 
