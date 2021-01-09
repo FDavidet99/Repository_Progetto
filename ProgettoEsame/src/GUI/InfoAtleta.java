@@ -20,6 +20,7 @@ import Entità.Contratto;
 import Entità.Ingaggio;
 import Entità.Persona;
 import Entità.ProcuratoreSportivo;
+import Entità.TipoContratto;
 import ImplementationDAO.ImplementationDAO;
 
 import javax.swing.JSplitPane;
@@ -31,7 +32,11 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.ScrollPane;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -52,6 +57,8 @@ public class InfoAtleta extends JFrame {
 	private JTable TabellaStatistiche;
 	Controller controller;
 	private JTextField textField;
+	private JTextField ClubField_1;
+	private JTextField SponsorField_2;
 
 //	/**
 //	 * Launch the application.
@@ -118,14 +125,15 @@ public class InfoAtleta extends JFrame {
 		InfoLabel.setBounds(10, 33, 509, 21);
 		contentPane.add(InfoLabel);
 					
-		Object[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante", "Data Fine", "Compenso"};
+		Object[] ColonneTabContrattiAttivi= {"Id Contratto", "Club/Sponsor", "Entita Stipulante", "Data Fine", "Compenso"};
+		Object[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante","Data Inizio","Data Fine", "Compenso"};
 		Object[] ColonneTabStoriaProcuratori= {"Codice Fiscale P.","Nome","Cognome", "Data Inizio", "Data Fine", "Stipendio"};
 		
 		TabellaStatistiche = new JTable();
 		scrollPane.setViewportView(TabellaStatistiche);
 		
 		TabellaStatistiche.setModel(new DefaultTableModel(
-				PopolaTabellaContrattiAttivi(atleta,ColonneTabContratti.length),ColonneTabContratti 
+				PopolaTabellaContrattiAttivi(atleta,ColonneTabContrattiAttivi.length),ColonneTabContrattiAttivi
 		){
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int r,int c) {
@@ -137,7 +145,7 @@ public class InfoAtleta extends JFrame {
 		ContrattiAttiviRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TabellaStatistiche.setModel(new DefaultTableModel(
-						PopolaTabellaContrattiAttivi(atleta,ColonneTabContratti.length),ColonneTabContratti 
+						PopolaTabellaContrattiAttivi(atleta,ColonneTabContrattiAttivi.length),ColonneTabContrattiAttivi
 				){
 					private static final long serialVersionUID = 1L;
 					public boolean isCellEditable(int r,int c) {
@@ -192,37 +200,55 @@ public class InfoAtleta extends JFrame {
 		    GroupTabella.add(StoriaContrattiRadioButton);
 		    GroupTabella.add(StoriaProcuratoriRadioButton);
 		    
-		    JDateChooser dateChooser = new JDateChooser();
-		    dateChooser.setBounds(56, 313, 150, 20);
-		    contentPane.add(dateChooser);
+		  
 		    
-		    JDateChooser dateChooser_1 = new JDateChooser();
-		    dateChooser_1.setBounds(262, 313, 144, 20);
-		    contentPane.add(dateChooser_1);
+		    JDateChooser DateInizioDateChooser = new JDateChooser();
+		    DateInizioDateChooser.setBounds(10, 283, 150, 20);
+		    contentPane.add(DateInizioDateChooser);
 		    
-//		
-//		double SommaGuadagni=0.0;
-//		TabellaStatistiche.getRowCount();
-//		List ColonneTabContrattiList = Arrays.asList(ColonneTabContratti);
-//		ArrayList list = new ArrayList();
-//		for(int i=0;i<TabellaStatistiche.getRowCount();i++) {
-//			SommaGuadagni+=(Double)TabellaStatistiche.getValueAt(i,ColonneTabContrattiList.indexOf("Compenso"));
-//			 list.add(TabellaStatistiche.getValueAt(i,ColonneTabContrattiList.indexOf("Compenso")));
-//		}
-//		
-//		for(int i = 0;i<TabellaStatistiche.getRowCount();i++){
-//		    list.add(TabellaStatistiche.getValueAt(i,0)); //get the all row values at column index 0
-//		}
-//		
-//		Integer maxVal = Collections.max(myList); // should return 7
-//		Integer maxIdx = myList.indexOf(maxVal); // should return 2 (position of the value 7)
-//		
-//		textField = new JTextField();
-//		textField.setBounds(525, 273, 86, 20);
-//		contentPane.add(textField);
-//		textField.setColumns(10);
-//		textField.setText(String.valueOf(SommaGuadagni));
-		
+		    JDateChooser DateFineDateChooser_1 = new JDateChooser();
+		    DateFineDateChooser_1.setBounds(201, 283, 144, 20);
+		    contentPane.add(DateFineDateChooser_1);
+		    
+		    ClubField_1 = new JTextField();
+		    ClubField_1.setBounds(235, 338, 187, 20);
+		    contentPane.add(ClubField_1);
+		    ClubField_1.setColumns(10);
+		    
+		    SponsorField_2 = new JTextField();
+		    SponsorField_2.setBounds(235, 368, 187, 20);
+		    contentPane.add(SponsorField_2);
+		    SponsorField_2.setColumns(10);
+		    
+		    JButton btnNewButton = new JButton("New button");
+		    btnNewButton.addActionListener(new ActionListener() {
+		    	public void actionPerformed(ActionEvent e) {
+				try {
+					LocalDate TempDate1=DateInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				    LocalDate TempDate2=DateFineDateChooser_1.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
+				    ArrayList<Contratto> Prova = (ArrayList) DAO.GetMaxContrattiAtleta(atleta,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
+					Iterator i=Prova.iterator();
+					while(i.hasNext()) {
+					Contratto Tmp=(Contratto) i.next();
+					System.out.println(Tmp);
+					if(Tmp.getTipo().equals(TipoContratto.Club))
+					    ClubField_1.setText(String.valueOf(Tmp.getCompensoAtleta()));
+					else
+						SponsorField_2.setText(String.valueOf(Tmp.getCompensoAtleta()));
+					}
+				} catch (EccezioneCF e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				  
+					    
+		    	}
+		    });
+		    btnNewButton.setBounds(451, 283, 89, 23);
+		    contentPane.add(btnNewButton);	
 		
 	}
 	
@@ -305,8 +331,9 @@ public class InfoAtleta extends JFrame {
 						Contenutotab[i][0]=TmpContratto.getIdContratto();
 						Contenutotab[i][1]=TmpContratto.getTipo();
 						Contenutotab[i][2]=NomeClub_Sponsor;
-						Contenutotab[i][3]=TmpContratto.getDataFine();
-						Contenutotab[i][4]=TmpContratto.getCompensoAtleta();
+						Contenutotab[i][3]=TmpContratto.getDataInizio();
+						Contenutotab[i][4]=TmpContratto.getDataFine();
+						Contenutotab[i][5]=TmpContratto.getCompensoAtleta();
 			}	
 		} catch (EccezioneCF e) {
 			JDialog Dialog = new JDialog(); 

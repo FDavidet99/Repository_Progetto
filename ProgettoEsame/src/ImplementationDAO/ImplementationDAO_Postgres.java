@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.print.attribute.standard.MediaSize.Other;
+
 import com.sun.jdi.Type;
 
 import Eccezioni.EccezioneCF;
@@ -49,6 +51,17 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetClubById=Connection.prepareStatement("SELECT * FROM ClubSportivo Where IdClub=?;");
 		StmGetContratti = Connection.prepareStatement("SELECT * From contratto;");
 		StmGetContrattiAttivi = Connection.prepareStatement("SELECT * FROM Contratto where ?::date>=datainizio and ?::date <datafine ;");
+		
+		
+		StmGetMaxContrattiAtleta=Connection.prepareStatement("Select tipocontratto,max(compenso) From Contratto  where tipocontratto= 'Club' "+
+				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ? ) AND codicefiscaleatleta=? "+
+				"group by  tipocontratto "+
+				"union "+
+				"Select tipocontratto,max(compenso) From Contratto  where tipocontratto= 'Sponsor'  "+
+				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "+
+				"AND codicefiscaleatleta=? "+ 
+				"group by  tipocontratto;");
+		
 	}
 
 	@Override
@@ -448,6 +461,9 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	
 	@Override
 	public List<Contratto> GetContrattiAttivi() throws SQLException, EccezioneCF {
+		
+		//Verificare se si possono toglere le stringhe
+		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String curDate = formatter.format(new Date(System.currentTimeMillis()));
 		StmGetContrattiAttivi.setString(1,curDate);
@@ -481,6 +497,32 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		}
 		rs.close();
 		return contrattiAttivi;
+	}
+
+	@Override
+	public List GetMaxContrattiAtleta(Atleta atleta,Date DataInizio,Date DataFine) throws EccezioneCF, SQLException {
+		ArrayList<Contratto> ValoriMassimi= new ArrayList<Contratto>();
+		StmGetMaxContrattiAtleta.setDate(1,DataInizio);
+		StmGetMaxContrattiAtleta.setDate(2,DataFine);
+		StmGetMaxContrattiAtleta.setDate(3,DataInizio);
+		StmGetMaxContrattiAtleta.setDate(4,DataFine);
+		StmGetMaxContrattiAtleta.setString(5, atleta.getCF());
+		StmGetMaxContrattiAtleta.setDate(6,DataInizio);
+		StmGetMaxContrattiAtleta.setDate(7,DataFine);
+		StmGetMaxContrattiAtleta.setDate(8,DataInizio);
+		StmGetMaxContrattiAtleta.setDate(9,DataFine);
+		StmGetMaxContrattiAtleta.setString(10, atleta.getCF());
+		ResultSet rs= StmGetMaxContrattiAtleta.executeQuery();
+		while(rs.next()) {
+			double CompensoAtleta = rs.getDouble("max");
+			TipoContratto TipoC = TipoContratto.Club;
+			if(rs.getString("tipocontratto").equals("Sponsor"))
+				TipoC = TipoContratto.Sponsor;	
+			Contratto contratto = new Contratto (null, atleta, null, null, TipoC, null, null, CompensoAtleta, 0,0);
+			ValoriMassimi.add(contratto);	
+		}
+		System.out.println(ValoriMassimi.size());
+		return ValoriMassimi;	
 	}
 	
 }
