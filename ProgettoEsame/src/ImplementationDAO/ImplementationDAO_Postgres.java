@@ -54,19 +54,19 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		
 		
 		StmGetMaxContrattiAtleta=Connection.prepareStatement("(Select tipocontratto,club as Entita,compenso From Contratto "+
-		"where compenso=( "+
+				" where  tipocontratto= 'Club' and compenso = ( "+
 				"Select max(compenso) From Contratto  where tipocontratto= 'Club' "+
 				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ? ) AND codicefiscaleatleta=? "+
-				"group by  tipocontratto)) "+
+				")) "+
 				
 				"union "+
 				
 				"(Select tipocontratto,sponsor as Entita,compenso From Contratto "+
-				"where compenso=( "+
+				 "where  tipocontratto= 'Sponsor' and compenso = ( "+
 				"Select max(compenso) From Contratto  where tipocontratto= 'Sponsor'  "+
 				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "+
 				"AND codicefiscaleatleta=? "+ 
-				"group by  tipocontratto))");
+				"))");
 		
 	}
 
@@ -535,13 +535,12 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			}
 			Contratto contratto = new Contratto (null, atleta, null, null, TipoC, club, sponsor, CompensoAtleta, 0,0);
 			
-			System.out.println(contratto.getTipo()+" "+(contratto.getClub() != null ? contratto.getClub().getIdClubSportivo() + ", " : "")
-					+" "+(contratto.getSponsor() != null ? contratto.getSponsor().getIdSponsor() + ", " : "")
-					);
+//			System.out.println(contratto.getTipo()+" "+(contratto.getClub() != null ? contratto.getClub().getIdClubSportivo() + ", " : "")
+//					+" "+(contratto.getSponsor() != null ? contratto.getSponsor().getIdSponsor() + ", " : "")
+//					);
 
 			ValoriMassimi.add(contratto);	
 		}
-		System.out.println(ValoriMassimi.size());
 		return ValoriMassimi;	
 	}
 	

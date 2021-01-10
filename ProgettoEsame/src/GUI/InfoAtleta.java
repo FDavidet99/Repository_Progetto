@@ -55,7 +55,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 
 public class InfoAtleta extends JFrame {
-
+	private Atleta atleta;
 	private JPanel contentPane;
 	private JTextField ProcuratoreAttivoField;
 	private JTable TabellaStatistiche;
@@ -65,6 +65,12 @@ public class InfoAtleta extends JFrame {
 	private JTextField SommaGuadagniTextField;
 	private JTextField NomeClubTextField;
 	private JTextField NomeSponsorTextField;
+	private JTable TabellaIntroiti;
+	private Object[] ColonneIntroiti= {"Club/Sponsor id", "Club/Sponsor", "Compenso"};
+	private JLabel lblTotStat;
+	private JLabel lblTotIntroiti;
+	private JDateChooser DateInizioDateChooser;
+	private JDateChooser DateFineDateChooser;
 
 //	/**
 //	 * Launch the application.
@@ -89,12 +95,22 @@ public class InfoAtleta extends JFrame {
 	 */
 	public InfoAtleta(Controller c,Atleta atleta) throws SQLException, EccezioneCF {
 		controller=c;
+		this.atleta = atleta;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 830, 560);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+
+	    lblTotStat = new JLabel("Totale= -");
+	    lblTotStat.setBounds(601, 232, 109, 18);
+	    contentPane.add(lblTotStat);
+	    
+	    lblTotIntroiti = new JLabel("Totale= - ");
+	    lblTotIntroiti.setBounds(601, 437, 109, 18);
+	    contentPane.add(lblTotIntroiti);
 		
 		ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
 		
@@ -151,6 +167,7 @@ public class InfoAtleta extends JFrame {
 				return false;
 			}
 		});
+		setLblTotStat();
 		
 		JRadioButton ContrattiAttiviRadioButton = new JRadioButton("Contratti Attivi\r\n");
 		ContrattiAttiviRadioButton.addActionListener(new ActionListener() {
@@ -163,7 +180,7 @@ public class InfoAtleta extends JFrame {
 						return false;
 					}
 				});
-				
+				setLblTotStat();
 			}
 		});
 		ContrattiAttiviRadioButton.setBounds(17, 110, 109, 23);
@@ -183,6 +200,7 @@ public class InfoAtleta extends JFrame {
 						return false;
 					}
 				});
+				setLblTotStat();
 			}
 		});
 		StoriaContrattiRadioButton.setBounds(128, 110, 109, 23);
@@ -200,6 +218,7 @@ public class InfoAtleta extends JFrame {
 					}
 				});
 				TabellaStatistiche.getColumnModel().getColumn(0).setPreferredWidth(100);
+				setLblTotStat();
 			}
 		});
 	    StoriaProcuratoriRadioButton.setBounds(239, 110, 144, 23);
@@ -216,104 +235,148 @@ public class InfoAtleta extends JFrame {
 		    lblNewLabel_2.setBounds(20, 248, 178, 14);
 		    contentPane.add(lblNewLabel_2);
 		    
-		    ClubTextField = new JTextField();
-		    ClubTextField.setEditable(false);
-		    ClubTextField.setBounds(355, 338, 187, 20);
-		    contentPane.add(ClubTextField);
-		    ClubTextField.setColumns(10);
 		    
-		    SponsorTextField = new JTextField();
-		    SponsorTextField.setEditable(false);
-		    SponsorTextField.setBounds(341, 368, 187, 20);
-		    contentPane.add(SponsorTextField);
-		    SponsorTextField.setColumns(10);
 		    
-		    JLabel ClubMaxLabel = new JLabel("Club ");
-		    ClubMaxLabel.setBounds(44, 341, 46, 14);
-		    contentPane.add(ClubMaxLabel);
-		    
-		    JLabel lblNewLabel_1 = new JLabel("Sponsor");
-		    lblNewLabel_1.setBounds(44, 371, 46, 14);
-		    contentPane.add(lblNewLabel_1);
-		    
-		    SommaGuadagniTextField = new JTextField();
-		    SommaGuadagniTextField.setEditable(false);
-		    SommaGuadagniTextField.setBounds(201, 424, 123, 20);
-		    contentPane.add(SommaGuadagniTextField);
-		    SommaGuadagniTextField.setColumns(10);
-		    
-		    JLabel lblNewLabel = new JLabel("Somma guadagni periodo");
-		    lblNewLabel.setBounds(44, 427, 129, 14);
-		    contentPane.add(lblNewLabel);  
-		    
-		    JDateChooser DateInizioDateChooser = new JDateChooser();
+		    DateInizioDateChooser = new JDateChooser();
 		    DateInizioDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
 		    	public void propertyChange(PropertyChangeEvent evt) {
-		    		//SvuotaCampi();
+		    		if(DateFineDateChooser==null || DateInizioDateChooser == null)
+		    			return;
+		    		if(DateInizioDateChooser.getCalendar() == null ||
+		    				DateFineDateChooser.getCalendar() == null)
+		    			return;
+		    		calcolaIntroiti();
 		    	}
 		    });
 		    DateInizioDateChooser.setBounds(10, 283, 150, 20);
 		    DateInizioDateChooser.setDateFormatString("yyyy/MM/dd");
 		    contentPane.add(DateInizioDateChooser);
 		    
-		    JDateChooser DateFineDateChooser = new JDateChooser();
+		    DateFineDateChooser = new JDateChooser();
+		    DateFineDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
+		    	public void propertyChange(PropertyChangeEvent evt) {
+		    		if(DateFineDateChooser==null || DateInizioDateChooser == null)
+		    			return;
+		    		if(DateInizioDateChooser.getCalendar() == null ||
+		    				DateFineDateChooser.getCalendar() == null)
+		    			return;
+		    		calcolaIntroiti();
+		    	}
+		    });
 		    DateFineDateChooser.setBounds(201, 283, 144, 20);
 		    DateFineDateChooser.setDateFormatString("yyyy/MM/dd");
 		    contentPane.add(DateFineDateChooser);
 		    
-		    JButton CalcolaStatisticheButton = new JButton("Calcola statistiche");
-		    CalcolaStatisticheButton.addActionListener(new ActionListener() {
-		    	public void actionPerformed(ActionEvent e) {
-				try {
-					LocalDate TempDate1=DateInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-				    LocalDate TempDate2=DateFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
-				    ArrayList<Contratto> Prova = (ArrayList) DAO.GetMaxContrattiAtleta(atleta,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
-					Iterator i=Prova.iterator();
-					while(i.hasNext()) {
-					Contratto Tmp=(Contratto) i.next();
-					System.out.println(Tmp);
-					if(Tmp.getTipo().equals(TipoContratto.Club))
-					    ClubTextField.setText(String.valueOf(Tmp.getCompensoAtleta()));
-					else
-						SponsorTextField.setText(String.valueOf(Tmp.getCompensoAtleta()));
-					}
-				} catch (EccezioneCF e1) {
-					JDialog Dialog = new JDialog(); 
-					JLabel LabelJDialog= new JLabel("Elementi non visualizzabili",SwingConstants.CENTER); 
-					Dialog.getContentPane().add(LabelJDialog); 
-					Dialog.setBounds(400, 150, 250, 200);
-					Dialog.setVisible(true);
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-					JDialog Dialog = new JDialog(); 
-					JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-					Dialog.getContentPane().add(LabelJDialog); 
-					Dialog.setBounds(400, 150, 250, 200);
-					Dialog.setVisible(true);
-				} catch (NullPointerException e1) {
-					JDialog Dialog = new JDialog(); 
-					JLabel LabelJDialog= new JLabel("Tutti i campi devono essere inseriti",SwingConstants.CENTER); 
-					Dialog.getContentPane().add(LabelJDialog); 
-					Dialog.setBounds(400, 150, 250, 200);
-					Dialog.setVisible(true);
-					}				    
-		    	}
-		    });
-		    CalcolaStatisticheButton.setBounds(411, 283, 178, 23);
-		    contentPane.add(CalcolaStatisticheButton);	
 		    
-		    NomeClubTextField = new JTextField();
-		    NomeClubTextField.setEditable(false);
-		    NomeClubTextField.setBounds(110, 338, 86, 20);
-		    contentPane.add(NomeClubTextField);
-		    NomeClubTextField.setColumns(10);
+		    JScrollPane scrollPane2 = new JScrollPane();
+			scrollPane2.setBounds(10, 340, 700, 87);
+			contentPane.add(scrollPane2);
 		    
-		    NomeSponsorTextField = new JTextField();
-		    NomeSponsorTextField.setBounds(112, 371, 86, 20);
-		    contentPane.add(NomeSponsorTextField);
-		    NomeSponsorTextField.setColumns(10);
+			
+			
+			TabellaIntroiti = new JTable();
+			scrollPane2.setViewportView(TabellaIntroiti);
+			
+			TabellaIntroiti.setModel(new DefaultTableModel(
+					new Object[][] {},ColonneIntroiti
+			){
+				private static final long serialVersionUID = 1L;
+				public boolean isCellEditable(int r,int c) {
+					return false;
+				}
+			});	
 		    
+		    
+		    
+		    
+			
+			
 		
+	}
+	private void setLblTotIntroiti()
+	{
+		
+		int rows = TabellaIntroiti.getModel().getRowCount();
+		double tot=0;
+		for(int i=0;i<rows;i++)
+		{
+			tot+=Double.parseDouble(String.valueOf(TabellaIntroiti.getValueAt(i, 2)));
+		}
+		lblTotIntroiti.setText("Totale = "+tot+" €");
+	}
+	private void setLblTotStat()
+	{
+		int rows = TabellaStatistiche.getModel().getRowCount();
+		double tot=0;
+		for(int i=0;i<rows;i++)
+		{
+			tot+=Double.parseDouble(String.valueOf(TabellaStatistiche.getValueAt(i, 5)));
+			
+		}
+		lblTotStat.setText("Totale = "+tot+" €");
+	}
+	private void calcolaIntroiti()
+	{
+		try {
+			ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
+			LocalDate TempDate1=DateInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		    LocalDate TempDate2=DateFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
+		    ArrayList<Contratto> introiti = (ArrayList) DAO.GetMaxContrattiAtleta(atleta,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
+			Iterator i=introiti.iterator();
+			Object[][] dati = new Object[introiti.size()][3];
+			for(int k=0;k<introiti.size();k++)
+			{
+				TipoContratto tipoContratto = introiti.get(k).getTipo();
+				if(tipoContratto.equals(TipoContratto.Club))
+				{
+					if(introiti.get(k).getClub()==null)
+						continue;
+					dati[k][0] = introiti.get(k).getClub().getNomeClub();
+					dati[k][1] = "Club";
+					dati[k][2] = introiti.get(k).getCompensoAtleta();
+				}
+				else
+				{
+					if(introiti.get(k).getSponsor()==null)
+						continue;
+					dati[k][0] = introiti.get(k).getSponsor().getNomeSponsor();
+					dati[k][1] = "Sponsor";
+					dati[k][2] = introiti.get(k).getCompensoAtleta();
+				}
+				
+			}
+			TabellaIntroiti.setModel(new DefaultTableModel(
+					dati,
+					ColonneIntroiti
+			){
+				private static final long serialVersionUID = 1L;
+				public boolean isCellEditable(int r,int c) {
+					return false;
+				}
+			});
+			setLblTotIntroiti();
+		} catch (EccezioneCF e1) {
+			JDialog Dialog = new JDialog(); 
+			JLabel LabelJDialog= new JLabel("Elementi non visualizzabili",SwingConstants.CENTER); 
+			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setBounds(400, 150, 250, 200);
+			Dialog.setVisible(true);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JDialog Dialog = new JDialog(); 
+			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setBounds(400, 150, 250, 200);
+			Dialog.setVisible(true);
+		} catch (NullPointerException e1) {
+			e1.printStackTrace();
+			JDialog Dialog = new JDialog(); 
+			JLabel LabelJDialog= new JLabel("Tutti i campi devono essere inseriti",SwingConstants.CENTER); 
+			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setBounds(400, 150, 250, 200);
+			Dialog.setVisible(true);
+			}				    
+    	
 	}
 	
 	public Object[][] PopolaTabellaContrattiAttivi(Atleta atleta, int NumColonne) {
@@ -421,8 +484,6 @@ public class InfoAtleta extends JFrame {
 		}
 		return Contenutotab;
 	}
-
-
 	public Object[][] PopolaTabellaProcuratori(Atleta atleta,int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
@@ -459,15 +520,6 @@ public class InfoAtleta extends JFrame {
 			Dialog.setVisible(true);
 		}
 		return Contenutotab;
-	}
-
-	public void SvuotaCampi() {
-		ClubTextField.setText("");
-		SponsorTextField.setText("");
-		SommaGuadagniTextField.setText("");
-		NomeClubTextField.setText("");
-		NomeSponsorTextField.setText("");
-		
 	}
 }
 
