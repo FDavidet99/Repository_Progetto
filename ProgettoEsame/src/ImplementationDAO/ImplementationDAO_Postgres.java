@@ -9,6 +9,8 @@ import java.sql.SQLType;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,7 @@ import javax.print.attribute.standard.MediaSize.Other;
 import com.sun.jdi.Type;
 
 import Eccezioni.EccezioneCF;
-import Entitï¿½.*;
+import Entità.*;
 
 
 public class ImplementationDAO_Postgres extends ImplementationDAO {
@@ -57,14 +59,18 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetMaxContrattiAtleta=Connection.prepareStatement("(Select tipocontratto,club as Entita,compenso From Contratto "+
 				" where  tipocontratto= 'Club' and compenso = ( "+
 				"Select max(compenso) From Contratto  where tipocontratto= 'Club' "+
-				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ? ) AND codicefiscaleatleta=? )) "+
+				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ? ) AND codicefiscaleatleta=? "+
+				")) "+
+				
 				"union "+
+				
 				"(Select tipocontratto,sponsor as Entita,compenso From Contratto "+
 				 "where  tipocontratto= 'Sponsor' and compenso = ( "+
 				"Select max(compenso) From Contratto  where tipocontratto= 'Sponsor'  "+
 				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "+
 				"AND codicefiscaleatleta=? "+ 
 				"))");
+		
 		StmGetMaxContrattiProc = Connection.prepareStatement("(Select tipocontratto,club as Entita,guadagnoprocuratore From Contratto "+
 				" where  tipocontratto= 'Club' and guadagnoprocuratore = ( "+
 				"Select max(guadagnoprocuratore) From Contratto  where tipocontratto= 'Club' "+
@@ -638,11 +644,12 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		ResultSet rs= StmGetInaggiVantaggiosi.executeQuery();
 		while(rs.next()) {
 			String cfAtleta=rs.getString("codicefiscaleatleta");
-			
 			double stipendioProc = rs.getDouble("stipendioprocuratore");
 			
 			
-			Ingaggio ing = new Ingaggio (null,GetAtletaByCodiceFiscale(cfAtleta),null,null,stipendioProc);
+			Ingaggio ing = new Ingaggio (null,GetAtletaByCodiceFiscale(cfAtleta),
+					LocalDate.parse(DataInizio.toString()),
+					LocalDate.parse(DataFine.toString()),stipendioProc);
 //			System.out.println(cfAtleta+" "+stipendioProc);
 			ingaggiVantaggiosi.add(ing);	
 		}

@@ -13,6 +13,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import org.postgresql.translation.messages_bg;
+
 import Controller.ControllerQuery;
 import Eccezioni.EccezioneCF;
 import Entità.Atleta;
@@ -35,7 +37,10 @@ import java.awt.ScrollPane;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.MonthDay;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -66,6 +71,7 @@ public class InfoProcuratore extends JFrame {
 	private JDateChooser dateChooserdataFine;
 	private JRadioButton radioBtnIngaggiVantaggiosi;
 	private JRadioButton radioBtnContrattiVantaggiosi;
+	private List<Ingaggio> ingaggiVant = new ArrayList<Ingaggio>();
 
 //	/**
 //	 * Launch the application.
@@ -104,7 +110,7 @@ public class InfoProcuratore extends JFrame {
 	    contentPane.add(lblTotStat);
 	    
 	    lblTotIntroiti = new JLabel("Totale= - ");
-	    lblTotIntroiti.setBounds(601, 437, 109, 18);
+	    lblTotIntroiti.setBounds(532, 437, 178, 18);
 	    contentPane.add(lblTotIntroiti);
 		
 		
@@ -346,14 +352,16 @@ public class InfoProcuratore extends JFrame {
 	}
 	private void setLblTotIngaggiVantaggiosi()
 	{
-		
 		int rows = TabellaVantaggi.getModel().getRowCount();
 		double tot=0;
 		for(int i=0;i<rows;i++)
 		{
-			tot+=Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 3)));
+			int mesiIngaggio = (int)ChronoUnit.MONTHS.between(
+			        ((Ingaggio) ingaggiVant.get(i)).getDataInizio().withDayOfMonth(1),
+			        ((Ingaggio) ingaggiVant.get(i)).getDataInizio().withDayOfMonth(1)) + 1;
+			tot +=mesiIngaggio *Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 3)));
 		}
-		lblTotIntroiti.setText("Totale = "+tot+" €");
+		lblTotIntroiti.setText("Totale stipendio = "+tot+" €");
 	}
 	private void setLblTotStat()
 	{
@@ -361,11 +369,17 @@ public class InfoProcuratore extends JFrame {
 		double tot=0;
 		for(int i=0;i<rows;i++)
 		{
-			tot+=Double.parseDouble(String.valueOf(TabellaStatistiche.getValueAt(i, 5)));
-			
+			long diff=1;
+			System.out.println(TabellaStatistiche.getValueAt(0, 0).toString());
+			if(TabellaStatistiche.getModel().getColumnName(0).toString().equals("Codice Fiscale A.")) 
+				diff=(ChronoUnit.MONTHS.between((LocalDate)TabellaStatistiche.getValueAt(i, 3),(LocalDate) TabellaStatistiche.getValueAt(i, 4)));
+				
+			tot+=diff*Double.parseDouble(String.valueOf(TabellaStatistiche.getValueAt(i, 5)));
 		}
+		
 		lblTotStat.setText("Totale = "+tot+" €");
 	}
+		
 	private void calcolaContrattiVantaggiosi()
 	{
 		try {
@@ -435,15 +449,15 @@ public class InfoProcuratore extends JFrame {
 			ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
 			LocalDate TempDate1=dateChooserdataInizio.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		    LocalDate TempDate2=dateChooserdataFine.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
-		    ArrayList<Ingaggio> ingaggi = (ArrayList) DAO.GetIngaggiVantaggiosi(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
-			Iterator i=ingaggi.iterator();
-			Object[][] dati = new Object[ingaggi.size()][4];
-			for(int k=0;k<ingaggi.size();k++)
+		    ingaggiVant = (ArrayList) DAO.GetIngaggiVantaggiosi(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
+			Iterator i=ingaggiVant.iterator();
+			Object[][] dati = new Object[ingaggiVant.size()][4];
+			for(int k=0;k<ingaggiVant.size();k++)
 			{
-				dati[k][0] = ingaggi.get(k).getAtleta().getNome();
-				dati[k][1] = ingaggi.get(k).getAtleta().getCognome();
-				dati[k][2] = ingaggi.get(k).getAtleta().getCF();
-				dati[k][3] = ingaggi.get(k).getStipendioProcuratore();
+				dati[k][0] = ingaggiVant.get(k).getAtleta().getNome();
+				dati[k][1] = ingaggiVant.get(k).getAtleta().getCognome();
+				dati[k][2] = ingaggiVant.get(k).getAtleta().getCF();
+				dati[k][3] = ingaggiVant.get(k).getStipendioProcuratore();
 			}
 			TabellaVantaggi.setModel(new DefaultTableModel(
 					dati,

@@ -15,12 +15,12 @@ import javax.swing.table.TableModel;
 
 import Controller.ControllerQuery;
 import Eccezioni.EccezioneCF;
-import Entitï¿½.Atleta;
-import Entitï¿½.Contratto;
-import Entitï¿½.Ingaggio;
-import Entitï¿½.Persona;
-import Entitï¿½.ProcuratoreSportivo;
-import Entitï¿½.TipoContratto;
+import Entità.Atleta;
+import Entità.Contratto;
+import Entità.Ingaggio;
+import Entità.Persona;
+import Entità.ProcuratoreSportivo;
+import Entità.TipoContratto;
 import ImplementationDAO.ImplementationDAO;
 
 import javax.swing.JSplitPane;
@@ -104,7 +104,7 @@ public class InfoAtleta extends JFrame {
 		contentPane.setLayout(null);
 		
 
-	    lblTotStat = new JLabel("Totale= - ");
+	    lblTotStat = new JLabel("Totale= -");
 	    lblTotStat.setBounds(601, 232, 109, 18);
 	    contentPane.add(lblTotStat);
 	    
@@ -293,6 +293,24 @@ public class InfoAtleta extends JFrame {
 			}
 		});	
 		
+		JButton IndietroButton = new JButton("Indietro");
+		IndietroButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.GotoVisualizzaAtletiFromInfoAtleta();
+			}
+		});
+		IndietroButton.setBounds(516, 466, 89, 23);
+		contentPane.add(IndietroButton);
+		
+		JButton HomeButton = new JButton("Home");
+		HomeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.GotoHomeFromInfoAtleta();
+			}
+		});
+		HomeButton.setBounds(635, 466, 89, 23);
+		contentPane.add(HomeButton);
+		
 	}
 	private void setLblTotContrattiVantaggiosi()
 	{
@@ -303,7 +321,7 @@ public class InfoAtleta extends JFrame {
 		{
 			tot+=Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 2)));
 		}
-		lblTotIntroiti.setText("Totale = "+tot+" ï¿½");
+		lblTotIntroiti.setText("Totale = "+tot+" €");
 	}
 	private void setLblTotStat()
 	{
@@ -314,7 +332,7 @@ public class InfoAtleta extends JFrame {
 			tot+=Double.parseDouble(String.valueOf(TabellaStatistiche.getValueAt(i, 5)));
 			
 		}
-		lblTotStat.setText("Totale = "+tot+" ï¿½");
+		lblTotStat.setText("Totale = "+tot+" €");
 	}
 	private void calcolaContrattiVantaggiosi()
 	{
@@ -418,7 +436,7 @@ public class InfoAtleta extends JFrame {
 	        Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Non ï¿½ stato trovato nulla",SwingConstants.CENTER); 
+	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
@@ -471,7 +489,7 @@ public class InfoAtleta extends JFrame {
 	        Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Non ï¿½ stato trovato nulla",SwingConstants.CENTER); 
+	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
@@ -508,7 +526,7 @@ public class InfoAtleta extends JFrame {
 	        Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Non ï¿½ stato trovato nulla",SwingConstants.CENTER); 
+	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
