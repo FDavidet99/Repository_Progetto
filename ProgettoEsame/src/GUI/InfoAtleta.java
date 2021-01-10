@@ -65,8 +65,8 @@ public class InfoAtleta extends JFrame {
 	private JTextField SommaGuadagniTextField;
 	private JTextField NomeClubTextField;
 	private JTextField NomeSponsorTextField;
-	private JTable TabellaIntroiti;
-	private Object[] ColonneIntroiti= {"Club/Sponsor id", "Club/Sponsor", "Compenso"};
+	private JTable TabellaVantaggi;
+	private Object[] ColonneContrattiVantaggiosi= {"Nome Club/Sponsor", "Club/Sponsor", "Compenso"};
 	private JLabel lblTotStat;
 	private JLabel lblTotIntroiti;
 	private JDateChooser DateInizioDateChooser;
@@ -226,81 +226,82 @@ public class InfoAtleta extends JFrame {
 		
 		
 	    ButtonGroup GroupTabella = new ButtonGroup();
-		    GroupTabella.add(ContrattiAttiviRadioButton);
-		    GroupTabella.add(StoriaContrattiRadioButton);
-		    GroupTabella.add(StoriaProcuratoriRadioButton);
-		    
-
-		    JLabel lblNewLabel_2 = new JLabel("Selezionare periodo di ricerca");
-		    lblNewLabel_2.setBounds(20, 248, 178, 14);
-		    contentPane.add(lblNewLabel_2);
-		    
-		    
-		    
-		    DateInizioDateChooser = new JDateChooser();
-		    DateInizioDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
-		    	public void propertyChange(PropertyChangeEvent evt) {
-		    		if(DateFineDateChooser==null || DateInizioDateChooser == null)
-		    			return;
-		    		if(DateInizioDateChooser.getCalendar() == null ||
-		    				DateFineDateChooser.getCalendar() == null)
-		    			return;
-		    		calcolaIntroiti();
-		    	}
-		    });
-		    DateInizioDateChooser.setBounds(10, 283, 150, 20);
-		    DateInizioDateChooser.setDateFormatString("yyyy/MM/dd");
-		    contentPane.add(DateInizioDateChooser);
-		    
-		    DateFineDateChooser = new JDateChooser();
-		    DateFineDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
-		    	public void propertyChange(PropertyChangeEvent evt) {
-		    		if(DateFineDateChooser==null || DateInizioDateChooser == null)
-		    			return;
-		    		if(DateInizioDateChooser.getCalendar() == null ||
-		    				DateFineDateChooser.getCalendar() == null)
-		    			return;
-		    		calcolaIntroiti();
-		    	}
-		    });
-		    DateFineDateChooser.setBounds(201, 283, 144, 20);
-		    DateFineDateChooser.setDateFormatString("yyyy/MM/dd");
-		    contentPane.add(DateFineDateChooser);
-		    
-		    
-		    JScrollPane scrollPane2 = new JScrollPane();
-			scrollPane2.setBounds(10, 340, 700, 87);
-			contentPane.add(scrollPane2);
-		    
-			
-			
-			TabellaIntroiti = new JTable();
-			scrollPane2.setViewportView(TabellaIntroiti);
-			
-			TabellaIntroiti.setModel(new DefaultTableModel(
-					new Object[][] {},ColonneIntroiti
-			){
-				private static final long serialVersionUID = 1L;
-				public boolean isCellEditable(int r,int c) {
-					return false;
-				}
-			});	
-		    
-		    
-		    
-		    
-			
-			
+	    GroupTabella.add(ContrattiAttiviRadioButton);
+	    GroupTabella.add(StoriaContrattiRadioButton);
+	    GroupTabella.add(StoriaProcuratoriRadioButton);
+	    
+	    
+		ContrattiAttiviRadioButton.setBounds(17, 110, 109, 23);
+		contentPane.add(ContrattiAttiviRadioButton);
+		ContrattiAttiviRadioButton.setSelected(true);
+		
+		
+	    JLabel lblNewLabel_2 = new JLabel("Selezionare periodo di ricerca");
+	    lblNewLabel_2.setBounds(20, 248, 178, 14);
+	    contentPane.add(lblNewLabel_2);
+	    
+	    
+	    
+	    DateInizioDateChooser = new JDateChooser();
+	    DateInizioDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
+	    	public void propertyChange(PropertyChangeEvent evt) {
+	    		if(DateFineDateChooser==null || DateInizioDateChooser == null)
+	    			return;
+	    		if(DateInizioDateChooser.getCalendar() == null ||
+	    				DateFineDateChooser.getCalendar() == null)
+	    			return;
+	    		calcolaContrattiVantaggiosi();
+	    		setLblTotContrattiVantaggiosi();
+	    	}
+	    });
+	    DateInizioDateChooser.setBounds(10, 283, 150, 20);
+	    DateInizioDateChooser.setDateFormatString("yyyy/MM/dd");
+	    contentPane.add(DateInizioDateChooser);
+	    
+	    DateFineDateChooser = new JDateChooser();
+	    DateFineDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
+	    	public void propertyChange(PropertyChangeEvent evt) {
+	    		if(DateFineDateChooser==null || DateInizioDateChooser == null)
+	    			return;
+	    		if(DateInizioDateChooser.getCalendar() == null ||
+	    				DateFineDateChooser.getCalendar() == null)
+	    			return;
+	    		calcolaContrattiVantaggiosi();
+	    		setLblTotContrattiVantaggiosi();
+	    	}
+	    });
+	    DateFineDateChooser.setBounds(201, 283, 144, 20);
+	    DateFineDateChooser.setDateFormatString("yyyy/MM/dd");
+	    contentPane.add(DateFineDateChooser);
+	    
+	    
+	    JScrollPane scrollPane2 = new JScrollPane();
+		scrollPane2.setBounds(10, 340, 700, 87);
+		contentPane.add(scrollPane2);
+	    
+		
+		
+		TabellaVantaggi = new JTable();
+		scrollPane2.setViewportView(TabellaVantaggi);
+		
+		TabellaVantaggi.setModel(new DefaultTableModel(
+				new Object[][] {},ColonneContrattiVantaggiosi
+		){
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int r,int c) {
+				return false;
+			}
+		});	
 		
 	}
-	private void setLblTotIntroiti()
+	private void setLblTotContrattiVantaggiosi()
 	{
 		
-		int rows = TabellaIntroiti.getModel().getRowCount();
+		int rows = TabellaVantaggi.getModel().getRowCount();
 		double tot=0;
 		for(int i=0;i<rows;i++)
 		{
-			tot+=Double.parseDouble(String.valueOf(TabellaIntroiti.getValueAt(i, 2)));
+			tot+=Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 2)));
 		}
 		lblTotIntroiti.setText("Totale = "+tot+" €");
 	}
@@ -315,7 +316,7 @@ public class InfoAtleta extends JFrame {
 		}
 		lblTotStat.setText("Totale = "+tot+" €");
 	}
-	private void calcolaIntroiti()
+	private void calcolaContrattiVantaggiosi()
 	{
 		try {
 			ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
@@ -345,16 +346,15 @@ public class InfoAtleta extends JFrame {
 				}
 				
 			}
-			TabellaIntroiti.setModel(new DefaultTableModel(
+			TabellaVantaggi.setModel(new DefaultTableModel(
 					dati,
-					ColonneIntroiti
+					ColonneContrattiVantaggiosi
 			){
 				private static final long serialVersionUID = 1L;
 				public boolean isCellEditable(int r,int c) {
 					return false;
 				}
 			});
-			setLblTotIntroiti();
 		} catch (EccezioneCF e1) {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Elementi non visualizzabili",SwingConstants.CENTER); 
