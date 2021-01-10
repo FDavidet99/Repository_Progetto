@@ -8,7 +8,7 @@ public class DatabaseConnection {
 	private static DatabaseConnection instance;
     private Connection Connection = null;
     private final String USERNAME = "postgres";
-    private final String PASSWORD = "alex28";
+    private final String PASSWORD = "postgres";
     private final String IP = "localhost";
     private final String PORT = "5432";
     private final String DBNAME = "DB_AgenziaProcuratori";
