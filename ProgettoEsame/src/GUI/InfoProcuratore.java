@@ -106,7 +106,7 @@ public class InfoProcuratore extends JFrame {
 		
 
 	    lblTotStat = new JLabel("Totale= -");
-	    lblTotStat.setBounds(601, 232, 109, 18);
+	    lblTotStat.setBounds(532, 232, 178, 18);
 	    contentPane.add(lblTotStat);
 	    
 	    lblTotIntroiti = new JLabel("Totale= - ");
@@ -359,7 +359,7 @@ public class InfoProcuratore extends JFrame {
 			int mesiIngaggio = (int)ChronoUnit.MONTHS.between(
 			        ((Ingaggio) ingaggiVant.get(i)).getDataInizio().withDayOfMonth(1),
 			        ((Ingaggio) ingaggiVant.get(i)).getDataInizio().withDayOfMonth(1)) + 1;
-			tot +=mesiIngaggio *Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 3)));
+			tot +=mesiIngaggio *Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 5)));
 		}
 		lblTotIntroiti.setText("Totale stipendio = "+tot+" €");
 	}
@@ -370,14 +370,16 @@ public class InfoProcuratore extends JFrame {
 		for(int i=0;i<rows;i++)
 		{
 			long diff=1;
-			System.out.println(TabellaStatistiche.getValueAt(0, 0).toString());
-			if(TabellaStatistiche.getModel().getColumnName(0).toString().equals("Codice Fiscale A.")) 
+			//System.out.println(TabellaStatistiche.getValueAt(0, 0).toString());
+			if(TabellaStatistiche.getModel().getColumnName(5).toString().equals("Stipendio")) 
 				diff=(ChronoUnit.MONTHS.between((LocalDate)TabellaStatistiche.getValueAt(i, 3),(LocalDate) TabellaStatistiche.getValueAt(i, 4)));
 				
 			tot+=diff*Double.parseDouble(String.valueOf(TabellaStatistiche.getValueAt(i, 5)));
 		}
-		
-		lblTotStat.setText("Totale = "+tot+" €");
+		if(TabellaStatistiche.getModel().getColumnName(5).toString().equals("Stipendio")) 
+			lblTotStat.setText("Totale stipendio= "+tot+" €");
+		else 
+			lblTotStat.setText("Totale = "+tot+" €");
 	}
 		
 	private void calcolaContrattiVantaggiosi()
@@ -443,15 +445,15 @@ public class InfoProcuratore extends JFrame {
 			}				    
     	
 	}
-	private void calcolaIngaggiVantaggiosi()
+	private Object[][] getDatiIngaggiVantaggiosi()
 	{
+		Object[][] dati = null;
 		try {
 			ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
 			LocalDate TempDate1=dateChooserdataInizio.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		    LocalDate TempDate2=dateChooserdataFine.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
-		    ingaggiVant = (ArrayList) DAO.GetIngaggiVantaggiosi(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
-			Iterator i=ingaggiVant.iterator();
-			Object[][] dati = new Object[ingaggiVant.size()][6];
+			LocalDate TempDate2=dateChooserdataFine.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
+			ingaggiVant = (ArrayList) DAO.GetIngaggiVantaggiosi(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
+			dati = new Object[ingaggiVant.size()][6];
 			for(int k=0;k<ingaggiVant.size();k++)
 			{
 				dati[k][0] = ingaggiVant.get(k).getAtleta().getNome();
@@ -461,8 +463,17 @@ public class InfoProcuratore extends JFrame {
 				dati[k][4] = ingaggiVant.get(k).getDataFine();
 				dati[k][5] = ingaggiVant.get(k).getStipendioProcuratore();
 			}
+		} catch (EccezioneCF | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dati;
+	}
+	private void calcolaIngaggiVantaggiosi()
+	{
+		try {
 			TabellaVantaggi.setModel(new DefaultTableModel(
-					dati,
+					getDatiIngaggiVantaggiosi(),
 					ColonneIngaggiVantaggiosi
 			){
 				private static final long serialVersionUID = 1L;
@@ -471,19 +482,6 @@ public class InfoProcuratore extends JFrame {
 				}
 			});
 			
-		} catch (EccezioneCF e1) {
-			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Elementi non visualizzabili",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 200);
-			Dialog.setVisible(true);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 200);
-			Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			e1.printStackTrace();
 			JDialog Dialog = new JDialog(); 
