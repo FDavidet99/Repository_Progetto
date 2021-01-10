@@ -65,6 +65,8 @@ public class InfoProcuratore extends JFrame {
 	private JTable TabellaVantaggi;
 	private Object[] ColonneContrattiVantaggiosi= {"Nome Club/Sponsor", "Club/Sponsor", "Guadagno P."};
 	private Object[] ColonneIngaggiVantaggiosi= {"Nome atleta", "Cognome atleta","CF atleta","Data inizio","Data fine", "Stipendio P."};
+	private Object[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante","Data Inizio", "Data Fine", "Guadagno P."};
+	private Object[] ColonneTabStoriaProcuratori= {"Codice Fiscale A.","Nome","Cognome", "Data Inizio", "Data Fine", "Stipendio"};
 	private JLabel lblTotStat;
 	private JLabel lblTotIntroiti;
 	private JDateChooser dateChooserdataInizio;
@@ -123,33 +125,19 @@ public class InfoProcuratore extends JFrame {
 		InfoLabel.setBounds(10, 33, 509, 21);
 		contentPane.add(InfoLabel);
 		
-		Object[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante","Data Inizio", "Data Fine", "Guadagno P."};
-		Object[] ColonneTabStoriaProcuratori= {"Codice Fiscale A.","Nome","Cognome", "Data Inizio", "Data Fine", "Stipendio"};
+		
 		
 		TabellaStatistiche = new JTable();
 		scrollPane.setViewportView(TabellaStatistiche);
 		
-		TabellaStatistiche.setModel(new DefaultTableModel(
-				PopolaTabellaContrattiAttivi(proc,ColonneTabContratti.length),ColonneTabContratti 
-		){
-			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int r,int c) {
-				return false;
-			}
-		});
+		RiempiTabContrattiAttivi();
+		setLblTotStat();
 		
 		JRadioButton ContrattiAttiviRadioButton = new JRadioButton("Contratti Attivi\r\n");
 		ContrattiAttiviRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TabellaStatistiche.setModel(new DefaultTableModel(
-						PopolaTabellaContrattiAttivi(proc,ColonneTabContratti.length),ColonneTabContratti 
-				){
-					private static final long serialVersionUID = 1L;
-					public boolean isCellEditable(int r,int c) {
-						return false;
-					}
-				});
-				
+				RiempiTabContrattiAttivi();
+				setLblTotStat();
 			}
 		});
 		setLblTotStat();
@@ -161,14 +149,7 @@ public class InfoProcuratore extends JFrame {
 		JRadioButton StoriaContrattiRadioButton = new JRadioButton("Storia Contratti");
 		StoriaContrattiRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TabellaStatistiche.setModel(new DefaultTableModel(
-						PopolaTabellaContratti(proc,ColonneTabContratti.length),ColonneTabContratti 
-				){
-					private static final long serialVersionUID = 1L;
-					public boolean isCellEditable(int r,int c) {
-						return false;
-					}
-				});
+				RiempiDatiTabContratti();
 				setLblTotStat();
 			}
 		});
@@ -179,7 +160,7 @@ public class InfoProcuratore extends JFrame {
 		StoriaAtletiRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TabellaStatistiche.setModel(new DefaultTableModel(
-						PopolaTabellaIngaggiAtleti(proc, ColonneTabStoriaProcuratori.length),ColonneTabStoriaProcuratori
+						GetDatiTabIngaggiAtleti(proc, ColonneTabStoriaProcuratori.length),ColonneTabStoriaProcuratori
 				){
 					private static final long serialVersionUID = 1L;
 					public boolean isCellEditable(int r,int c) {
@@ -197,7 +178,7 @@ public class InfoProcuratore extends JFrame {
 	    AtletiAttiviRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TabellaStatistiche.setModel(new DefaultTableModel(
-						PopolaTabellaIngaggiAtletiAttivi(proc, ColonneTabStoriaProcuratori.length),ColonneTabStoriaProcuratori
+						GetDatiTabIngaggiAtletiAttivi(proc, ColonneTabStoriaProcuratori.length),ColonneTabStoriaProcuratori
 				){
 					private static final long serialVersionUID = 1L;
 					public boolean isCellEditable(int r,int c) {
@@ -354,10 +335,13 @@ public class InfoProcuratore extends JFrame {
 		int rows = TabellaVantaggi.getModel().getRowCount();
 		double tot=0;
 		for(int i=0;i<rows;i++){
-			int mesiIngaggio = (int)ChronoUnit.MONTHS.between(
-			        ((Ingaggio) ingaggiVant.get(i)).getDataInizio().withDayOfMonth(1),
-			        ((Ingaggio) ingaggiVant.get(i)).getDataInizio().withDayOfMonth(1)) + 1;
-			tot +=mesiIngaggio *Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 5)));
+			long diff=1;
+			//System.out.println(TabellaStatistiche.getValueAt(0, 0).toString());
+			if(TabellaVantaggi.getModel().getColumnName(5).toString().equals("Stipendio P.")) 
+
+				diff=(ChronoUnit.MONTHS.between((LocalDate)TabellaVantaggi.getValueAt(i, 3),(LocalDate) TabellaVantaggi.getValueAt(i, 4)));
+				
+			tot+=diff*Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 5)));
 		}
 		lblTotIntroiti.setText("Totale stipendio = "+tot+" €");
 	}
@@ -369,12 +353,9 @@ public class InfoProcuratore extends JFrame {
 		for(int i=0;i<rows;i++)
 		{
 			long diff=1;
-<<<<<<< Updated upstream
 			//System.out.println(TabellaStatistiche.getValueAt(0, 0).toString());
 			if(TabellaStatistiche.getModel().getColumnName(5).toString().equals("Stipendio")) 
-=======
-			if(TabellaStatistiche.getModel().getColumnName(0).toString().equals("Codice Fiscale A.")) 
->>>>>>> Stashed changes
+
 				diff=(ChronoUnit.MONTHS.between((LocalDate)TabellaStatistiche.getValueAt(i, 3),(LocalDate) TabellaStatistiche.getValueAt(i, 4)));
 				
 			tot+=diff*Double.parseDouble(String.valueOf(TabellaStatistiche.getValueAt(i, 5)));
@@ -443,16 +424,19 @@ public class InfoProcuratore extends JFrame {
 			Dialog.setVisible(true);
 			}				    
 	}
-<<<<<<< Updated upstream
-	private Object[][] getDatiIngaggiVantaggiosi()
+
+	
+		
+	
+	private void calcolaIngaggiVantaggiosi()
 	{
-		Object[][] dati = null;
 		try {
 			ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
 			LocalDate TempDate1=dateChooserdataInizio.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			LocalDate TempDate2=dateChooserdataFine.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
-			ingaggiVant = (ArrayList) DAO.GetIngaggiVantaggiosi(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
-			dati = new Object[ingaggiVant.size()][6];
+		    LocalDate TempDate2=dateChooserdataFine.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
+		    ingaggiVant = (ArrayList) DAO.GetIngaggiVantaggiosi(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
+			Iterator i=ingaggiVant.iterator();
+			Object[][] dati = new Object[ingaggiVant.size()][6];
 			for(int k=0;k<ingaggiVant.size();k++)
 			{
 				dati[k][0] = ingaggiVant.get(k).getAtleta().getNome();
@@ -461,34 +445,9 @@ public class InfoProcuratore extends JFrame {
 				dati[k][3] = ingaggiVant.get(k).getDataInizio();
 				dati[k][4] = ingaggiVant.get(k).getDataFine();
 				dati[k][5] = ingaggiVant.get(k).getStipendioProcuratore();
-=======
-	
-	
-	private void calcolaIngaggiVantaggiosi(){
-		try {
-			ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
-			LocalDate TempDate1=dateChooserdataInizio.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		    LocalDate TempDate2=dateChooserdataFine.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
-		    ingaggiVant = (ArrayList) DAO.GetIngaggiVantaggiosi(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
-			Object[][] dati = new Object[ingaggiVant.size()][4];
-			for(int i=0;i<ingaggiVant.size();i++){
-				dati[i][0] = ingaggiVant.get(i).getAtleta().getNome();
-				dati[i][1] = ingaggiVant.get(i).getAtleta().getCognome();
-				dati[i][2] = ingaggiVant.get(i).getAtleta().getCF();
-				dati[i][3] = ingaggiVant.get(i).getStipendioProcuratore();
->>>>>>> Stashed changes
 			}
-		} catch (EccezioneCF | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return dati;
-	}
-	private void calcolaIngaggiVantaggiosi()
-	{
-		try {
 			TabellaVantaggi.setModel(new DefaultTableModel(
-					getDatiIngaggiVantaggiosi(),
+					dati,
 					ColonneIngaggiVantaggiosi
 			){
 				private static final long serialVersionUID = 1L;
@@ -497,6 +456,19 @@ public class InfoProcuratore extends JFrame {
 				}
 			});
 			
+		} catch (EccezioneCF e1) {
+			JDialog Dialog = new JDialog(); 
+			JLabel LabelJDialog= new JLabel("Elementi non visualizzabili",SwingConstants.CENTER); 
+			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setBounds(400, 150, 250, 200);
+			Dialog.setVisible(true);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			JDialog Dialog = new JDialog(); 
+			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setBounds(400, 150, 250, 200);
+			Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			e1.printStackTrace();
 			JDialog Dialog = new JDialog(); 
@@ -504,19 +476,24 @@ public class InfoProcuratore extends JFrame {
 			Dialog.getContentPane().add(LabelJDialog); 
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
-		}				    
+			}				    
     	
 	}
 
-	public Object[][] PopolaTabellaContrattiAttivi(ProcuratoreSportivo proc, int NumColonne) {
+	
+	
+	//fatto
+	public Object[][] GetDatiTabContrattiAttivi(ProcuratoreSportivo proc, int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
 			ArrayList<Contratto> ContrattiAttivi=(ArrayList<Contratto>) dao.GetContrattiAttivi();	
 			for (Iterator it = ContrattiAttivi.iterator(); it.hasNext();) {
 			    Contratto contrattiAttivo = (Contratto) it.next();
-			    if(contrattiAttivo.getProcuratoreInteressato()==null)
+			    if(contrattiAttivo.getProcuratoreInteressato()==null) {
+			    	it.remove();
 			    	continue;
+			    }	
 			    if (!(contrattiAttivo.getProcuratoreInteressato().getCF().equals(proc.getCF()))) {
 			        it.remove();
 			    }
@@ -564,18 +541,32 @@ public class InfoProcuratore extends JFrame {
 		return Contenutotab;
 	}
 	
-	public Object[][] PopolaTabellaContratti(ProcuratoreSportivo proc,int NumColonne) {
+	public void RiempiTabContrattiAttivi() {
+		TabellaStatistiche.setModel(new DefaultTableModel(
+				GetDatiTabContrattiAttivi(proc,ColonneTabContratti.length),ColonneTabContratti 
+		){
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int r,int c) {
+				return false;
+			}
+		});
+		
+	}
+	
+	public Object[][] GetDatiTabContratti(ProcuratoreSportivo proc,int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
 			ArrayList<Contratto> ContrattiAttivi=(ArrayList<Contratto>) dao.GetContratti();	
 			for (Iterator it = ContrattiAttivi.iterator(); it.hasNext();) {
 			    Contratto contrattiAttivo = (Contratto) it.next();
-			    if(contrattiAttivo.getProcuratoreInteressato()==null)
-			    	continue;
-			    if (!(contrattiAttivo.getProcuratoreInteressato().getCF().equals(proc.getCF()))) {
-			        it.remove();
+			    if(contrattiAttivo.getProcuratoreInteressato()==null) {
+			    	it.remove();
+			    	continue;}
+			    	if (!(contrattiAttivo.getProcuratoreInteressato().getCF().equals(proc.getCF()))) {
+			    		it.remove();
 			    }
+			    	
 			}
 			Contenutotab=new Object [ContrattiAttivi.size()][NumColonne];		
 			for(int i=0;i<ContrattiAttivi.size();i++){
@@ -619,7 +610,19 @@ public class InfoProcuratore extends JFrame {
 		return Contenutotab;
 	}
 
-	public Object[][] PopolaTabellaIngaggiAtletiAttivi(ProcuratoreSportivo proc,int NumColonne) {
+	public void RiempiDatiTabContratti() {
+		TabellaStatistiche.setModel(new DefaultTableModel(
+				GetDatiTabContratti(proc,ColonneTabContratti.length),ColonneTabContratti 
+		){
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int r,int c) {
+				return false;
+			}
+		});
+	}
+	//fatto
+	
+	public Object[][] GetDatiTabIngaggiAtletiAttivi(ProcuratoreSportivo proc,int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
@@ -657,7 +660,7 @@ public class InfoProcuratore extends JFrame {
 		return Contenutotab;
 	}
 	
-	public Object[][] PopolaTabellaIngaggiAtleti(ProcuratoreSportivo proc,int NumColonne) {
+	public Object[][] GetDatiTabIngaggiAtleti(ProcuratoreSportivo proc,int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
