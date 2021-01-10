@@ -226,7 +226,7 @@ public class InfoProcuratore extends JFrame {
 	    		if(dateChooserdataInizio.getCalendar() == null ||
 	    				dateChooserdataFine.getCalendar() == null)
 	    			return;
-				calcolaIngaggiVantaggiosi();
+				riempiTabIngaggiVantaggiosi();
 				setLblTotIngaggiVantaggiosi();
 			}
 		});
@@ -269,7 +269,7 @@ public class InfoProcuratore extends JFrame {
 	    		}
 	    		else if(radioBtnIngaggiVantaggiosi.isSelected())
 	    		{
-	    			calcolaIngaggiVantaggiosi();
+	    			riempiTabIngaggiVantaggiosi();
 	    			setLblTotIngaggiVantaggiosi();
 	    		}
 	    		
@@ -293,7 +293,7 @@ public class InfoProcuratore extends JFrame {
 	    		}
 	    		else if(radioBtnIngaggiVantaggiosi.isSelected())
 	    		{
-	    			calcolaIngaggiVantaggiosi();
+	    			riempiTabIngaggiVantaggiosi();
 	    			setLblTotIngaggiVantaggiosi();
 	    		}
 	    	}
@@ -469,7 +469,7 @@ public class InfoProcuratore extends JFrame {
 		}
 		return dati;
 	}
-	private void calcolaIngaggiVantaggiosi()
+	private void riempiTabIngaggiVantaggiosi()
 	{
 		try {
 			TabellaVantaggi.setModel(new DefaultTableModel(
@@ -490,7 +490,6 @@ public class InfoProcuratore extends JFrame {
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 			}				    
-    	
 	}
 	public Object[][] PopolaTabellaContrattiAttivi(ProcuratoreSportivo proc, int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
