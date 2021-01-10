@@ -21,7 +21,7 @@ import Entità.*;
 
 
 public class ImplementationDAO_Postgres extends ImplementationDAO {
-	
+
 	public ImplementationDAO_Postgres(Connection connection) throws SQLException {
 		super();
 		Connection = connection;
@@ -46,11 +46,12 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 				+ "tipocontratto,guadagnoprocuratore,codicefiscaleprocuratore,codicefiscaleatleta,sponsor,"
 				+ "club,gettonepresenzanazionale) values (?,?,?,?,?,?,?,?,?,?);");
 		StmGetProcuratoreAttivo = Connection.prepareStatement("SELECT * FROM Ingaggio where CodiceFiscaleAtleta= ? and  "
-				+ " ?::date>=datainizio and ?::date <datafine ;");
+				+ " ?::date>=datainizio and ?::date <=datafine ;");
 		StmGetSponsorById=Connection.prepareStatement("SELECT * FROM Sponsor Where Idsponsor=?;");
 		StmGetClubById=Connection.prepareStatement("SELECT * FROM ClubSportivo Where IdClub=?;");
 		StmGetContratti = Connection.prepareStatement("SELECT * From contratto;");
 		StmGetContrattiAttivi = Connection.prepareStatement("SELECT * FROM Contratto where ?::date>=datainizio and ?::date <datafine ;");
+		StmGetIngaggiByProcuratoreAttivi=Connection.prepareStatement("SELECT * FROM Ingaggio WHERE CodiceFiscaleProcuratore=? AND ?::date>=datainizio and ?::date <=datafine;");
 		
 		
 		StmGetMaxContrattiAtleta=Connection.prepareStatement("(Select tipocontratto,club as Entita,compenso From Contratto "+
@@ -545,6 +546,25 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		return ValoriMassimi;	
 	}
 	
+	@Override
+	public List<Ingaggio> GetIngaggiByProcuratoreAttivi(ProcuratoreSportivo procuratore) throws EccezioneCF, SQLException {
+		StmGetIngaggiByProcuratoreAttivi.setString(1,procuratore.getCF());
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String curDate = formatter.format(new Date(System.currentTimeMillis()));
+		StmGetIngaggiByProcuratoreAttivi.setString(2,curDate);
+		StmGetIngaggiByProcuratoreAttivi.setString(3,curDate);
+		ResultSet rs= StmGetIngaggiByProcuratoreAttivi.executeQuery();
+		List<Ingaggio> IngaggiProcuratore=new ArrayList<Ingaggio>();
+		while(rs.next()) {
+			String CodiceFiscaleAtleta=rs.getString("codicefiscaleatleta");
+			LocalDate DataInizio =  LocalDate.parse(rs.getString("datainizio"));
+			LocalDate DataFine =  LocalDate.parse(rs.getString("datafine"));
+			Ingaggio TmpIngaggio=new Ingaggio(procuratore, GetAtletaByCodiceFiscale(CodiceFiscaleAtleta) , DataInizio, DataFine, rs.getDouble("stipendioprocuratore"));
+			IngaggiProcuratore.add(TmpIngaggio);
+		}
+		rs.close();
+		return IngaggiProcuratore;
+	}
 }
 	
 
