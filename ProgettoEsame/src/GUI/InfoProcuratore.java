@@ -350,10 +350,12 @@ public class InfoProcuratore extends JFrame {
 		}
 		lblTotIntroiti.setText("Totale = "+tot+" €");
 	}
-	private void setLblTotIngaggiVantaggiosi(){
+	private void setLblTotIngaggiVantaggiosi()
+	{
 		int rows = TabellaVantaggi.getModel().getRowCount();
 		double tot=0;
-		for(int i=0;i<rows;i++){
+		for(int i=0;i<rows;i++)
+		{
 			int mesiIngaggio = (int)ChronoUnit.MONTHS.between(
 			        ((Ingaggio) ingaggiVant.get(i)).getDataInizio().withDayOfMonth(1),
 			        ((Ingaggio) ingaggiVant.get(i)).getDataInizio().withDayOfMonth(1)) + 1;
@@ -361,7 +363,6 @@ public class InfoProcuratore extends JFrame {
 		}
 		lblTotIntroiti.setText("Totale stipendio = "+tot+" €");
 	}
-	
 	private void setLblTotStat()
 	{
 		int rows = TabellaStatistiche.getModel().getRowCount();
@@ -369,12 +370,8 @@ public class InfoProcuratore extends JFrame {
 		for(int i=0;i<rows;i++)
 		{
 			long diff=1;
-<<<<<<< Updated upstream
 			//System.out.println(TabellaStatistiche.getValueAt(0, 0).toString());
 			if(TabellaStatistiche.getModel().getColumnName(5).toString().equals("Stipendio")) 
-=======
-			if(TabellaStatistiche.getModel().getColumnName(0).toString().equals("Codice Fiscale A.")) 
->>>>>>> Stashed changes
 				diff=(ChronoUnit.MONTHS.between((LocalDate)TabellaStatistiche.getValueAt(i, 3),(LocalDate) TabellaStatistiche.getValueAt(i, 4)));
 				
 			tot+=diff*Double.parseDouble(String.valueOf(TabellaStatistiche.getValueAt(i, 5)));
@@ -385,7 +382,8 @@ public class InfoProcuratore extends JFrame {
 			lblTotStat.setText("Totale = "+tot+" €");
 	}
 		
-	private void calcolaContrattiVantaggiosi(){
+	private void calcolaContrattiVantaggiosi()
+	{
 		try {
 			ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
 			LocalDate TempDate1=dateChooserdataInizio.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -393,16 +391,19 @@ public class InfoProcuratore extends JFrame {
 		    ArrayList<Contratto> introiti = (ArrayList) DAO.GetMaxContrattiProc(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
 			Iterator i=introiti.iterator();
 			Object[][] dati = new Object[introiti.size()][3];
-			for(int k=0;k<introiti.size();k++) {
+			for(int k=0;k<introiti.size();k++)
+			{
 				TipoContratto tipoContratto = introiti.get(k).getTipo();
-				if(tipoContratto.equals(TipoContratto.Club)){
+				if(tipoContratto.equals(TipoContratto.Club))
+				{
 					if(introiti.get(k).getClub()==null)
 						continue;
 					dati[k][0] = introiti.get(k).getClub().getNomeClub();
 					dati[k][1] = "Club";
 					dati[k][2] = introiti.get(k).getCompensoProcuratore();
 				}
-				else {
+				else
+				{
 					if(introiti.get(k).getSponsor()==null)
 						continue;
 					dati[k][0] = introiti.get(k).getSponsor().getNomeSponsor();
@@ -442,8 +443,8 @@ public class InfoProcuratore extends JFrame {
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 			}				    
+    	
 	}
-<<<<<<< Updated upstream
 	private Object[][] getDatiIngaggiVantaggiosi()
 	{
 		Object[][] dati = null;
@@ -461,22 +462,6 @@ public class InfoProcuratore extends JFrame {
 				dati[k][3] = ingaggiVant.get(k).getDataInizio();
 				dati[k][4] = ingaggiVant.get(k).getDataFine();
 				dati[k][5] = ingaggiVant.get(k).getStipendioProcuratore();
-=======
-	
-	
-	private void calcolaIngaggiVantaggiosi(){
-		try {
-			ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
-			LocalDate TempDate1=dateChooserdataInizio.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		    LocalDate TempDate2=dateChooserdataFine.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
-		    ingaggiVant = (ArrayList) DAO.GetIngaggiVantaggiosi(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
-			Object[][] dati = new Object[ingaggiVant.size()][4];
-			for(int i=0;i<ingaggiVant.size();i++){
-				dati[i][0] = ingaggiVant.get(i).getAtleta().getNome();
-				dati[i][1] = ingaggiVant.get(i).getAtleta().getCognome();
-				dati[i][2] = ingaggiVant.get(i).getAtleta().getCF();
-				dati[i][3] = ingaggiVant.get(i).getStipendioProcuratore();
->>>>>>> Stashed changes
 			}
 		} catch (EccezioneCF | SQLException e) {
 			// TODO Auto-generated catch block
@@ -504,10 +489,9 @@ public class InfoProcuratore extends JFrame {
 			Dialog.getContentPane().add(LabelJDialog); 
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
-		}				    
+			}				    
     	
 	}
-
 	public Object[][] PopolaTabellaContrattiAttivi(ProcuratoreSportivo proc, int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
@@ -618,6 +602,7 @@ public class InfoProcuratore extends JFrame {
 		}
 		return Contenutotab;
 	}
+
 
 	public Object[][] PopolaTabellaIngaggiAtletiAttivi(ProcuratoreSportivo proc,int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
