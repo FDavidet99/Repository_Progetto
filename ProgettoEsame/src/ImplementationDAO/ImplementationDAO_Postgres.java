@@ -647,20 +647,12 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		while(rs.next()) {
 			String cfAtleta=rs.getString("codicefiscaleatleta");
 			double stipendioProc = rs.getDouble("stipendioprocuratore");
-<<<<<<< Updated upstream
-			
-			
-			Ingaggio ing = new Ingaggio (null,GetAtletaByCodiceFiscale(cfAtleta),
-					LocalDate.parse(DataInizio.toString()),
-					LocalDate.parse(DataFine.toString()),stipendioProc);
-=======
 			LocalDate dataInizioIng = LocalDate.parse(rs.getDate("datainizio").toString());
 			LocalDate dataFineIng = LocalDate.parse(rs.getDate("datafine").toString());
 			System.out.println(dataInizioIng+ " "+dataFineIng);
 			Ingaggio ing = new Ingaggio (null,GetAtletaByCodiceFiscale(cfAtleta),
 					dataInizioIng,
 					dataFineIng,stipendioProc);
->>>>>>> Stashed changes
 //			System.out.println(cfAtleta+" "+stipendioProc);
 			ingaggiVantaggiosi.add(ing);	
 		}

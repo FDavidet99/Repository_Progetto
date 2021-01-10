@@ -356,17 +356,10 @@ public class InfoProcuratore extends JFrame {
 		double tot=0;
 		for(int i=0;i<rows;i++)
 		{
-<<<<<<< Updated upstream
 			int mesiIngaggio = (int)ChronoUnit.MONTHS.between(
 			        ((Ingaggio) ingaggiVant.get(i)).getDataInizio().withDayOfMonth(1),
 			        ((Ingaggio) ingaggiVant.get(i)).getDataInizio().withDayOfMonth(1)) + 1;
 			tot +=mesiIngaggio *Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 3)));
-=======
-			int mesiIngaggio = Math.max(1, (int)ChronoUnit.MONTHS.between(
-			        ((Ingaggio) ingaggiVant.get(i)).getDataInizio().withDayOfMonth(1),
-			        ((Ingaggio) ingaggiVant.get(i)).getDataFine().withDayOfMonth(1))) ;
-			tot += mesiIngaggio*Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 5)));
->>>>>>> Stashed changes
 		}
 		lblTotIntroiti.setText("Totale stipendio = "+tot+" €");
 	}
@@ -458,23 +451,15 @@ public class InfoProcuratore extends JFrame {
 		    LocalDate TempDate2=dateChooserdataFine.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
 		    ingaggiVant = (ArrayList) DAO.GetIngaggiVantaggiosi(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
 			Iterator i=ingaggiVant.iterator();
-<<<<<<< Updated upstream
-			Object[][] dati = new Object[ingaggiVant.size()][4];
-=======
 			Object[][] dati = new Object[ingaggiVant.size()][6];
->>>>>>> Stashed changes
 			for(int k=0;k<ingaggiVant.size();k++)
 			{
 				dati[k][0] = ingaggiVant.get(k).getAtleta().getNome();
 				dati[k][1] = ingaggiVant.get(k).getAtleta().getCognome();
 				dati[k][2] = ingaggiVant.get(k).getAtleta().getCF();
-<<<<<<< Updated upstream
-				dati[k][3] = ingaggiVant.get(k).getStipendioProcuratore();
-=======
 				dati[k][3] = ingaggiVant.get(k).getDataInizio();
 				dati[k][4] = ingaggiVant.get(k).getDataFine();
 				dati[k][5] = ingaggiVant.get(k).getStipendioProcuratore();
->>>>>>> Stashed changes
 			}
 			TabellaVantaggi.setModel(new DefaultTableModel(
 					dati,
