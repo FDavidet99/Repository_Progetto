@@ -21,10 +21,10 @@ import javax.swing.table.DefaultTableModel;
 
 import Controller.ControllerQuery;
 import Eccezioni.EccezioneCF;
-import Entit‡.Atleta;
-import Entit‡.Contratto;
-import Entit‡.Persona;
-import Entit‡.ProcuratoreSportivo;
+import Entit√†.Atleta;
+import Entit√†.Contratto;
+import Entit√†.Persona;
+import Entit√†.ProcuratoreSportivo;
 import ImplementationDAO.ImplementationDAO;
 
 import javax.swing.border.LineBorder;
@@ -136,7 +136,7 @@ public class VisualizzaProcuratori extends JFrame {
         	Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Non Ë stato trovato nulla",SwingConstants.CENTER); 
+			JLabel LabelJDialog= new JLabel("Non ÔøΩ stato trovato nulla",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
 			Dialog.setBounds(400, 150, 240, 150);
 			Dialog.setVisible(true);
@@ -163,10 +163,10 @@ public class VisualizzaProcuratori extends JFrame {
 					+ procuratoreSelezionato.getNome()+ " "+procuratoreSelezionato.getCognome()+"'?","Warning",dialogButton);
         	if(dialogResult == JOptionPane.YES_OPTION){
         		controller.GotoInfoProcuratoreFromVisualizzaProcuratore(procuratoreSelezionato);
-        	}
-        	
+        	}	
         	
     	} catch (IndexOutOfBoundsException | EccezioneCF e) {
+    		e.printStackTrace();
     		JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Selezionare procuratore",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
@@ -186,3 +186,4 @@ public class VisualizzaProcuratori extends JFrame {
 	
 	
 }
+

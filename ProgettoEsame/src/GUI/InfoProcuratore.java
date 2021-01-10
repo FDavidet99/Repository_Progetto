@@ -88,8 +88,6 @@ public class InfoProcuratore extends JFrame {
 		contentPane.add(NomeProcuratoreLabel);
 		
 		
-		
-		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 140, 700, 87);
 		contentPane.add(scrollPane);
@@ -98,7 +96,8 @@ public class InfoProcuratore extends JFrame {
 		InfoLabel.setFont(new Font("Monospaced", Font.PLAIN, 15));
 		InfoLabel.setBounds(10, 33, 509, 21);
 		contentPane.add(InfoLabel);
-		Object[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante", "Data Fine", "Compenso"};
+		
+		Object[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante","Data Inizio", "Data Fine", "Compenso"};
 		Object[] ColonneTabStoriaProcuratori= {"Codice Fiscale P.","Nome","Cognome", "Data Inizio", "Data Fine", "Stipendio"};
 		
 		TabellaStatistiche = new JTable();
@@ -225,11 +224,12 @@ public class InfoProcuratore extends JFrame {
 					if(TmpContratto.getCompensoAtleta()==0)
 						Guadagno=TmpContratto.getGettonePresenzaNazionale();
 
-						Contenutotab[i][0]=TmpContratto.getIdContratto();
-						Contenutotab[i][1]=TmpContratto.getTipo();
-						Contenutotab[i][2]=NomeClub_Sponsor;
-						Contenutotab[i][3]=TmpContratto.getDataFine();
-						Contenutotab[i][4]=TmpContratto.getCompensoAtleta();
+					Contenutotab[i][0]=TmpContratto.getIdContratto();
+					Contenutotab[i][1]=TmpContratto.getTipo();
+					Contenutotab[i][2]=NomeClub_Sponsor;
+					Contenutotab[i][3]=TmpContratto.getDataInizio();
+					Contenutotab[i][4]=TmpContratto.getDataFine();
+					Contenutotab[i][5]=TmpContratto.getCompensoAtleta();
 			}	
 		} catch (EccezioneCF e) {
 			JDialog Dialog = new JDialog(); 
