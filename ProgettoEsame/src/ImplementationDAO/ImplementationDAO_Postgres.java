@@ -17,7 +17,7 @@ import javax.print.attribute.standard.MediaSize.Other;
 import com.sun.jdi.Type;
 
 import Eccezioni.EccezioneCF;
-import Entità.*;
+import Entitï¿½.*;
 
 
 public class ImplementationDAO_Postgres extends ImplementationDAO {
@@ -63,8 +63,28 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 				 "where  tipocontratto= 'Sponsor' and compenso = ( "+
 				"Select max(compenso) From Contratto  where tipocontratto= 'Sponsor'  "+
 				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "+
-				"AND codicefiscaleatleta=?))");
-		
+				"AND codicefiscaleatleta=? "+ 
+				"))");
+		StmGetMaxContrattiProc = Connection.prepareStatement("(Select tipocontratto,club as Entita,guadagnoprocuratore From Contratto "+
+				" where  tipocontratto= 'Club' and guadagnoprocuratore = ( "+
+				"Select max(guadagnoprocuratore) From Contratto  where tipocontratto= 'Club' "+
+				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ? ) AND codicefiscaleprocuratore=? "+
+				")) "+
+				
+				"union "+
+				
+				"(Select tipocontratto,sponsor as Entita,guadagnoprocuratore From Contratto "+
+				 "where  tipocontratto= 'Sponsor' and guadagnoprocuratore = ( "+
+				"Select max(guadagnoprocuratore) From Contratto  where tipocontratto= 'Sponsor'  "+
+				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "+
+				"AND codicefiscaleprocuratore=? "+ 
+				"))");
+		StmGetInaggiVantaggiosi = Connection.prepareStatement("select codicefiscaleatleta,stipendioprocuratore "
+				+ "from ingaggio where codicefiscaleprocuratore = ? "
+				+"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "
+				+ "and stipendioprocuratore = (select max(stipendioprocuratore) from ingaggio where codicefiscaleprocuratore = ? "
+				+"and (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "
+				+ ");");
 	}
 
 	@Override
@@ -503,7 +523,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	}
 
 	@Override
-	public List GetMaxContrattiAtleta(Atleta atleta,Date DataInizio,Date DataFine) throws EccezioneCF, SQLException {
+	public List<Contratto> GetMaxContrattiAtleta(Atleta atleta,Date DataInizio,Date DataFine) throws EccezioneCF, SQLException {
 		ArrayList<Contratto> ValoriMassimi= new ArrayList<Contratto>();
 		StmGetMaxContrattiAtleta.setDate(1,DataInizio);
 		StmGetMaxContrattiAtleta.setDate(2,DataFine);
@@ -542,6 +562,47 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	}
 	
 	@Override
+	public List<Contratto> GetMaxContrattiProc(ProcuratoreSportivo proc,Date DataInizio,Date DataFine) throws EccezioneCF, SQLException {
+		ArrayList<Contratto> ValoriMassimi= new ArrayList<Contratto>();
+		StmGetMaxContrattiProc.setDate(1,DataInizio);
+		StmGetMaxContrattiProc.setDate(2,DataFine);
+		StmGetMaxContrattiProc.setDate(3,DataInizio);
+		StmGetMaxContrattiProc.setDate(4,DataFine);
+		StmGetMaxContrattiProc.setString(5, proc.getCF());
+		StmGetMaxContrattiProc.setDate(6,DataInizio);
+		StmGetMaxContrattiProc.setDate(7,DataFine);
+		StmGetMaxContrattiProc.setDate(8,DataInizio);
+		StmGetMaxContrattiProc.setDate(9,DataFine);
+		StmGetMaxContrattiProc.setString(10, proc.getCF());
+		ResultSet rs= StmGetMaxContrattiProc.executeQuery();
+		while(rs.next()) {
+			int IdClub_Sponsor=rs.getInt("Entita");
+			ClubSportivo club = null;
+			Sponsor sponsor=null;
+			double compenso = rs.getDouble("guadagnoprocuratore");
+			TipoContratto TipoC=null;
+			if(rs.getString("tipocontratto").equals("Club")) {
+				TipoC = TipoContratto.Club;
+				club = GetClubById(IdClub_Sponsor);
+			}
+			if(rs.getString("tipocontratto").equals("Sponsor")) {
+				TipoC = TipoContratto.Sponsor;
+				sponsor = GetSponsorById(IdClub_Sponsor);
+			}
+			
+			Contratto contratto = new Contratto (proc, null, null, null, TipoC, club, sponsor, 0, compenso,0);
+			
+//			System.out.println(contratto.getTipo()+" "+(contratto.getClub() != null ? contratto.getClub().getIdClubSportivo() + ", " : "")
+//					+" "+(contratto.getSponsor() != null ? contratto.getSponsor().getIdSponsor() + ", " : "")
+//					);
+
+			ValoriMassimi.add(contratto);	
+		}
+//		System.out.println("size = "+ValoriMassimi.size());
+		return ValoriMassimi;	
+	}
+	
+	@Override
 	public List<Ingaggio> GetIngaggiByProcuratoreAttivi(ProcuratoreSportivo procuratore) throws EccezioneCF, SQLException {
 		StmGetIngaggiByProcuratoreAttivi.setString(1,procuratore.getCF());
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -559,6 +620,34 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		}
 		rs.close();
 		return IngaggiProcuratore;
+	}
+	@Override
+	public List<Ingaggio> GetIngaggiVantaggiosi(ProcuratoreSportivo proc,Date DataInizio,Date DataFine) throws EccezioneCF, SQLException {
+		ArrayList<Ingaggio> ingaggiVantaggiosi= new ArrayList<Ingaggio>();
+		StmGetInaggiVantaggiosi.setString(1,proc.getCF());
+		StmGetInaggiVantaggiosi.setDate(2,DataInizio);
+		StmGetInaggiVantaggiosi.setDate(3,DataFine);
+		StmGetInaggiVantaggiosi.setDate(4,DataInizio);
+		StmGetInaggiVantaggiosi.setDate(5,DataFine);
+		
+		StmGetInaggiVantaggiosi.setString(6,proc.getCF());
+		StmGetInaggiVantaggiosi.setDate(7,DataInizio);
+		StmGetInaggiVantaggiosi.setDate(8,DataFine);
+		StmGetInaggiVantaggiosi.setDate(9,DataInizio);
+		StmGetInaggiVantaggiosi.setDate(10,DataFine);
+		ResultSet rs= StmGetInaggiVantaggiosi.executeQuery();
+		while(rs.next()) {
+			String cfAtleta=rs.getString("codicefiscaleatleta");
+			
+			double stipendioProc = rs.getDouble("stipendioprocuratore");
+			
+			
+			Ingaggio ing = new Ingaggio (null,GetAtletaByCodiceFiscale(cfAtleta),null,null,stipendioProc);
+//			System.out.println(cfAtleta+" "+stipendioProc);
+			ingaggiVantaggiosi.add(ing);	
+		}
+//		System.out.println("size = "+ingaggiVantaggiosi.size());
+		return ingaggiVantaggiosi;	
 	}
 }
 	
