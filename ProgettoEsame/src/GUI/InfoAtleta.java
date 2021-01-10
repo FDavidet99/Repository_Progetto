@@ -104,7 +104,7 @@ public class InfoAtleta extends JFrame {
 		contentPane.setLayout(null);
 		
 
-	    lblTotStat = new JLabel("Totale= -");
+	    lblTotStat = new JLabel("Totale= - ");
 	    lblTotStat.setBounds(601, 232, 109, 18);
 	    contentPane.add(lblTotStat);
 	    
@@ -285,17 +285,29 @@ public class InfoAtleta extends JFrame {
 					return false;
 				}
 			});	
-		    
-		    
-		    
-		    
 			
+			JButton HomeButton = new JButton("Home");
+			HomeButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					controller.GotoHomeFromInfoAtleta();
+				}
+			});
+			HomeButton.setBounds(644, 466, 89, 23);
+			contentPane.add(HomeButton);
 			
+			JButton IndietroButton = new JButton("Indietro");
+			IndietroButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					controller.GotoVisualizzaAtletiFromInfoAtleta();
+				}
+			});
+			IndietroButton.setBounds(529, 466, 89, 23);
+			contentPane.add(IndietroButton);
+       
 		
 	}
-	private void setLblTotIntroiti()
-	{
-		
+	
+	private void setLblTotIntroiti(){
 		int rows = TabellaIntroiti.getModel().getRowCount();
 		double tot=0;
 		for(int i=0;i<rows;i++)
@@ -346,8 +358,7 @@ public class InfoAtleta extends JFrame {
 				
 			}
 			TabellaIntroiti.setModel(new DefaultTableModel(
-					dati,
-					ColonneIntroiti
+					dati,ColonneIntroiti
 			){
 				private static final long serialVersionUID = 1L;
 				public boolean isCellEditable(int r,int c) {

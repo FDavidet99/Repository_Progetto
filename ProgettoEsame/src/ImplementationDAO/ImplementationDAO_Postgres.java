@@ -57,17 +57,13 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetMaxContrattiAtleta=Connection.prepareStatement("(Select tipocontratto,club as Entita,compenso From Contratto "+
 				" where  tipocontratto= 'Club' and compenso = ( "+
 				"Select max(compenso) From Contratto  where tipocontratto= 'Club' "+
-				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ? ) AND codicefiscaleatleta=? "+
-				")) "+
-				
+				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ? ) AND codicefiscaleatleta=? )) "+
 				"union "+
-				
 				"(Select tipocontratto,sponsor as Entita,compenso From Contratto "+
 				 "where  tipocontratto= 'Sponsor' and compenso = ( "+
 				"Select max(compenso) From Contratto  where tipocontratto= 'Sponsor'  "+
 				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "+
-				"AND codicefiscaleatleta=? "+ 
-				"))");
+				"AND codicefiscaleatleta=?))");
 		
 	}
 

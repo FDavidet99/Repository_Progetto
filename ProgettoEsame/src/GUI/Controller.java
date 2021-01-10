@@ -255,6 +255,7 @@ public class Controller {
 	
 	public void GotoHomeFromInfoAtleta() {
 		PageInfoAtleta.setVisible(false);
+		PageViewAtleti.setVisible(false);
 		HomePage.setVisible(true);
 	}
 	
