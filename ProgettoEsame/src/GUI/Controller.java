@@ -234,9 +234,10 @@ public class Controller {
 	}
 	
 	public void GotoInfoAtletaFromVisualizzaAtleta(Atleta atletaSelezionato) {
-		PageViewAtleti.setVisible(false);
 		try {
+			PageViewAtleti.setVisible(false);
 			PageInfoAtleta = new InfoAtleta(this,atletaSelezionato);
+			PageInfoAtleta.setVisible(true);
 		} catch (SQLException e1) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errori di connessione",SwingConstants.CENTER); 
@@ -250,7 +251,6 @@ public class Controller {
             Dialog.setBounds(400, 250, 250, 200);
             Dialog.setVisible(true);
 		}	
-		PageInfoAtleta.setVisible(true);
 	}
 	
 	public void GotoHomeFromInfoAtleta() {
@@ -258,31 +258,45 @@ public class Controller {
 		HomePage.setVisible(true);
 	}
 	
-	public void GotoInfoProcuratoreFromVisualizzaProcuratore(ProcuratoreSportivo proc) {
-		PageViewProcuratori.setVisible(false);
+	public void GotoInfoProcuratoreFromVisualizzaProcuratore(ProcuratoreSportivo procuratore) {
 		try {
-			PageInfoProcuratore = new InfoProcuratore(this,proc);
-		} catch (EccezioneCF e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		PageInfoProcuratore.setVisible(true);
+			PageViewProcuratori.setVisible(false);
+			PageInfoProcuratore = new InfoProcuratore(this,procuratore);
+			PageInfoProcuratore.setVisible(true);
+		} catch (SQLException e1) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errori di connessione",SwingConstants.CENTER); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 250, 250, 200);
+            Dialog.setVisible(true);
+		} catch (EccezioneCF e1) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errori visualizzazione dati",SwingConstants.CENTER); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 250, 250, 200);
+            Dialog.setVisible(true);
+		}	
 	}
+
 	public void GotoInfoProcuratoreFromInfoAtleta(ProcuratoreSportivo proc) {
-		PageInfoAtleta.setVisible(false);
 		try {
+			PageInfoAtleta.setVisible(false);
 			PageInfoProcuratore = new InfoProcuratore(this,proc);
-		} catch (EccezioneCF e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			PageInfoProcuratore.setVisible(true);
+		} catch (SQLException e1) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errori di connessione",SwingConstants.CENTER); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 250, 250, 200);
+            Dialog.setVisible(true);
+		} catch (EccezioneCF e1) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errori visualizzazione dati",SwingConstants.CENTER); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 250, 250, 200);
+            Dialog.setVisible(true);
 		}
-		PageInfoProcuratore.setVisible(true);
+		
 	}
 	
 	public void GotoHomeFromInfoProcuratore() {
@@ -299,7 +313,6 @@ public class Controller {
 		PageInfoAtleta.setVisible(false);
 		PageViewAtleti.setVisible(true);
 	}
-	
 	
 	public void GoToPageInsertContratto() {
 		try {

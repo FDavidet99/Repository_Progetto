@@ -53,14 +53,20 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetContrattiAttivi = Connection.prepareStatement("SELECT * FROM Contratto where ?::date>=datainizio and ?::date <datafine ;");
 		
 		
-		StmGetMaxContrattiAtleta=Connection.prepareStatement("Select tipocontratto,max(compenso) From Contratto  where tipocontratto= 'Club' "+
+		StmGetMaxContrattiAtleta=Connection.prepareStatement("(Select tipocontratto,club as Entita,compenso From Contratto "+
+		"where compenso=( "+
+				"Select max(compenso) From Contratto  where tipocontratto= 'Club' "+
 				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ? ) AND codicefiscaleatleta=? "+
-				"group by  tipocontratto "+
+				"group by  tipocontratto)) "+
+				
 				"union "+
-				"Select tipocontratto,max(compenso) From Contratto  where tipocontratto= 'Sponsor'  "+
+				
+				"(Select tipocontratto,sponsor as Entita,compenso From Contratto "+
+				"where compenso=( "+
+				"Select max(compenso) From Contratto  where tipocontratto= 'Sponsor'  "+
 				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "+
 				"AND codicefiscaleatleta=? "+ 
-				"group by  tipocontratto;");
+				"group by  tipocontratto))");
 		
 	}
 
@@ -514,11 +520,25 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetMaxContrattiAtleta.setString(10, atleta.getCF());
 		ResultSet rs= StmGetMaxContrattiAtleta.executeQuery();
 		while(rs.next()) {
-			double CompensoAtleta = rs.getDouble("max");
-			TipoContratto TipoC = TipoContratto.Club;
-			if(rs.getString("tipocontratto").equals("Sponsor"))
-				TipoC = TipoContratto.Sponsor;	
-			Contratto contratto = new Contratto (null, atleta, null, null, TipoC, null, null, CompensoAtleta, 0,0);
+			int IdClub_Sponsor=rs.getInt("Entita");
+			ClubSportivo club = null;
+			Sponsor sponsor=null;
+			double CompensoAtleta = rs.getDouble("compenso");
+			TipoContratto TipoC=null;
+			if(rs.getString("tipocontratto").equals("Club")) {
+				TipoC = TipoContratto.Club;
+				club = GetClubById(IdClub_Sponsor);
+			}
+			if(rs.getString("tipocontratto").equals("Sponsor")) {
+				TipoC = TipoContratto.Sponsor;
+				sponsor = GetSponsorById(IdClub_Sponsor);
+			}
+			Contratto contratto = new Contratto (null, atleta, null, null, TipoC, club, sponsor, CompensoAtleta, 0,0);
+			
+			System.out.println(contratto.getTipo()+" "+(contratto.getClub() != null ? contratto.getClub().getIdClubSportivo() + ", " : "")
+					+" "+(contratto.getSponsor() != null ? contratto.getSponsor().getIdSponsor() + ", " : "")
+					);
+
 			ValoriMassimi.add(contratto);	
 		}
 		System.out.println(ValoriMassimi.size());
