@@ -76,22 +76,21 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 				"Select max(guadagnoprocuratore) From Contratto  where tipocontratto= 'Club' "+
 				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ? ) AND codicefiscaleprocuratore=? "+
 				")) "+
-				
 				"union "+
-				
 				"(Select tipocontratto,sponsor as Entita,guadagnoprocuratore From Contratto "+
 				 "where  tipocontratto= 'Sponsor' and guadagnoprocuratore = ( "+
 				"Select max(guadagnoprocuratore) From Contratto  where tipocontratto= 'Sponsor'  "+
 				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "+
 				"AND codicefiscaleprocuratore=? "+ 
 				"))");
+		
 		StmGetInaggiVantaggiosi = Connection.prepareStatement("select datainizio,datafine,codicefiscaleatleta,stipendioprocuratore  "
 				+ "from ingaggio where codicefiscaleprocuratore = ? "
 				+"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "
-				+ "and stipendioprocuratore*greatest(1,(DATE_PART('month', AGE(datainizio, datafine)))) = "
-				+ "(select max(stipendioprocuratore*greatest(1,(DATE_PART('month', AGE(datainizio, datafine))))) "
-				+ "from ingaggio where codicefiscaleprocuratore = ? "
-				+"and (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "
+				+ "AND stipendioprocuratore*greatest(1,(DATE_PART('month', AGE(datainizio, datafine)))) = "
+				+ "(SELECT max(stipendioprocuratore*greatest(1,(DATE_PART('month', AGE(datainizio, datafine))))) "
+				+ "FROM ingaggio where codicefiscaleprocuratore = ? "
+				+"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "
 				+ ");");
 	}
 

@@ -114,8 +114,7 @@ public class InfoProcuratore extends JFrame {
 	    lblTotIntroiti = new JLabel("Totale= - ");
 	    lblTotIntroiti.setBounds(532, 437, 178, 18);
 	    contentPane.add(lblTotIntroiti);
-		
-		
+			
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 140, 700, 87);
 		contentPane.add(scrollPane);
@@ -124,8 +123,6 @@ public class InfoProcuratore extends JFrame {
 		InfoLabel.setFont(new Font("Monospaced", Font.PLAIN, 15));
 		InfoLabel.setBounds(10, 33, 509, 21);
 		contentPane.add(InfoLabel);
-		
-		
 		
 		TabellaStatistiche = new JTable();
 		scrollPane.setViewportView(TabellaStatistiche);
@@ -140,12 +137,10 @@ public class InfoProcuratore extends JFrame {
 				setLblTotStat();
 			}
 		});
-		setLblTotStat();
 		ContrattiAttiviRadioButton.setBounds(17, 110, 109, 23);
 		contentPane.add(ContrattiAttiviRadioButton);
 		ContrattiAttiviRadioButton.setSelected(true);
-		
-		
+			
 		JRadioButton StoriaContrattiRadioButton = new JRadioButton("Storia Contratti");
 		StoriaContrattiRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -159,15 +154,7 @@ public class InfoProcuratore extends JFrame {
 		JRadioButton StoriaAtletiRadioButton = new JRadioButton("Storia Atleti ingaggiati");
 		StoriaAtletiRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TabellaStatistiche.setModel(new DefaultTableModel(
-						GetDatiTabIngaggiAtleti(proc, ColonneTabStoriaProcuratori.length),ColonneTabStoriaProcuratori
-				){
-					private static final long serialVersionUID = 1L;
-					public boolean isCellEditable(int r,int c) {
-						return false;
-					}
-				});
-				TabellaStatistiche.getColumnModel().getColumn(0).setPreferredWidth(100);
+				RiempiTabIngaggiAtleti();
 				setLblTotStat();
 			}
 		});
@@ -177,22 +164,13 @@ public class InfoProcuratore extends JFrame {
 	    JRadioButton AtletiAttiviRadioButton = new JRadioButton("Ingaggi Attivi\r\n");
 	    AtletiAttiviRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TabellaStatistiche.setModel(new DefaultTableModel(
-						GetDatiTabIngaggiAtletiAttivi(proc, ColonneTabStoriaProcuratori.length),ColonneTabStoriaProcuratori
-				){
-					private static final long serialVersionUID = 1L;
-					public boolean isCellEditable(int r,int c) {
-						return false;
-					}
-				});
-				TabellaStatistiche.getColumnModel().getColumn(0).setPreferredWidth(100);
+				RiempiTabIngaggiAttivi();
 				setLblTotStat();
 			}
 		});
 		AtletiAttiviRadioButton.setBounds(239, 110, 109, 23);
 		contentPane.add(AtletiAttiviRadioButton);
-		
-		
+			
 	    ButtonGroup GroupTabella = new ButtonGroup();
 	    GroupTabella.add(ContrattiAttiviRadioButton);
 	    GroupTabella.add(StoriaContrattiRadioButton);
@@ -220,8 +198,7 @@ public class InfoProcuratore extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(dateChooserdataInizio==null || dateChooserdataFine == null)
 	    			return;
-	    		if(dateChooserdataInizio.getCalendar() == null ||
-	    				dateChooserdataFine.getCalendar() == null)
+	    		if(dateChooserdataInizio.getCalendar() == null ||dateChooserdataFine.getCalendar() == null)
 	    			return;
 				calcolaContrattiVantaggiosi();
 	    		setLblTotContrattiVantaggiosi();
@@ -240,20 +217,16 @@ public class InfoProcuratore extends JFrame {
 	    	public void propertyChange(PropertyChangeEvent evt) {
 	    		if(dateChooserdataInizio==null || dateChooserdataFine == null)
 	    			return;
-	    		if(dateChooserdataInizio.getCalendar() == null ||
-	    				dateChooserdataFine.getCalendar() == null)
+	    		if(dateChooserdataInizio.getCalendar() == null || dateChooserdataFine.getCalendar() == null)
 	    			return;
-	    		if(radioBtnContrattiVantaggiosi.isSelected())
-	    		{
+	    		if(radioBtnContrattiVantaggiosi.isSelected()){
 	    			calcolaContrattiVantaggiosi();
 		    		setLblTotContrattiVantaggiosi();
 	    		}
-	    		else if(radioBtnIngaggiVantaggiosi.isSelected())
-	    		{
+	    		else if(radioBtnIngaggiVantaggiosi.isSelected()){
 	    			calcolaIngaggiVantaggiosi();
 	    			setLblTotIngaggiVantaggiosi();
 	    		}
-	    		
 	    	}
 	    });
 	    dateChooserdataInizio.setBounds(56, 313, 150, 20);
@@ -267,13 +240,11 @@ public class InfoProcuratore extends JFrame {
 	    		if(dateChooserdataFine.getCalendar() == null ||
 	    				dateChooserdataInizio.getCalendar() == null)
 	    			return;
-	    		if(radioBtnContrattiVantaggiosi.isSelected())
-	    		{
+	    		if(radioBtnContrattiVantaggiosi.isSelected()){
 	    			calcolaContrattiVantaggiosi();
 		    		setLblTotContrattiVantaggiosi();
 	    		}
-	    		else if(radioBtnIngaggiVantaggiosi.isSelected())
-	    		{
+	    		else if(radioBtnIngaggiVantaggiosi.isSelected()){
 	    			calcolaIngaggiVantaggiosi();
 	    			setLblTotIngaggiVantaggiosi();
 	    		}
@@ -303,8 +274,6 @@ public class InfoProcuratore extends JFrame {
 		JScrollPane scrollPane2 = new JScrollPane();
 		scrollPane2.setBounds(10, 340, 700, 87);
 		contentPane.add(scrollPane2);
-	    
-		
 		
 		TabellaVantaggi = new JTable();
 		scrollPane2.setViewportView(TabellaVantaggi);
@@ -320,17 +289,15 @@ public class InfoProcuratore extends JFrame {
 	
 	}
 	
-	private void setLblTotContrattiVantaggiosi()
-	{
-		
+	private void setLblTotContrattiVantaggiosi() {
 		int rows = TabellaVantaggi.getModel().getRowCount();
 		double tot=0;
-		for(int i=0;i<rows;i++)
-		{
+		for(int i=0;i<rows;i++){
 			tot+=Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 2)));
 		}
 		lblTotIntroiti.setText("Totale = "+tot+" €");
 	}
+	
 	private void setLblTotIngaggiVantaggiosi(){
 		int rows = TabellaVantaggi.getModel().getRowCount();
 		double tot=0;
@@ -338,9 +305,7 @@ public class InfoProcuratore extends JFrame {
 			long diff=1;
 			//System.out.println(TabellaStatistiche.getValueAt(0, 0).toString());
 			if(TabellaVantaggi.getModel().getColumnName(5).toString().equals("Stipendio P.")) 
-
-				diff=(ChronoUnit.MONTHS.between((LocalDate)TabellaVantaggi.getValueAt(i, 3),(LocalDate) TabellaVantaggi.getValueAt(i, 4)));
-				
+				diff=(ChronoUnit.MONTHS.between((LocalDate)TabellaVantaggi.getValueAt(i, 3),(LocalDate) TabellaVantaggi.getValueAt(i, 4)));		
 			tot+=diff*Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 5)));
 		}
 		lblTotIntroiti.setText("Totale stipendio = "+tot+" €");
@@ -620,7 +585,7 @@ public class InfoProcuratore extends JFrame {
 			}
 		});
 	}
-	//fatto
+	
 	
 	public Object[][] GetDatiTabIngaggiAtletiAttivi(ProcuratoreSportivo proc,int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
@@ -660,6 +625,19 @@ public class InfoProcuratore extends JFrame {
 		return Contenutotab;
 	}
 	
+	public void RiempiTabIngaggiAttivi() {
+		TabellaStatistiche.setModel(new DefaultTableModel(
+				GetDatiTabIngaggiAtletiAttivi(proc, ColonneTabStoriaProcuratori.length),ColonneTabStoriaProcuratori
+		){
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int r,int c) {
+				return false;
+			}
+		});
+		TabellaStatistiche.getColumnModel().getColumn(0).setPreferredWidth(100);
+	}
+	//fatto
+	
 	public Object[][] GetDatiTabIngaggiAtleti(ProcuratoreSportivo proc,int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
@@ -696,6 +674,18 @@ public class InfoProcuratore extends JFrame {
 			Dialog.setVisible(true);
 		}
 		return Contenutotab;
+	}
+
+	public void RiempiTabIngaggiAtleti() {
+		TabellaStatistiche.setModel(new DefaultTableModel(
+				GetDatiTabIngaggiAtleti(proc, ColonneTabStoriaProcuratori.length),ColonneTabStoriaProcuratori
+		){
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int r,int c) {
+				return false;
+			}
+		});
+		TabellaStatistiche.getColumnModel().getColumn(0).setPreferredWidth(100);
 	}
 }
 
