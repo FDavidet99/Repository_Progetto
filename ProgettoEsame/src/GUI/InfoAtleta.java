@@ -66,9 +66,11 @@ public class InfoAtleta extends JFrame {
 	private JTextField NomeClubTextField;
 	private JTextField NomeSponsorTextField;
 	private JTable TabellaVantaggi;
-	private Object[] ColonneContrattiVantaggiosi= {"Nome Club/Sponsor", "Club/Sponsor", "Compenso"};
-	private JLabel lblTotStat;
-	private JLabel lblTotIntroiti;
+	private Object[] ColonneContrattiMigliori= {"Id Contratto","Nome Club/Sponsor", "Club/Sponsor", "Compenso"};
+	private Object[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante","Data Inizio","Data Fine", "Compenso"};
+	private Object[] ColonneTabStoriaProcuratori= {"Codice Fiscale P.","Nome","Cognome", "Data Inizio", "Data Fine", "Stipendio"};
+	private JLabel TotContratti;
+	private JLabel TotContrattiMigliori;
 	private JDateChooser DateInizioDateChooser;
 	private JDateChooser DateFineDateChooser;
 
@@ -103,14 +105,13 @@ public class InfoAtleta extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-
-	    lblTotStat = new JLabel("Totale= -");
-	    lblTotStat.setBounds(601, 232, 109, 18);
-	    contentPane.add(lblTotStat);
+	    TotContratti = new JLabel("Totale= -");
+	    TotContratti.setBounds(601, 232, 109, 18);
+	    contentPane.add(TotContratti);
 	    
-	    lblTotIntroiti = new JLabel("Totale= - ");
-	    lblTotIntroiti.setBounds(601, 437, 109, 18);
-	    contentPane.add(lblTotIntroiti);
+	    TotContrattiMigliori = new JLabel("Totale= - ");
+	    TotContrattiMigliori.setBounds(601, 437, 109, 18);
+	    contentPane.add(TotContrattiMigliori);
 		
 		ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
 		
@@ -152,55 +153,29 @@ public class InfoAtleta extends JFrame {
 		InfoLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		InfoLabel.setBounds(10, 33, 509, 21);
 		contentPane.add(InfoLabel);
-					
-		Object[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante","Data Inizio","Data Fine", "Compenso"};
-		Object[] ColonneTabStoriaProcuratori= {"Codice Fiscale P.","Nome","Cognome", "Data Inizio", "Data Fine", "Stipendio"};
 		
 		TabellaStatistiche = new JTable();
 		scrollPane.setViewportView(TabellaStatistiche);
 		
-		TabellaStatistiche.setModel(new DefaultTableModel(
-				PopolaTabellaContrattiAttivi(atleta,ColonneTabContratti.length),ColonneTabContratti
-		){
-			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int r,int c) {
-				return false;
-			}
-		});
-		setLblTotStat();
+		RiempiTabContrattiAttivi();
+		SetLabelTotContratti();
 		
 		JRadioButton ContrattiAttiviRadioButton = new JRadioButton("Contratti Attivi\r\n");
 		ContrattiAttiviRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TabellaStatistiche.setModel(new DefaultTableModel(
-						PopolaTabellaContrattiAttivi(atleta,ColonneTabContratti.length),ColonneTabContratti
-				){
-					private static final long serialVersionUID = 1L;
-					public boolean isCellEditable(int r,int c) {
-						return false;
-					}
-				});
-				setLblTotStat();
+				RiempiTabContrattiAttivi();
+				SetLabelTotContratti();
 			}
 		});
 		ContrattiAttiviRadioButton.setBounds(17, 110, 109, 23);
 		contentPane.add(ContrattiAttiviRadioButton);
 		ContrattiAttiviRadioButton.setSelected(true);
 		
-		
-		
 		JRadioButton StoriaContrattiRadioButton = new JRadioButton("Storia Contratti");
 		StoriaContrattiRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TabellaStatistiche.setModel(new DefaultTableModel(
-						PopolaTabellaContratti(atleta,ColonneTabContratti.length),ColonneTabContratti 
-				){
-					private static final long serialVersionUID = 1L;
-					public boolean isCellEditable(int r,int c) {
-						return false;
-					}
-				});
-				setLblTotStat();
+				RiempiTabContratti();
+				SetLabelTotContratti();
 			}
 		});
 		StoriaContrattiRadioButton.setBounds(128, 110, 109, 23);
@@ -209,38 +184,25 @@ public class InfoAtleta extends JFrame {
 		JRadioButton StoriaProcuratoriRadioButton = new JRadioButton("Storia Procuratori");
 		StoriaProcuratoriRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TabellaStatistiche.setModel(new DefaultTableModel(
-						PopolaTabellaProcuratori(atleta, ColonneTabStoriaProcuratori.length),ColonneTabStoriaProcuratori
-				){
-					private static final long serialVersionUID = 1L;
-					public boolean isCellEditable(int r,int c) {
-						return false;
-					}
-				});
-				TabellaStatistiche.getColumnModel().getColumn(0).setPreferredWidth(100);
-				setLblTotStat();
+				RiempiTabProcuratori();
+				TotContratti.setText("");
 			}
 		});
 	    StoriaProcuratoriRadioButton.setBounds(239, 110, 144, 23);
 	    contentPane.add(StoriaProcuratoriRadioButton);
-		
 		
 	    ButtonGroup GroupTabella = new ButtonGroup();
 	    GroupTabella.add(ContrattiAttiviRadioButton);
 	    GroupTabella.add(StoriaContrattiRadioButton);
 	    GroupTabella.add(StoriaProcuratoriRadioButton);
 	    
-	    
 		ContrattiAttiviRadioButton.setBounds(17, 110, 109, 23);
 		contentPane.add(ContrattiAttiviRadioButton);
 		ContrattiAttiviRadioButton.setSelected(true);
 		
-		
 	    JLabel lblNewLabel_2 = new JLabel("Selezionare periodo di ricerca");
 	    lblNewLabel_2.setBounds(20, 248, 178, 14);
-	    contentPane.add(lblNewLabel_2);
-	    
-	    
+	    contentPane.add(lblNewLabel_2);	    
 	    
 	    DateInizioDateChooser = new JDateChooser();
 	    DateInizioDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
@@ -250,8 +212,8 @@ public class InfoAtleta extends JFrame {
 	    		if(DateInizioDateChooser.getCalendar() == null ||
 	    				DateFineDateChooser.getCalendar() == null)
 	    			return;
-	    		calcolaContrattiVantaggiosi();
-	    		setLblTotContrattiVantaggiosi();
+	    		RiempiTabContrattiMigliori();
+	    		SetLabelTotContrattiMigliori();
 	    	}
 	    });
 	    DateInizioDateChooser.setBounds(10, 283, 150, 20);
@@ -266,26 +228,23 @@ public class InfoAtleta extends JFrame {
 	    		if(DateInizioDateChooser.getCalendar() == null ||
 	    				DateFineDateChooser.getCalendar() == null)
 	    			return;
-	    		calcolaContrattiVantaggiosi();
-	    		setLblTotContrattiVantaggiosi();
+	    		RiempiTabContrattiMigliori();
+	    		SetLabelTotContrattiMigliori();
 	    	}
 	    });
 	    DateFineDateChooser.setBounds(201, 283, 144, 20);
 	    DateFineDateChooser.setDateFormatString("yyyy/MM/dd");
 	    contentPane.add(DateFineDateChooser);
-	    
-	    
+	       
 	    JScrollPane scrollPane2 = new JScrollPane();
 		scrollPane2.setBounds(10, 340, 700, 87);
 		contentPane.add(scrollPane2);
-	    
-		
 		
 		TabellaVantaggi = new JTable();
 		scrollPane2.setViewportView(TabellaVantaggi);
 		
 		TabellaVantaggi.setModel(new DefaultTableModel(
-				new Object[][] {},ColonneContrattiVantaggiosi
+				new Object[][] {},ColonneContrattiMigliori
 		){
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int r,int c) {
@@ -312,67 +271,53 @@ public class InfoAtleta extends JFrame {
 		contentPane.add(HomeButton);
 		
 	}
-	private void setLblTotContrattiVantaggiosi()
-	{
-		
+	
+	private void SetLabelTotContrattiMigliori(){
 		int rows = TabellaVantaggi.getModel().getRowCount();
 		double tot=0;
-		for(int i=0;i<rows;i++)
-		{
-			tot+=Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 2)));
+		for(int i=0;i<rows;i++){
+			tot+=Double.parseDouble(String.valueOf(TabellaVantaggi.getValueAt(i, 3)));
 		}
-		lblTotIntroiti.setText("Totale = "+tot+" €");
+		TotContrattiMigliori.setText("Totale = "+tot+" €");
 	}
-	private void setLblTotStat()
-	{
+	
+	private void SetLabelTotContratti(){
 		int rows = TabellaStatistiche.getModel().getRowCount();
 		double tot=0;
-		for(int i=0;i<rows;i++)
-		{
+		for(int i=0;i<rows;i++){
 			tot+=Double.parseDouble(String.valueOf(TabellaStatistiche.getValueAt(i, 5)));
 			
 		}
-		lblTotStat.setText("Totale = "+tot+" €");
+		TotContratti.setText("Totale = "+tot+" €");
 	}
-	private void calcolaContrattiVantaggiosi()
-	{
+	
+	public Object[][] GetDatiContrattiMigliori() {
+		Object[][] ContenutoTab=new Object [0][0];
 		try {
 			ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
 			LocalDate TempDate1=DateInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		    LocalDate TempDate2=DateFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
-		    ArrayList<Contratto> introiti = (ArrayList) DAO.GetMaxContrattiAtleta(atleta,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
-			Iterator i=introiti.iterator();
-			Object[][] dati = new Object[introiti.size()][3];
-			for(int k=0;k<introiti.size();k++)
-			{
-				TipoContratto tipoContratto = introiti.get(k).getTipo();
-				if(tipoContratto.equals(TipoContratto.Club))
-				{
-					if(introiti.get(k).getClub()==null)
+		    ArrayList<Contratto> ContrattiMigliori = (ArrayList) DAO.GetMaxContrattiAtleta(atleta,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
+			ContenutoTab = new Object[ContrattiMigliori.size()][ColonneContrattiMigliori.length];
+			for(int i=0;i<ContrattiMigliori.size();i++){
+				TipoContratto tipoContratto = ContrattiMigliori.get(i).getTipo();
+				if(tipoContratto.equals(TipoContratto.Club)){
+					if(ContrattiMigliori.get(i).getClub()==null)
 						continue;
-					dati[k][0] = introiti.get(k).getClub().getNomeClub();
-					dati[k][1] = "Club";
-					dati[k][2] = introiti.get(k).getCompensoAtleta();
+					ContenutoTab[i][0] = ContrattiMigliori.get(i).getIdContratto();
+					ContenutoTab[i][1] = ContrattiMigliori.get(i).getClub().getNomeClub();
+					ContenutoTab[i][2] = "Club";
+					ContenutoTab[i][3] = ContrattiMigliori.get(i).getCompensoAtleta();
 				}
-				else
-				{
-					if(introiti.get(k).getSponsor()==null)
+				else {
+					if(ContrattiMigliori.get(i).getSponsor()==null)
 						continue;
-					dati[k][0] = introiti.get(k).getSponsor().getNomeSponsor();
-					dati[k][1] = "Sponsor";
-					dati[k][2] = introiti.get(k).getCompensoAtleta();
-				}
-				
+					ContenutoTab[i][0] = ContrattiMigliori.get(i).getIdContratto();
+					ContenutoTab[i][1] = ContrattiMigliori.get(i).getSponsor().getNomeSponsor();
+					ContenutoTab[i][2] = "Sponsor";
+					ContenutoTab[i][3] = ContrattiMigliori.get(i).getCompensoAtleta();
+				}	
 			}
-			TabellaVantaggi.setModel(new DefaultTableModel(
-					dati,
-					ColonneContrattiVantaggiosi
-			){
-				private static final long serialVersionUID = 1L;
-				public boolean isCellEditable(int r,int c) {
-					return false;
-				}
-			});
 		} catch (EccezioneCF e1) {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Elementi non visualizzabili",SwingConstants.CENTER); 
@@ -393,11 +338,22 @@ public class InfoAtleta extends JFrame {
 			Dialog.getContentPane().add(LabelJDialog); 
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
-			}				    
-    	
+		}				
+		return ContenutoTab;		
 	}
 	
-	public Object[][] PopolaTabellaContrattiAttivi(Atleta atleta, int NumColonne) {
+	private void RiempiTabContrattiMigliori() {
+			TabellaVantaggi.setModel(new DefaultTableModel(
+					GetDatiContrattiMigliori(),ColonneContrattiMigliori
+			){
+				private static final long serialVersionUID = 1L;
+				public boolean isCellEditable(int r,int c) {
+					return false;
+				}
+			});	    
+	}
+	
+	public Object[][] GetDatiContrattiAttivi(Atleta atleta) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
@@ -408,7 +364,7 @@ public class InfoAtleta extends JFrame {
 			        it.remove();
 			    }
 			}
-			Contenutotab=new Object [ContrattiAttivi.size()][NumColonne];		
+			Contenutotab=new Object [ContrattiAttivi.size()][ColonneTabContratti.length];		
 			for(int i=0;i<ContrattiAttivi.size();i++){
 					Contratto TmpContratto=ContrattiAttivi.get(i);	
 					String NomeClub_Sponsor;
@@ -450,7 +406,18 @@ public class InfoAtleta extends JFrame {
 		return Contenutotab;
 	}
 	
-	public Object[][] PopolaTabellaContratti(Atleta atleta,int NumColonne) {
+	public void RiempiTabContrattiAttivi() {
+		TabellaStatistiche.setModel(new DefaultTableModel(
+				GetDatiContrattiAttivi(atleta),ColonneTabContratti
+		){
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int r,int c) {
+				return false;
+			}
+		});
+	}
+	
+	public Object[][] GetDatiContratti(Atleta atleta) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
@@ -461,7 +428,7 @@ public class InfoAtleta extends JFrame {
 			        it.remove();
 			    }
 			}
-			Contenutotab=new Object [ContrattiAttivi.size()][NumColonne];		
+			Contenutotab=new Object [ContrattiAttivi.size()][ColonneTabContratti.length];		
 			for(int i=0;i<ContrattiAttivi.size();i++){
 					Contratto TmpContratto=ContrattiAttivi.get(i);	
 					String NomeClub_Sponsor;
@@ -502,12 +469,24 @@ public class InfoAtleta extends JFrame {
 		}
 		return Contenutotab;
 	}
-	public Object[][] PopolaTabellaProcuratori(Atleta atleta,int NumColonne) {
+	
+	public void RiempiTabContratti() {
+		TabellaStatistiche.setModel(new DefaultTableModel(
+				GetDatiContratti(atleta),ColonneTabContratti 
+		){
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int r,int c) {
+				return false;
+			}
+		});
+	}
+	
+	public Object[][] GetDatiTabellaProcuratori(Atleta atleta) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
 			ArrayList<Ingaggio> Ingaggi=(ArrayList<Ingaggio>) dao.GetIngaggiByAtleta(atleta);	
-			Contenutotab=new Object [Ingaggi.size()][NumColonne];		
+			Contenutotab=new Object [Ingaggi.size()][ColonneTabStoriaProcuratori.length];		
 			for(int i=0;i<Ingaggi.size();i++){
 					Ingaggio TmpIngaggio=Ingaggi.get(i);	
 
@@ -515,7 +494,7 @@ public class InfoAtleta extends JFrame {
 					Contenutotab[i][1]=TmpIngaggio.getProcuratore().getNome();
 					Contenutotab[i][2]=TmpIngaggio.getProcuratore().getCognome();
 					Contenutotab[i][3]=TmpIngaggio.getDataInizio();
-					Contenutotab[i][4]=TmpIngaggio.getDataInizio();
+					Contenutotab[i][4]=TmpIngaggio.getDataFine();
 					Contenutotab[i][5]=TmpIngaggio.getStipendioProcuratore();
 			}	
 		} catch (EccezioneCF e) {
@@ -539,6 +518,19 @@ public class InfoAtleta extends JFrame {
 		}
 		return Contenutotab;
 	}
+	
+	public void RiempiTabProcuratori() {
+		TabellaStatistiche.setModel(new DefaultTableModel(
+				GetDatiTabellaProcuratori(atleta),ColonneTabStoriaProcuratori
+		){
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int r,int c) {
+				return false;
+			}
+		});
+		TabellaStatistiche.getColumnModel().getColumn(0).setPreferredWidth(100);
+	}
+
 }
 
 	

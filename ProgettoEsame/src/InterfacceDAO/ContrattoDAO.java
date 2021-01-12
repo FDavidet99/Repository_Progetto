@@ -16,6 +16,6 @@ public interface ContrattoDAO {
 	public List<Contratto> GetContratti() throws SQLException, EccezioneCF;
 	public List<Contratto> GetContrattiAttivi() throws SQLException, EccezioneCF;
 	public List<Contratto> GetMaxContrattiAtleta(Atleta atleta, Date datainizio, Date dataFine) throws EccezioneCF, SQLException;
-	public List<Contratto> GetMaxContrattiProc(ProcuratoreSportivo proc, Date datainizio, Date dataFine) throws EccezioneCF, SQLException;
-	public List<Ingaggio> GetIngaggiVantaggiosi(ProcuratoreSportivo proc, Date datainizio, Date dataFine) throws EccezioneCF, SQLException;
+	public List<Contratto> GetMaxContrattiProcuratori(ProcuratoreSportivo proc, Date datainizio, Date dataFine) throws EccezioneCF, SQLException;
+	public List<Ingaggio> GetIngaggiMigliori(ProcuratoreSportivo proc, Date datainizio, Date dataFine) throws EccezioneCF, SQLException;
 }

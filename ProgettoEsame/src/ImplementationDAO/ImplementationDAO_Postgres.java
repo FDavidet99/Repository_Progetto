@@ -9,7 +9,6 @@ import java.sql.SQLType;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,43 +54,33 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetContrattiAttivi = Connection.prepareStatement("SELECT * FROM Contratto where ?::date>=datainizio and ?::date <datafine ;");
 		StmGetIngaggiByProcuratoreAttivi=Connection.prepareStatement("SELECT * FROM Ingaggio WHERE CodiceFiscaleProcuratore=? AND ?::date>=datainizio and ?::date <=datafine;");
 		
-		
-		StmGetMaxContrattiAtleta=Connection.prepareStatement("(Select tipocontratto,club as Entita,compenso From Contratto "+
+		StmGetMaxContrattiAtleta=Connection.prepareStatement("(Select IdContratto,tipocontratto,club as Entita,compenso From Contratto "+
 				" where  tipocontratto= 'Club' and compenso = ( "+
 				"Select max(compenso) From Contratto  where tipocontratto= 'Club' "+
-				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ? ) AND codicefiscaleatleta=? "+
-				")) "+
-				
+				"And ?::date>=datainizio and ?::date <datafine AND codicefiscaleatleta=? )) "+
 				"union "+
-				
-				"(Select tipocontratto,sponsor as Entita,compenso From Contratto "+
+				"(Select IdContratto,tipocontratto,sponsor as Entita,compenso From Contratto "+
 				 "where  tipocontratto= 'Sponsor' and compenso = ( "+
 				"Select max(compenso) From Contratto  where tipocontratto= 'Sponsor'  "+
-				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "+
-				"AND codicefiscaleatleta=? "+ 
-				"))");
+				"And ?::date>=datainizio and ?::date <datafine AND codicefiscaleatleta=? ))");
 		
-		StmGetMaxContrattiProc = Connection.prepareStatement("(Select tipocontratto,club as Entita,guadagnoprocuratore From Contratto "+
+		StmGetMaxContrattiProcuratori = Connection.prepareStatement("(Select IdContratto,tipocontratto,club as Entita,guadagnoprocuratore From Contratto "+
 				" where  tipocontratto= 'Club' and guadagnoprocuratore = ( "+
 				"Select max(guadagnoprocuratore) From Contratto  where tipocontratto= 'Club' "+
-				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ? ) AND codicefiscaleprocuratore=? "+
-				")) "+
+				"AND codicefiscaleprocuratore=? And ?::date>=datainizio and ?::date <datafine ))"+
 				"union "+
-				"(Select tipocontratto,sponsor as Entita,guadagnoprocuratore From Contratto "+
-				 "where  tipocontratto= 'Sponsor' and guadagnoprocuratore = ( "+
+				"(Select IdContratto,tipocontratto,sponsor as Entita,guadagnoprocuratore From Contratto "+
+				"where  tipocontratto= 'Sponsor' and guadagnoprocuratore = ( "+
 				"Select max(guadagnoprocuratore) From Contratto  where tipocontratto= 'Sponsor'  "+
-				"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "+
-				"AND codicefiscaleprocuratore=? "+ 
-				"))");
-		
-		StmGetInaggiVantaggiosi = Connection.prepareStatement("select datainizio,datafine,codicefiscaleatleta,stipendioprocuratore  "
-				+ "from ingaggio where codicefiscaleprocuratore = ? "
-				+"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "
-				+ "AND stipendioprocuratore*greatest(1,(DATE_PART('month', AGE(datainizio, datafine)))) = "
-				+ "(SELECT max(stipendioprocuratore*greatest(1,(DATE_PART('month', AGE(datainizio, datafine))))) "
-				+ "FROM ingaggio where codicefiscaleprocuratore = ? "
-				+"AND (datainizio BETWEEN ? AND ?) AND ( datafine BETWEEN ? AND ?) "
-				+ ");");
+				" AND codicefiscaleprocuratore=? AND ?::date>=datainizio AND ?::date <=datafine ))");
+					
+		StmGetInaggiMigliori = Connection.prepareStatement("select datainizio,datafine,codicefiscaleatleta,stipendioprocuratore  "+
+				"from ingaggio where codicefiscaleprocuratore = ? "+
+			    "AND ?::date>=datainizio AND ?::date <=datafine "+
+				"AND stipendioprocuratore*greatest(1,(DATE_PART('month', AGE(datainizio, datafine)))) = "+
+				"(SELECT max(stipendioprocuratore*greatest(1,(DATE_PART('month', AGE(datainizio, datafine))))) "+
+				"FROM ingaggio where codicefiscaleprocuratore = ? "+
+				"AND ?::date>=datainizio AND ?::date <=datafine);");
 	}
 
 	@Override
@@ -490,10 +479,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	}
 	
 	@Override
-	public List<Contratto> GetContrattiAttivi() throws SQLException, EccezioneCF {
-		
-		//Verificare se si possono toglere le stringhe
-		
+	public List<Contratto> GetContrattiAttivi() throws SQLException, EccezioneCF {		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String curDate = formatter.format(new Date(System.currentTimeMillis()));
 		StmGetContrattiAttivi.setString(1,curDate);
@@ -534,14 +520,10 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		ArrayList<Contratto> ValoriMassimi= new ArrayList<Contratto>();
 		StmGetMaxContrattiAtleta.setDate(1,DataInizio);
 		StmGetMaxContrattiAtleta.setDate(2,DataFine);
-		StmGetMaxContrattiAtleta.setDate(3,DataInizio);
-		StmGetMaxContrattiAtleta.setDate(4,DataFine);
-		StmGetMaxContrattiAtleta.setString(5, atleta.getCF());
-		StmGetMaxContrattiAtleta.setDate(6,DataInizio);
-		StmGetMaxContrattiAtleta.setDate(7,DataFine);
-		StmGetMaxContrattiAtleta.setDate(8,DataInizio);
-		StmGetMaxContrattiAtleta.setDate(9,DataFine);
-		StmGetMaxContrattiAtleta.setString(10, atleta.getCF());
+		StmGetMaxContrattiAtleta.setString(3, atleta.getCF());
+		StmGetMaxContrattiAtleta.setDate(4,DataInizio);
+		StmGetMaxContrattiAtleta.setDate(5,DataFine);
+		StmGetMaxContrattiAtleta.setString(6,atleta.getCF());
 		ResultSet rs= StmGetMaxContrattiAtleta.executeQuery();
 		while(rs.next()) {
 			int IdClub_Sponsor=rs.getInt("Entita");
@@ -558,30 +540,24 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 				sponsor = GetSponsorById(IdClub_Sponsor);
 			}
 			Contratto contratto = new Contratto (null, atleta, null, null, TipoC, club, sponsor, CompensoAtleta, 0,0);
-			
-//			System.out.println(contratto.getTipo()+" "+(contratto.getClub() != null ? contratto.getClub().getIdClubSportivo() + ", " : "")
-//					+" "+(contratto.getSponsor() != null ? contratto.getSponsor().getIdSponsor() + ", " : "")
-//					);
 
+			contratto.setIdContratto(rs.getInt("idcontratto"));
 			ValoriMassimi.add(contratto);	
 		}
 		return ValoriMassimi;	
 	}
 	
 	@Override
-	public List<Contratto> GetMaxContrattiProc(ProcuratoreSportivo proc,Date DataInizio,Date DataFine) throws EccezioneCF, SQLException {
-		ArrayList<Contratto> ValoriMassimi= new ArrayList<Contratto>();
-		StmGetMaxContrattiProc.setDate(1,DataInizio);
-		StmGetMaxContrattiProc.setDate(2,DataFine);
-		StmGetMaxContrattiProc.setDate(3,DataInizio);
-		StmGetMaxContrattiProc.setDate(4,DataFine);
-		StmGetMaxContrattiProc.setString(5, proc.getCF());
-		StmGetMaxContrattiProc.setDate(6,DataInizio);
-		StmGetMaxContrattiProc.setDate(7,DataFine);
-		StmGetMaxContrattiProc.setDate(8,DataInizio);
-		StmGetMaxContrattiProc.setDate(9,DataFine);
-		StmGetMaxContrattiProc.setString(10, proc.getCF());
-		ResultSet rs= StmGetMaxContrattiProc.executeQuery();
+	public List<Contratto> GetMaxContrattiProcuratori(ProcuratoreSportivo proc,Date DataInizio,Date DataFine) throws EccezioneCF, SQLException {
+		ArrayList<Contratto> ValoriMassimi= new ArrayList<Contratto>();		
+		StmGetMaxContrattiProcuratori.setString(1,proc.getCF());
+		StmGetMaxContrattiProcuratori.setDate(2,DataInizio);
+		StmGetMaxContrattiProcuratori.setDate(3,DataFine);
+		StmGetMaxContrattiProcuratori.setString(4,proc.getCF());
+		StmGetMaxContrattiProcuratori.setDate(5,DataInizio);
+		StmGetMaxContrattiProcuratori.setDate(6,DataFine);
+		
+		ResultSet rs= StmGetMaxContrattiProcuratori.executeQuery();
 		while(rs.next()) {
 			int IdClub_Sponsor=rs.getInt("Entita");
 			ClubSportivo club = null;
@@ -598,14 +574,9 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			}
 			
 			Contratto contratto = new Contratto (proc, null, null, null, TipoC, club, sponsor, 0, compenso,0);
-			
-//			System.out.println(contratto.getTipo()+" "+(contratto.getClub() != null ? contratto.getClub().getIdClubSportivo() + ", " : "")
-//					+" "+(contratto.getSponsor() != null ? contratto.getSponsor().getIdSponsor() + ", " : "")
-//					);
-
+			contratto.setIdContratto(rs.getInt("idcontratto"));
 			ValoriMassimi.add(contratto);	
 		}
-//		System.out.println("size = "+ValoriMassimi.size());
 		return ValoriMassimi;	
 	}
 	
@@ -628,34 +599,29 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		rs.close();
 		return IngaggiProcuratore;
 	}
+	
 	@Override
-	public List<Ingaggio> GetIngaggiVantaggiosi(ProcuratoreSportivo proc,Date DataInizio,Date DataFine) throws EccezioneCF, SQLException {
+	public List<Ingaggio> GetIngaggiMigliori(ProcuratoreSportivo proc,Date DataInizio,Date DataFine) throws EccezioneCF, SQLException {
 		ArrayList<Ingaggio> ingaggiVantaggiosi= new ArrayList<Ingaggio>();
-		StmGetInaggiVantaggiosi.setString(1,proc.getCF());
-		StmGetInaggiVantaggiosi.setDate(2,DataInizio);
-		StmGetInaggiVantaggiosi.setDate(3,DataFine);
-		StmGetInaggiVantaggiosi.setDate(4,DataInizio);
-		StmGetInaggiVantaggiosi.setDate(5,DataFine);
-		
-		StmGetInaggiVantaggiosi.setString(6,proc.getCF());
-		StmGetInaggiVantaggiosi.setDate(7,DataInizio);
-		StmGetInaggiVantaggiosi.setDate(8,DataFine);
-		StmGetInaggiVantaggiosi.setDate(9,DataInizio);
-		StmGetInaggiVantaggiosi.setDate(10,DataFine);
-		ResultSet rs= StmGetInaggiVantaggiosi.executeQuery();
+		StmGetInaggiMigliori.setString(1,proc.getCF());
+		StmGetInaggiMigliori.setDate(2,DataInizio);
+		StmGetInaggiMigliori.setDate(3,DataFine);
+		StmGetInaggiMigliori.setString(1,proc.getCF());
+		StmGetInaggiMigliori.setString(4,proc.getCF());
+		StmGetInaggiMigliori.setDate(5,DataInizio);
+		StmGetInaggiMigliori.setDate(6,DataFine);
+		ResultSet rs= StmGetInaggiMigliori.executeQuery();
 		while(rs.next()) {
-			String cfAtleta=rs.getString("codicefiscaleatleta");
+			String CfAtleta=rs.getString("codicefiscaleatleta");
 			double stipendioProc = rs.getDouble("stipendioprocuratore");
-			LocalDate dataInizioIng = LocalDate.parse(rs.getDate("datainizio").toString());
-			LocalDate dataFineIng = LocalDate.parse(rs.getDate("datafine").toString());
-			System.out.println(dataInizioIng+ " "+dataFineIng);
-			Ingaggio ing = new Ingaggio (null,GetAtletaByCodiceFiscale(cfAtleta),
-					dataInizioIng,
-					dataFineIng,stipendioProc);
-//			System.out.println(cfAtleta+" "+stipendioProc);
-			ingaggiVantaggiosi.add(ing);	
+			LocalDate DataInizioIng = LocalDate.parse(rs.getDate("datainizio").toString());
+			LocalDate DataFineIng = LocalDate.parse(rs.getDate("datafine").toString());
+			System.out.println(DataInizioIng+ " "+DataFineIng);
+			Ingaggio Ingaggio = new Ingaggio (null,GetAtletaByCodiceFiscale(CfAtleta),
+					DataInizioIng,
+					DataFineIng,stipendioProc);
+			ingaggiVantaggiosi.add(Ingaggio);	
 		}
-//		System.out.println("size = "+ingaggiVantaggiosi.size());
 		return ingaggiVantaggiosi;	
 	}
 }
