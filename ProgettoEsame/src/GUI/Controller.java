@@ -14,7 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import Controller.ControllerQuery;
+import Controller.ControllerDAO;
 import Eccezioni.EccezioneCF;
 import Entità.*;
 import ImplementationDAO.ImplementationDAO;
@@ -44,7 +44,6 @@ public class Controller {
 	}
 	
 	public void GotoFrameInsertAtleta() {
-
 		try {
 			HomePage.setVisible(false);
 			PageInsertAtleta=new InsertAtleta(this);
@@ -60,7 +59,7 @@ public class Controller {
 	
 	public void InsertAtletaInDB(Atleta atleta) {	
 			try {
-				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
+				ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();
 				OggettoConnessione.InsertAtleta(atleta);
 				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
 	            JLabel LabelJDialog= new JLabel("L'atleta è stato inserito con successo",SwingConstants.CENTER); 
@@ -93,7 +92,7 @@ public class Controller {
 	}
 	
 	public void GotoHomePageFromInsertAtleta() {
-		PageInsertAtleta.setVisible(false);
+		PageInsertAtleta.dispose();
 		HomePage.setVisible(true);
 	}
 	
@@ -114,7 +113,7 @@ public class Controller {
 	
 	public void InsertProcuratoreInDB(ProcuratoreSportivo procuratore) {
 			try {
-				ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
+				ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();
 				OggettoConnessione.InsertProcuratoreSportivo(procuratore);
 				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
 	            JLabel LabelJDialog= new JLabel("Il procuratore è stato inserito con successo",SwingConstants.CENTER); 
@@ -147,7 +146,7 @@ public class Controller {
 	}
 	
 	public void GotoHomePageFromInsertProcuratoreSportivo() {
-		PageInsertProcuratore.setVisible(false);
+		PageInsertProcuratore.dispose();
 		HomePage.setVisible(true);
 	}
 	
@@ -158,13 +157,13 @@ public class Controller {
 	}
 	
 	public void GotoHomePageFromPageViewAtleti() {
-		PageViewAtleti.setVisible(false);
+		PageViewAtleti.dispose();
 		HomePage.setVisible(true);
 	}
 	
 	public void InsertIngaggio(Ingaggio ingaggio) {
 		try {			
-			ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();		
+			ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();		
 			OggettoConnessione.InsertIngaggio(ingaggio);
 			JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
             JLabel LabelJDialog= new JLabel("Il procuratore è stato ingaggiato",SwingConstants.CENTER); 
@@ -204,7 +203,7 @@ public class Controller {
 	}
 	
 	public void GotoHomePageFromViewProcuratori() {
-		PageViewProcuratori.setVisible(false);
+		PageViewProcuratori.dispose();
 		HomePage.setVisible(true);
 	}
 	
@@ -229,7 +228,7 @@ public class Controller {
 	}
 
 	public void GotoHomePageFromInsertIngaggio() {
-		PageInsertIngaggio.setVisible(false);
+		PageInsertIngaggio.dispose();
 		HomePage.setVisible(true);
 	}
 	
@@ -254,7 +253,7 @@ public class Controller {
 	}
 	
 	public void GotoHomeFromInfoAtleta() {
-		PageInfoAtleta.setVisible(false);
+		PageInfoAtleta.dispose();
 		HomePage.setVisible(true);
 	}
 	
@@ -300,17 +299,17 @@ public class Controller {
 	}
 	
 	public void GotoHomeFromInfoProcuratore() {
-		PageInfoProcuratore.setVisible(false);
+		PageInfoProcuratore.dispose();
 		HomePage.setVisible(true);
 	}
 	
-	public void GotoVisualizzaProcFromInfoProcuratore() {
-		PageInfoProcuratore.setVisible(false);
+	public void GotoVisualizzaProcuratoreFromInfoProcuratore() {
+		PageInfoProcuratore.dispose();
 		PageViewProcuratori.setVisible(true);
 	}
 	
 	public void GotoVisualizzaAtletiFromInfoAtleta() {
-		PageInfoAtleta.setVisible(false);
+		PageInfoAtleta.dispose();
 		PageViewAtleti.setVisible(true);
 	}
 	
@@ -335,13 +334,13 @@ public class Controller {
 	}
 	
 	public void GotoHomeFromPageInsertContratto() {
-		PageInsertContratto.setVisible(false);
+		PageInsertContratto.dispose();
 		HomePage.setVisible(true);
 	}
 
 	public void InsertContratto(Contratto contratto) {
 		try {			
-			ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();		
+			ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();		
 			OggettoConnessione.InsertContratto(contratto);
 			JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
             JLabel LabelJDialog= new JLabel("Il Contratto è stato registrato",SwingConstants.CENTER); 

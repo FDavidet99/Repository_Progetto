@@ -54,15 +54,20 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetContrattiAttivi = Connection.prepareStatement("SELECT * FROM Contratto where ?::date>=datainizio and ?::date <datafine ;");
 		StmGetIngaggiByProcuratoreAttivi=Connection.prepareStatement("SELECT * FROM Ingaggio WHERE CodiceFiscaleProcuratore=? AND ?::date>=datainizio and ?::date <=datafine;");
 		
-		StmGetMaxContrattiAtleta=Connection.prepareStatement("(Select IdContratto,tipocontratto,club as Entita,compenso From Contratto "+
+		StmGetMaxContrattiAtleta=Connection.prepareStatement("(Select IdContratto,tipocontratto,club as Entita,compenso,datainizio,datafine,GettonepresenzaNazionale From Contratto "+
 				" where  tipocontratto= 'Club' and compenso = ( "+
 				"Select max(compenso) From Contratto  where tipocontratto= 'Club' "+
-				"And ?::date>=datainizio and ?::date <datafine AND codicefiscaleatleta=? )) "+
+				"And ?::date>=datainizio and ?::date <=datafine AND codicefiscaleatleta=? )) "+
 				"union "+
-				"(Select IdContratto,tipocontratto,sponsor as Entita,compenso From Contratto "+
-				 "where  tipocontratto= 'Sponsor' and compenso = ( "+
+				"(Select IdContratto,tipocontratto,sponsor as Entita,compenso,datainizio,datafine,GettonepresenzaNazionale From Contratto "+
+				"where  tipocontratto= 'Sponsor' and compenso = ( "+
 				"Select max(compenso) From Contratto  where tipocontratto= 'Sponsor'  "+
-				"And ?::date>=datainizio and ?::date <datafine AND codicefiscaleatleta=? ))");
+				"And ?::date>=datainizio and ?::date <=datafine AND codicefiscaleatleta=? )) "+
+				"union "+
+				"(Select IdContratto,tipocontratto,club as Entita,compenso,datainizio,datafine,GettonepresenzaNazionale From Contratto "+
+			    "where tipocontratto= 'Club' and GettonepresenzaNazionale=( "+
+			    "Select max(GettonepresenzaNazionale) From Contratto  where tipocontratto= 'Club' "+
+			    "And ?::date>=datainizio and ?::date <=datafine AND codicefiscaleatleta=? ))");
 		
 		StmGetMaxContrattiProcuratori = Connection.prepareStatement("(Select IdContratto,tipocontratto,club as Entita,guadagnoprocuratore From Contratto "+
 				" where  tipocontratto= 'Club' and guadagnoprocuratore = ( "+
@@ -468,9 +473,9 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 				club = GetClubById(idClub);
 			if(idSponsor!=0)
 				sponsor = GetSponsorById(idSponsor);
-			double gettone =rs.getDouble("gettonepresenzanazionale");
+			double Gettone =rs.getDouble("gettonepresenzanazionale");
 			Contratto contratto = new Contratto (Procuratore, atleta, dataInizio, dataFine, 
-						tipoContratto, club, sponsor, CompensoAtleta, GuadagnoProcuratore,gettone);
+						tipoContratto, club, sponsor, CompensoAtleta, GuadagnoProcuratore,Gettone);
 			contratto.setIdContratto(id);
 			contratti.add(contratto);
 		}
@@ -524,12 +529,19 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetMaxContrattiAtleta.setDate(4,DataInizio);
 		StmGetMaxContrattiAtleta.setDate(5,DataFine);
 		StmGetMaxContrattiAtleta.setString(6,atleta.getCF());
+		StmGetMaxContrattiAtleta.setDate(7,DataInizio);
+		StmGetMaxContrattiAtleta.setDate(8,DataFine);
+		StmGetMaxContrattiAtleta.setString(9,atleta.getCF());
+		
 		ResultSet rs= StmGetMaxContrattiAtleta.executeQuery();
 		while(rs.next()) {
 			int IdClub_Sponsor=rs.getInt("Entita");
+			LocalDate dataInizio =  LocalDate.parse(rs.getString("datainizio"));
+			LocalDate dataFine =  LocalDate.parse(rs.getString("datafine"));
 			ClubSportivo club = null;
 			Sponsor sponsor=null;
 			double CompensoAtleta = rs.getDouble("compenso");
+			double Gettone=rs.getDouble("gettonepresenzanazionale");
 			TipoContratto TipoC=null;
 			if(rs.getString("tipocontratto").equals("Club")) {
 				TipoC = TipoContratto.Club;
@@ -539,7 +551,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 				TipoC = TipoContratto.Sponsor;
 				sponsor = GetSponsorById(IdClub_Sponsor);
 			}
-			Contratto contratto = new Contratto (null, atleta, null, null, TipoC, club, sponsor, CompensoAtleta, 0,0);
+			Contratto contratto = new Contratto (null, atleta,dataInizio,dataFine, TipoC, club, sponsor, CompensoAtleta, 0,Gettone);
 
 			contratto.setIdContratto(rs.getInt("idcontratto"));
 			ValoriMassimi.add(contratto);	
@@ -555,8 +567,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 		StmGetMaxContrattiProcuratori.setDate(3,DataFine);
 		StmGetMaxContrattiProcuratori.setString(4,proc.getCF());
 		StmGetMaxContrattiProcuratori.setDate(5,DataInizio);
-		StmGetMaxContrattiProcuratori.setDate(6,DataFine);
-		
+		StmGetMaxContrattiProcuratori.setDate(6,DataFine);		
 		ResultSet rs= StmGetMaxContrattiProcuratori.executeQuery();
 		while(rs.next()) {
 			int IdClub_Sponsor=rs.getInt("Entita");

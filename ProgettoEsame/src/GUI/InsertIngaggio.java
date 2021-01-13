@@ -16,7 +16,7 @@ import javax.swing.JDialog;
 
 import com.toedter.calendar.JDateChooser;
 
-import Controller.ControllerQuery;
+import Controller.ControllerDAO;
 import Eccezioni.EccezioneCF;
 import Entità.Atleta;
 import Entità.Ingaggio;
@@ -60,27 +60,27 @@ public class InsertIngaggio extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
+		ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();
 		
 		Label ProcuratoreLabel = new Label();
-		ProcuratoreLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		ProcuratoreLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		ProcuratoreLabel.setBackground(UIManager.getColor("Button.background"));
 		ProcuratoreLabel.setText("Procuratore");
-		ProcuratoreLabel.setBounds(37, 70, 93, 22);
+		ProcuratoreLabel.setBounds(37, 70, 71, 22);
 		contentPane.add(ProcuratoreLabel);
 		
 		Label AtletaLabel = new Label();
-		AtletaLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		AtletaLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		AtletaLabel.setBackground(UIManager.getColor("Button.background"));
 		AtletaLabel.setText("Atleta");
-		AtletaLabel.setBounds(293, 70, 53, 22);
+		AtletaLabel.setBounds(293, 70, 44, 22);
 		contentPane.add(AtletaLabel);
 		
 		Label DataInizioLabel = new Label();
-		DataInizioLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		DataInizioLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		DataInizioLabel.setBackground(UIManager.getColor("Button.background"));
 		DataInizioLabel.setText("Data Inizio");
-		DataInizioLabel.setBounds(37, 120, 93, 22);
+		DataInizioLabel.setBounds(37, 120, 71, 22);
 		contentPane.add(DataInizioLabel);
 		
 		QueryProcuratori=new ArrayList <ProcuratoreSportivo>();
@@ -90,7 +90,7 @@ public class InsertIngaggio extends JFrame {
 			nomiProcuratori.add(a.getNome()+" "+a.getCognome());
 	
 		ProcuratoreComboBox = new JComboBox(nomiProcuratori.toArray());
-		ProcuratoreComboBox.setBounds(151, 70, 100, 22);
+		ProcuratoreComboBox.setBounds(114, 70, 100, 22);
 		ProcuratoreComboBox.setSelectedIndex(-1);
 		contentPane.add(ProcuratoreComboBox);
 		
@@ -101,29 +101,30 @@ public class InsertIngaggio extends JFrame {
 			nomiAtleti.add(a.getNome()+" "+a.getCognome());
 		
 		AtletaComboBox = new JComboBox(nomiAtleti.toArray());
-		AtletaComboBox.setBounds(385, 70, 100, 22);
+		AtletaComboBox.setBounds(343, 70, 100, 22);
 		AtletaComboBox.setSelectedIndex(-1);
 		contentPane.add(AtletaComboBox);
 		
 		DataInizioDateChooser = new JDateChooser();
-		DataInizioDateChooser.setBounds(137, 122, 100, 20);
+		DataInizioDateChooser.setBounds(110, 120, 100, 20);
 		DataInizioDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataInizioDateChooser);
 		
 		Label DataFineLabel = new Label();
-		DataFineLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		DataFineLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		DataFineLabel.setBackground(UIManager.getColor("Button.background"));
 		DataFineLabel.setText("Data Fine");
-		DataFineLabel.setBounds(293, 120, 86, 22);
+		DataFineLabel.setBounds(293, 120, 67, 22);
 		contentPane.add(DataFineLabel);
 		
 		DataFineDateChooser = new JDateChooser();
-		DataFineDateChooser.setBounds(385, 122, 100, 20);
+		DataFineDateChooser.setBounds(366, 122, 100, 20);
 		DataFineDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataFineDateChooser);
 		
 		StipendiotextField = new JTextField();
-		StipendiotextField.setBounds(200, 175, 86, 20);
+		StipendiotextField.setEditable(false);
+		StipendiotextField.setBounds(139, 165, 86, 20);
 		contentPane.add(StipendiotextField);
 		StipendiotextField.setColumns(10);
 		
@@ -133,7 +134,7 @@ public class InsertIngaggio extends JFrame {
 				controller.GotoHomePageFromInsertIngaggio();
 			}
 		});
-		HomeButton.setBounds(263, 276, 89, 23);
+		HomeButton.setBounds(263, 224, 89, 23);
 		contentPane.add(HomeButton);
 		
 		JButton ResetButton = new JButton("Cancella");
@@ -142,7 +143,7 @@ public class InsertIngaggio extends JFrame {
 				SvuotaCampi();
 			}
 		});
-		ResetButton.setBounds(362, 276, 89, 23);
+		ResetButton.setBounds(354, 224, 89, 23);
 		contentPane.add(ResetButton);
 		
 		JButton IngaggioButton = new JButton("Registra");
@@ -195,18 +196,24 @@ public class InsertIngaggio extends JFrame {
 				
 			}
 		});
-		IngaggioButton.setBounds(461, 276, 89, 23);
+		IngaggioButton.setBounds(445, 224, 89, 23);
 		contentPane.add(IngaggioButton);
 		
 		JLabel StipendioLabel = new JLabel("Stipendio mensile");
-		StipendioLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
-		StipendioLabel.setBounds(37, 175, 136, 18);
+		StipendioLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		StipendioLabel.setBounds(37, 165, 136, 18);
 		contentPane.add(StipendioLabel);
 		
 		JLabel TitoloLabel = new JLabel("Inserire un nuovo ingaggio");
-		TitoloLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		TitoloLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		TitoloLabel.setBounds(37, 29, 208, 18);
 		contentPane.add(TitoloLabel);
+		
+		JLabel lblNewLabel = new JLabel("\u20AC");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel.setBounds(235, 167, 28, 18);
+		contentPane.add(lblNewLabel);
 		
 	}
 	

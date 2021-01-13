@@ -22,7 +22,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import Controller.ControllerQuery;
+import Controller.ControllerDAO;
 import Eccezioni.EccezioneCF;
 import Entità.Comune;
 import Entità.Nazione;
@@ -60,8 +60,8 @@ public class InsertProcuratoreSportivo extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		Label TitoloLabel = new Label();
-		TitoloLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		Label TitoloLabel =  new Label();
+		TitoloLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		TitoloLabel.setBackground(UIManager.getColor("Panel.background"));
 		TitoloLabel.setText("Inserire i dati del nuovo atleta");
 		TitoloLabel.setBounds(10, 6, 267, 22);
@@ -75,13 +75,13 @@ public class InsertProcuratoreSportivo extends JFrame {
 		Label NomeLabel = new Label();
 		NomeLabel.setBackground(UIManager.getColor("Panel.background"));
 		NomeLabel.setText("Nome");
-		NomeLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		NomeLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		NomeLabel.setBounds(10, 37, 37, 22);
 		contentPane.add(NomeLabel);
 		
 		Label CognomeLabel = new Label();
 		CognomeLabel.setBackground(UIManager.getColor("Panel.background"));
-		CognomeLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		CognomeLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		CognomeLabel.setText("Cognome\r\n");
 		CognomeLabel.setBounds(172, 37, 68, 22);
 		contentPane.add(CognomeLabel);
@@ -93,7 +93,7 @@ public class InsertProcuratoreSportivo extends JFrame {
 		
 		Label SessoLabel = new Label();
 		SessoLabel.setBackground(UIManager.getColor("Panel.background"));
-		SessoLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		SessoLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		SessoLabel.setText("Sesso");
 		SessoLabel.setBounds(10, 72, 45, 22);
 		contentPane.add(SessoLabel);
@@ -105,23 +105,23 @@ public class InsertProcuratoreSportivo extends JFrame {
 		
 		Label DataLabel = new Label();
 		DataLabel.setText("Data di nascita");
-		DataLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		DataLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		DataLabel.setBackground(SystemColor.menu);
-		DataLabel.setBounds(170, 70, 125, 22);
+		DataLabel.setBounds(170, 70, 88, 22);
 		contentPane.add(DataLabel);
 		
 		DataNascitaDateChooser = new JDateChooser();
-		DataNascitaDateChooser.setBounds(301, 68, 115, 20);
+		DataNascitaDateChooser.setBounds(262, 68, 115, 20);
 		DataNascitaDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataNascitaDateChooser);
 		
-		ImplementationDAO OggettoConnessione = ControllerQuery.getInstance().getDAO();
+		ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();
 		
 		Label NazioneLabel = new Label();
 		NazioneLabel.setBackground(UIManager.getColor("Panel.background"));
 		NazioneLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		NazioneLabel.setText("Nazione");
-		NazioneLabel.setBounds(10, 103, 80, 22);
+		NazioneLabel.setBounds(10, 103, 68, 22);
 		contentPane.add(NazioneLabel);
 	
 	    QueryNazioni=new ArrayList <Nazione>();
@@ -133,20 +133,20 @@ public class InsertProcuratoreSportivo extends JFrame {
 		
 		Label ProvinciaLabel = new Label();
 		ProvinciaLabel.setBackground(UIManager.getColor("Panel.background"));
-		ProvinciaLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		ProvinciaLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		ProvinciaLabel.setText("Provincia");
-		ProvinciaLabel.setBounds(10, 136, 80, 22);
+		ProvinciaLabel.setBounds(10, 136, 68, 22);
 		contentPane.add(ProvinciaLabel);
 		
 		Label ComuneLabel = new Label();
 		ComuneLabel.setBackground(UIManager.getColor("Panel.background"));
-		ComuneLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		ComuneLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		ComuneLabel.setText("Comune");
 		ComuneLabel.setBounds(10, 169, 58, 22);
 		contentPane.add(ComuneLabel);
 		
 		ComuneComboBox = new JComboBox();
-		ComuneComboBox.setBounds(100, 170, 113, 22);
+		ComuneComboBox.setBounds(83, 169, 113, 22);
 		ComuneComboBox.setSelectedIndex(-1);
 		contentPane.add(ComuneComboBox);
 		
@@ -166,7 +166,7 @@ public class InsertProcuratoreSportivo extends JFrame {
 				ComuneComboBox.setVisible(false);
 			}
 		});
-		ProvinciaComboBox.setBounds(100, 137, 115, 22);
+		ProvinciaComboBox.setBounds(84, 136, 115, 22);
 		ProvinciaComboBox.setSelectedIndex(-1);
 		contentPane.add(ProvinciaComboBox);	
 		
@@ -182,7 +182,7 @@ public class InsertProcuratoreSportivo extends JFrame {
     		}
     	});
     	NazioneComboBox.setSelectedIndex(-1);
-		NazioneComboBox.setBounds(100, 105, 113, 20);
+		NazioneComboBox.setBounds(83, 105, 113, 20);
     	contentPane.add(NazioneComboBox);
 		
 		CfTextField = new JTextField();
@@ -218,19 +218,19 @@ public class InsertProcuratoreSportivo extends JFrame {
 				} catch (SQLException e1) {
 					JDialog Dialog = new JDialog(); 
 		            JLabel LabelJDialog= new JLabel("Errore di connessioe",SwingConstants.CENTER); 
-	                Dialog.add(LabelJDialog); 
+	                Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 350, 250, 200);
 		            Dialog.setVisible(true); 
 				} catch (NullPointerException | IndexOutOfBoundsException e2) {
 					JDialog Dialog = new JDialog(); 
 		            JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati",SwingConstants.CENTER); 
-		            Dialog.add(LabelJDialog); 
+		            Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 150, 230, 150);
 		            Dialog.setVisible(true);
 				} catch (EccezioneCF e3) {
 					JDialog Dialog = new JDialog(); 
 		            JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
-	                Dialog.add(LabelJDialog); 
+	                Dialog.getContentPane().add(LabelJDialog); 
 	                Dialog.setBounds(400, 250, 250, 200);
 		            Dialog.setVisible(true); 	
 				}
@@ -353,8 +353,6 @@ public class InsertProcuratoreSportivo extends JFrame {
 				    Persona TmpPersona;
 				    TmpPersona = new Persona(TempNome,TempCognome,TempSesso,TempDate,TempNazione,TempProvincia,TempComune);
 					CfTextField.setText(TmpPersona.getCF());
-					
-					
 				} catch (EccezioneCF  e1) {
 					JDialog Dialog = new JDialog(); 
 		            JLabel LabelJDialog= new JLabel("Caratteri incompatibili col sistema",SwingConstants.CENTER); 

@@ -9,12 +9,12 @@ import ImplementationDAO.ImplementationDAO;
 import ImplementationDAO.ImplementationDAO_Postgres;
 import ImplementationDAO.ImplementazioniDAO;
 
-public class ControllerQuery {
+public class ControllerDAO {
 	private final ImplementazioniDAO implementazioneScelta = ImplementazioniDAO.postgres;
-	private static ControllerQuery instance;
+	private static ControllerDAO instance;
 	private ImplementationDAO ImplementationDAO;
 	
-	private ControllerQuery() throws SQLException {
+	private ControllerDAO() throws SQLException {
 		if(implementazioneScelta == ImplementazioniDAO.postgres) {
 			
 			ImplementationDAO = new ImplementationDAO_Postgres(DatabaseConnection.getInstance().getConnection());
@@ -22,9 +22,9 @@ public class ControllerQuery {
 		}
 	}
 	
-	public static ControllerQuery getInstance() throws SQLException {
+	public static ControllerDAO getInstance() throws SQLException {
 		if(instance==null) {
-			instance = new ControllerQuery();
+			instance = new ControllerDAO();
 		}
 		return instance;
 	}

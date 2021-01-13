@@ -15,7 +15,7 @@ import javax.swing.table.TableModel;
 
 import org.postgresql.translation.messages_bg;
 
-import Controller.ControllerQuery;
+import Controller.ControllerDAO;
 import Eccezioni.EccezioneCF;
 import Entità.Atleta;
 import Entità.Contratto;
@@ -89,7 +89,6 @@ public class InfoProcuratore extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
 
 	    TotaleTabStatisticheLabel = new JLabel("Totale= -");
 	    TotaleTabStatisticheLabel.setBounds(532, 203, 178, 18);
@@ -104,7 +103,7 @@ public class InfoProcuratore extends JFrame {
 		contentPane.add(scrollPane);
 		
 		JLabel InfoLabel = new JLabel("Informazioni del procuratore:"+" "+proc.getNome()+" "+proc.getCognome());
-		InfoLabel.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		InfoLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		InfoLabel.setBounds(10, 33, 509, 21);
 		contentPane.add(InfoLabel);
 		
@@ -169,7 +168,7 @@ public class InfoProcuratore extends JFrame {
 	    		if(DataInizioDateChooser.getCalendar() == null || DataFineDateChooser.getCalendar() == null)
 	    			return;
 				RiempiTabIngaggiMigliori();
-				SetLabelIngaggiMigliori();
+				SetLabelTotIngaggiMigliori();
 			}
 		});
 	    radioBtnIngaggiMigliori.setBounds(151, 297, 127, 23);
@@ -183,16 +182,16 @@ public class InfoProcuratore extends JFrame {
 	    		if(DataInizioDateChooser.getCalendar() == null || DataFineDateChooser.getCalendar() == null)
 	    			return;
 				RiempiTabContrattiMigliori();
-	    		SetLabelContrattiMigliori();
+	    		SetLabelTotContrattiMigliori();
 			}
 		});
 	    radioBtnContrattiMigliori.setBounds(10, 297, 127, 23);
 		contentPane.add(radioBtnContrattiMigliori);
 		radioBtnContrattiMigliori.setSelected(true);
 	    
-	    ButtonGroup GroupTabellaVantaggi = new ButtonGroup();
-	    GroupTabellaVantaggi.add(radioBtnIngaggiMigliori);
-	    GroupTabellaVantaggi.add(radioBtnContrattiMigliori);
+	    ButtonGroup GroupTabellaMigliori = new ButtonGroup();
+	    GroupTabellaMigliori.add(radioBtnIngaggiMigliori);
+	    GroupTabellaMigliori.add(radioBtnContrattiMigliori);
 	    
 	    DataInizioDateChooser = new JDateChooser();
 	    DataInizioDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
@@ -203,15 +202,16 @@ public class InfoProcuratore extends JFrame {
 	    			return;
 	    		if(radioBtnContrattiMigliori.isSelected()){
 	    			RiempiTabContrattiMigliori();
-		    		SetLabelContrattiMigliori();
+		    		SetLabelTotContrattiMigliori();
 	    		}
 	    		else if(radioBtnIngaggiMigliori.isSelected()){
 	    			RiempiTabIngaggiMigliori();
-	    			SetLabelIngaggiMigliori();
+	    			SetLabelTotIngaggiMigliori();
 	    		}
 	    	}
 	    });
-	    DataInizioDateChooser.setBounds(10, 253, 150, 20);
+	    DataInizioDateChooser.setBounds(43, 253, 109, 20);
+	    DataInizioDateChooser.setDateFormatString("yyyy/MM/dd");
 	    contentPane.add(DataInizioDateChooser);
 	    
 	    DataFineDateChooser = new JDateChooser();
@@ -224,15 +224,16 @@ public class InfoProcuratore extends JFrame {
 	    			return;
 	    		if(radioBtnContrattiMigliori.isSelected()){
 	    			RiempiTabContrattiMigliori();
-		    		SetLabelContrattiMigliori();
+		    		SetLabelTotContrattiMigliori();
 	    		}
 	    		else if(radioBtnIngaggiMigliori.isSelected()){
 	    			RiempiTabIngaggiMigliori();
-	    			SetLabelIngaggiMigliori();
+	    			SetLabelTotIngaggiMigliori();
 	    		}
 	    	}
 	    });
-	    DataFineDateChooser.setBounds(172, 253, 144, 20);
+	    DataFineDateChooser.setBounds(215, 253, 89, 20);
+	    DataFineDateChooser.setDateFormatString("yyyy/MM/dd");
 	    contentPane.add(DataFineDateChooser);
 	    
 	    JButton HomeButton = new JButton("Home");
@@ -247,7 +248,7 @@ public class InfoProcuratore extends JFrame {
 		JButton IndietroButton = new JButton("Indietro");
 		IndietroButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.GotoVisualizzaProcFromInfoProcuratore();
+				controller.GotoVisualizzaProcuratoreFromInfoProcuratore();
 			}
 		});
 		IndietroButton.setBounds(514, 466, 89, 23);
@@ -260,14 +261,25 @@ public class InfoProcuratore extends JFrame {
 		TabellaMigliori = new JTable();
 		scrollPane2.setViewportView(TabellaMigliori);
 		
-		JLabel SpiegazioneLabel = new JLabel("Inserire il perido per avere i migliori contratti o ingaggi relativi");
+		JLabel SpiegazioneLabel = new JLabel("Inserire il perido per avere i migliori contratti o ingaggi di quel periodo");
 		SpiegazioneLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		SpiegazioneLabel.setBounds(10, 219, 372, 15);
+		SpiegazioneLabel.setBounds(10, 219, 443, 15);
 		contentPane.add(SpiegazioneLabel);
+		
+		JLabel DalLabel = new JLabel("Dal");
+		DalLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		DalLabel.setBounds(10, 259, 31, 14);
+		contentPane.add(DalLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("al");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel_1.setBounds(162, 259, 46, 14);
+		contentPane.add(lblNewLabel_1);
 	
 	}
 	
-	public void SetLabelContrattiMigliori() {
+	public void SetLabelTotContrattiMigliori() {
 		int rows = TabellaMigliori.getModel().getRowCount();
 		double Tot=0;
 		for(int i=0;i<rows;i++){
@@ -276,7 +288,7 @@ public class InfoProcuratore extends JFrame {
 		TotaleTabMigioriLabel.setText("Totale = "+Tot+" €");
 	}
 	
-	private void SetLabelIngaggiMigliori() {
+	private void SetLabelTotIngaggiMigliori() {
 		int rows = TabellaMigliori.getModel().getRowCount();
 		double Tot=0;
 		for(int i=0;i<rows;i++){
@@ -306,24 +318,25 @@ public class InfoProcuratore extends JFrame {
 	public Object[][] GetDatiTabContrattiMigliori(){
 		Object[][] ContenutoTab=new Object [0][0];
 		try {
-			ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
+			ImplementationDAO DAO = ControllerDAO.getInstance().getDAO();
 			LocalDate TempDate1=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		    LocalDate TempDate2=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
 		    ArrayList<Contratto> ContrattiMigliori = (ArrayList) DAO.GetMaxContrattiProcuratori(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
-		    ContenutoTab = new Object[ContrattiMigliori.size()][ColonneContrattiMigliori.length];
+		    ContenutoTab = new Object[ContrattiMigliori.size()][ColonneContrattiMigliori.length]; 
+		    for (Iterator it = ContrattiMigliori.iterator(); it.hasNext();) {
+			    Contratto ContrattiMigliore = (Contratto) it.next();
+			    if ((ContrattiMigliore.getClub()==null)&&(ContrattiMigliore.getSponsor()==null))
+			        it.remove();
+			    }
 			for(int i=0;i<ContrattiMigliori.size();i++) {
 				TipoContratto tipoContratto = ContrattiMigliori.get(i).getTipo();
 				if(tipoContratto.equals(TipoContratto.Club)){
-					if(ContrattiMigliori.get(i).getClub()==null)
-						continue;
 					ContenutoTab[i][0] = ContrattiMigliori.get(i).getIdContratto();
 					ContenutoTab[i][1] = ContrattiMigliori.get(i).getClub().getNomeClub();
 					ContenutoTab[i][2] = "Club";
 					ContenutoTab[i][3] = ContrattiMigliori.get(i).getCompensoProcuratore();
 				}
 				else {
-					if(ContrattiMigliori.get(i).getSponsor()==null)
-						continue;
 					ContenutoTab[i][0] = ContrattiMigliori.get(i).getIdContratto();
 					ContenutoTab[i][1] = ContrattiMigliori.get(i).getSponsor().getNomeSponsor();
 					ContenutoTab[i][2] = "Sponsor";
@@ -368,7 +381,7 @@ public class InfoProcuratore extends JFrame {
 	public Object[][] GetDatiTabIngaggiMigliori(){
 		Object[][] ContenutoTab=new Object [0][0];
 		try {
-			ImplementationDAO DAO = ControllerQuery.getInstance().getDAO();
+			ImplementationDAO DAO = ControllerDAO.getInstance().getDAO();
 			LocalDate TempDate1=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		    LocalDate TempDate2=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
 		    ingaggiVant = (ArrayList) DAO.GetIngaggiMigliori(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
@@ -419,7 +432,7 @@ public class InfoProcuratore extends JFrame {
 	public Object[][] GetDatiTabContrattiAttivi(ProcuratoreSportivo proc) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
-			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
+			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
 			ArrayList<Contratto> ContrattiAttivi=(ArrayList<Contratto>) dao.GetContrattiAttivi();	
 			for (Iterator it = ContrattiAttivi.iterator(); it.hasNext();) {
 			    Contratto contrattiAttivo = (Contratto) it.next();
@@ -489,7 +502,7 @@ public class InfoProcuratore extends JFrame {
 	public Object[][] GetDatiTabContratti(ProcuratoreSportivo proc) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
-			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
+			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
 			ArrayList<Contratto> ContrattiAttivi=(ArrayList<Contratto>) dao.GetContratti();	
 			for (Iterator it = ContrattiAttivi.iterator(); it.hasNext();) {
 			    Contratto contrattiAttivo = (Contratto) it.next();
@@ -557,7 +570,7 @@ public class InfoProcuratore extends JFrame {
 	public Object[][] GetDatiTabIngaggiAtletiAttivi(ProcuratoreSportivo proc) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
-			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
+			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
 			ArrayList<Ingaggio> Ingaggi=(ArrayList<Ingaggio>) dao.GetIngaggiByProcuratoreAttivi(proc);	
 			Contenutotab=new Object [Ingaggi.size()][ColonneTabStoriaAtleti.length];		
 			for(int i=0;i<Ingaggi.size();i++){
@@ -607,12 +620,11 @@ public class InfoProcuratore extends JFrame {
 	public Object[][] GetDatiTabIngaggiAtleti(ProcuratoreSportivo proc) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
-			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
+			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
 			ArrayList<Ingaggio> Ingaggi=(ArrayList<Ingaggio>) dao.GetIngaggiByProcuratore(proc);	
 			Contenutotab=new Object [Ingaggi.size()][ColonneTabStoriaAtleti.length];		
 			for(int i=0;i<Ingaggi.size();i++){
 					Ingaggio TmpIngaggio=Ingaggi.get(i);	
-
 					Contenutotab[i][0]=TmpIngaggio.getAtleta().getCF();
 					Contenutotab[i][1]=TmpIngaggio.getAtleta().getNome();
 					Contenutotab[i][2]=TmpIngaggio.getAtleta().getCognome();

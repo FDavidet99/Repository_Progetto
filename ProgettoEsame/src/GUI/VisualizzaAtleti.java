@@ -19,7 +19,7 @@ import java.awt.Dimension;
 
 import javax.swing.table.DefaultTableModel;
 
-import Controller.ControllerQuery;
+import Controller.ControllerDAO;
 import Eccezioni.EccezioneCF;
 import Entità.Atleta;
 import Entità.Contratto;
@@ -59,7 +59,7 @@ public class VisualizzaAtleti extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		labelTitolo = new JLabel("Scegli Atleta");
+		labelTitolo = new JLabel("Scegli un Atleta");
 		labelTitolo.setHorizontalAlignment(SwingConstants.CENTER);
 		labelTitolo.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		labelTitolo.setBounds(10, 10, 794, 33);
@@ -105,7 +105,7 @@ public class VisualizzaAtleti extends JFrame {
 	public Object[][] PopolaTabellaAtleti(int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
-			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
+			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
 			ArrayList<Atleta> Atleti=(ArrayList<Atleta>) dao.GetAtleti();	
 			Contenutotab=new Object [Atleti.size()][NumColonne];		
 			for(int i=0;i<Atleti.size();i++){
@@ -151,7 +151,7 @@ public class VisualizzaAtleti extends JFrame {
 
 	public void AtletaSelezionato(JTable tabellaAtleti,Controller controller) {
 		try {
-			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
+			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
 			ArrayList<Atleta> ListaAtletiVisualizzati=(ArrayList<Atleta>) dao.GetAtleti();
     		int i = tabellaAtleti.getSelectedRow();
     		if(i==-1)

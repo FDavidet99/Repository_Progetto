@@ -19,7 +19,7 @@ import java.awt.Dimension;
 
 import javax.swing.table.DefaultTableModel;
 
-import Controller.ControllerQuery;
+import Controller.ControllerDAO;
 import Eccezioni.EccezioneCF;
 import Entità.Atleta;
 import Entità.Contratto;
@@ -60,7 +60,7 @@ public class VisualizzaProcuratori extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		labelTitolo = new JLabel("Scegli Procuratore");
+		labelTitolo = new JLabel("Scegli un Procuratore");
 		labelTitolo.setHorizontalAlignment(SwingConstants.CENTER);
 		labelTitolo.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		labelTitolo.setBounds(10, 10, 794, 33);
@@ -106,7 +106,7 @@ public class VisualizzaProcuratori extends JFrame {
 	public Object[][] PopolaTabellaProcuratori(int NumColonne) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
-			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
+			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
 			ArrayList<ProcuratoreSportivo> Procuratori=(ArrayList<ProcuratoreSportivo>) dao.GetProcuratori();	
 			Contenutotab=new Object [Procuratori.size()][NumColonne];		
 			for(int i=0;i<Procuratori.size();i++){
@@ -152,7 +152,7 @@ public class VisualizzaProcuratori extends JFrame {
 
 	public void ProcuratoreSelezionato(JTable TabProcuratori,Controller controller) {
 		try {
-			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
+			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
 			ArrayList<ProcuratoreSportivo> ProcuratoriVisualizzati=(ArrayList<ProcuratoreSportivo>) dao.GetProcuratori();	
     		int i = TabProcuratori.getSelectedRow();
     		if(i==-1)
