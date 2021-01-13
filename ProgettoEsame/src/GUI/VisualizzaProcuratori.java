@@ -1,142 +1,145 @@
 package GUI;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.swing.SwingConstants;
+import javax.swing.JTable;
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.table.DefaultTableModel;
+
+import Controller.ControllerDAO;
+import Eccezioni.EccezioneCF;
+import Entit√†.Atleta;
+import Entit√†.Contratto;
+import Entit√†.Persona;
+import Entit√†.ProcuratoreSportivo;
+import ImplementationDAO.ImplementationDAO;
+
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-
-import Controller.ControllerQuery;
-import Eccezioni.EccezioneCF;
-import Entit‡.Persona;
-import Entit‡.ProcuratoreSportivo;
-import ImplementationDAO.ImplementationDAO;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.UIManager;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class VisualizzaProcuratori extends JFrame {
-	private static final long serialVersionUID = 1L;
+
 	private JPanel contentPane;
-	private JTable tabellaProcuratori;
-	private Controller controller;
+	private JTable TabellaProcuratori;
+	public JTable getTabellaProcuratori() {
+		return TabellaProcuratori;
+	}
+
 	private JLabel labelTitolo;
-	private ArrayList<ProcuratoreSportivo> ListaProcuratoriVisualizzati = new ArrayList<ProcuratoreSportivo>();
-	
+	private ArrayList<Atleta> ListaProcuratoriVisualizzati = new ArrayList<Atleta>();
+	Controller controller;
+
+	/**
+	 * Create the frame.
+	 */
 	public VisualizzaProcuratori(Controller c) {
 		controller=c;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 795, 410);
+		setBounds(100, 100, 800, 400);
 		contentPane = new JPanel();
-		contentPane.setBackground(UIManager.getColor("ComboBox.disabledBackground"));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		labelTitolo = new JLabel("Elenco Procuratori");
+		labelTitolo = new JLabel("Scegli un Procuratore");
 		labelTitolo.setHorizontalAlignment(SwingConstants.CENTER);
 		labelTitolo.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		labelTitolo.setBounds(311, 10, 250, 33);
+		labelTitolo.setBounds(10, 10, 794, 33);
 		contentPane.add(labelTitolo);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 52, 761, 275);
-		contentPane.add(panel);
-		
-		tabellaProcuratori = new JTable();
-		panel.add(tabellaProcuratori);
-		tabellaProcuratori.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		tabellaProcuratori.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"CF","Nome","Cognome","Sesso","DataNascita","Nazione", 
-				"Provincia","Comune" 
-			}
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 54, 764, 179);
+		contentPane.add(scrollPane);
 			
-		) {private static final long serialVersionUID = 1L;
-		public boolean isCellEditable(int r,int c) {return false;}});
+        Object[] Colonne= {"CF","Nome","Cognome","Sesso","DataNascita","Nazione","Provincia","Comune" };
 		
-		tabellaProcuratori.getColumnModel().getColumn(0).setPreferredWidth(150);
-		tabellaProcuratori.getColumnModel().getColumn(1).setPreferredWidth(120);
-		tabellaProcuratori.getColumnModel().getColumn(2).setPreferredWidth(81);
-		tabellaProcuratori.getColumnModel().getColumn(3).setPreferredWidth(44);
-		tabellaProcuratori.getColumnModel().getColumn(4).setPreferredWidth(100);
+        TabellaProcuratori = new JTable();
+		scrollPane.setViewportView(TabellaProcuratori);
 		
-		tabellaProcuratori.setBorder(new LineBorder(new Color(0, 0, 0)));
+		TabellaProcuratori.setModel(new DefaultTableModel(
+				PopolaTabellaProcuratori(Colonne.length),Colonne 
+		){
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int r,int c) {
+				return false;
+			}
+		});
+		TabellaProcuratori.getColumnModel().getColumn(0).setPreferredWidth(110);
 		
-		tabellaProcuratori.setPreferredScrollableViewportSize(new Dimension(670, 240));
-        tabellaProcuratori.setFillsViewportHeight(true);
-		
-		JScrollPane js=new JScrollPane(tabellaProcuratori);
-		js.setVisible(true);
-		panel.add(js);
-		
-		tabellaProcuratori.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+		TabellaProcuratori.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
-	        	ProcuratoreSelezionato();
+	        	ProcuratoreSelezionato(TabellaProcuratori,controller);
 	        }
 	    });
+		
 		JButton HomeButton = new JButton("Home");
 		HomeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.GotoHomePageFromViewProcuratori();
 			}
 		});
-		HomeButton.setBounds(542, 338, 89, 23);
-		contentPane.add(HomeButton);
+		HomeButton.setBounds(599, 244, 89, 23);
+		contentPane.add(HomeButton);	
 		
-		popolaTabellaProcuratori();
-		
+
 	}
-	
-	public void popolaTabellaProcuratori() {
+
+	public Object[][] PopolaTabellaProcuratori(int NumColonne) {
+		Object[][] Contenutotab=new Object [0][0];
 		try {
-			ImplementationDAO dao = ControllerQuery.getInstance().getDAO();
-			ListaProcuratoriVisualizzati = (ArrayList<ProcuratoreSportivo>) dao.GetProcuratori();
-			DefaultTableModel model = (DefaultTableModel) tabellaProcuratori.getModel();
-			for(int i=0;i<ListaProcuratoriVisualizzati.size();i++){
-				Persona p  =ListaProcuratoriVisualizzati.get(i);		
-				String provincia  = "Estero"; 
-				String comune= "Estero";
-				if(p.getProvinciaNascita()!=null)
-					provincia = p.getProvinciaNascita().getNome();
-				if(p.getComuneNascita()!=null)
-					comune = p.getComuneNascita().getNome();
-				model.addRow(new Object[] {
-					p.getCF(), p.getNome(),
-					p.getCognome(), p.getSessoPersona(),
-					p.getDataNascita(),p.getNazioneNascita().getNomeNazione(),
-					provincia,comune,
-				});
-			}
+			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
+			ArrayList<ProcuratoreSportivo> Procuratori=(ArrayList<ProcuratoreSportivo>) dao.GetProcuratori();	
+			Contenutotab=new Object [Procuratori.size()][NumColonne];		
+			for(int i=0;i<Procuratori.size();i++){
+					ProcuratoreSportivo TmpProcuratore=Procuratori.get(i);	
+					String provincia  = "Estero"; 
+					String comune= "Estero";
+					if(TmpProcuratore.getProvinciaNascita()!=null)
+						provincia = TmpProcuratore.getProvinciaNascita().getNome();
+					if(TmpProcuratore.getComuneNascita()!=null)
+						comune = TmpProcuratore.getComuneNascita().getNome();
+				
+					Contenutotab[i][0]=TmpProcuratore.getCF();
+					Contenutotab[i][1]= TmpProcuratore.getNome();
+					Contenutotab[i][2]=TmpProcuratore.getCognome();
+					Contenutotab[i][3]=TmpProcuratore.getDataNascita();
+					Contenutotab[i][4]=TmpProcuratore.getDataNascita();
+					Contenutotab[i][5]=TmpProcuratore.getNazioneNascita().getNomeNazione();
+					Contenutotab[i][6]=provincia;
+					Contenutotab[i][7]=comune;				
+			}	
+		
 		} catch (EccezioneCF e) {
 			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
-            Dialog.setBounds(400, 150, 240, 150);
-	        Dialog.setVisible(true);
+			JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
+			Dialog.getContentPane().add(LabelJDialog); 
+        	Dialog.setBounds(400, 150, 240, 150);
+        	Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Non Ë stato trovato nulla",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
-            Dialog.setBounds(400, 150, 240, 150);
-	        Dialog.setVisible(true);
+			JLabel LabelJDialog= new JLabel("Non ÔøΩ stato trovato nulla",SwingConstants.CENTER); 
+			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setBounds(400, 150, 240, 150);
+			Dialog.setVisible(true);
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
@@ -144,23 +147,43 @@ public class VisualizzaProcuratori extends JFrame {
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}
+		return Contenutotab;
 	}
-	
-	public void ProcuratoreSelezionato() {
+
+	public void ProcuratoreSelezionato(JTable TabProcuratori,Controller controller) {
 		try {
-    		int i = tabellaProcuratori.getSelectedRow();
-    		if(i==-1)return;
-        	Persona personaSelezionata = ListaProcuratoriVisualizzati.get(i);
-        	JOptionPane.showMessageDialog(contentPane,personaSelezionata);  
-    	} catch (IndexOutOfBoundsException e) {
+			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
+			ArrayList<ProcuratoreSportivo> ProcuratoriVisualizzati=(ArrayList<ProcuratoreSportivo>) dao.GetProcuratori();	
+    		int i = TabProcuratori.getSelectedRow();
+    		if(i==-1)
+    			return;
+        	ProcuratoreSportivo procuratoreSelezionato = ProcuratoriVisualizzati.get(i);
+        	int dialogButton = 0;
+			int dialogResult = JOptionPane.showConfirmDialog (null, "Vuoi visualizzare le info del procuratore '"
+					+ procuratoreSelezionato.getNome()+ " "+procuratoreSelezionato.getCognome()+"'?","Warning",dialogButton);
+        	if(dialogResult == JOptionPane.YES_OPTION){
+        		controller.GotoInfoProcuratoreFromVisualizzaProcuratore(procuratoreSelezionato);
+        	}	
+        	
+    	} catch (IndexOutOfBoundsException | EccezioneCF e) {
+    		e.printStackTrace();
     		JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Selezionare Procuratore",SwingConstants.CENTER); 
+			JLabel LabelJDialog= new JLabel("Selezionare procuratore",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
 			Dialog.setBounds(400, 150, 250, 100);
 			Dialog.setVisible(true);
+		} catch (SQLException e) {
+			JDialog Dialog = new JDialog(); 
+			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setBounds(400, 150, 250, 100);
+			Dialog.setVisible(true);
+			
 		}
-    	tabellaProcuratori.clearSelection(); // deseleziona
+		
+    	TabProcuratori.clearSelection(); // deseleziona
 	}
+	
 	
 }
 

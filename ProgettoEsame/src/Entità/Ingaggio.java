@@ -58,14 +58,10 @@ public class Ingaggio {
 		StipendioProcuratore = stipendioProcuratore;
 	}
 	
-	public void RegistraIngaggio() {
-		Procuratore.AddIngaggioDaAtleta(this);
-		Atleta.AddIngaggioProcuratore(this);
-	}
-	@Override
-	public String toString() {
-		String s ="["+DataInizio +" - "+DataFine+"]";
-		return s;
-	}
+//	public void RegistraIngaggio() {
+//		Procuratore.AddIngaggioDaAtleta(this);
+//		Atleta.AddIngaggioProcuratore(this);
+//	}
+	
 
 }

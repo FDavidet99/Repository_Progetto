@@ -11,5 +11,6 @@ public interface ProcuratoreSportivoDAO {
 	
 	public void InsertProcuratoreSportivo(ProcuratoreSportivo procuratore) throws SQLException, EccezioneCF;
 	public List<ProcuratoreSportivo> GetProcuratori() throws SQLException, EccezioneCF;
+	public ProcuratoreSportivo GetProcuratoreByCodiceFiscale(String CodiceFiscaleProcuratore) throws SQLException, EccezioneCF;
 
 }

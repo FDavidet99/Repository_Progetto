@@ -7,14 +7,15 @@ import Eccezioni.EccezioneNazionale;
 public class ClubSportivo {
 	private int IdClubSportivo;
 	private String NomeClub;
-	private Provincia SedeLegale;
-	private List<Squadra> ElencoSquadre;
+	private Nazione SedeLegale;
+	private boolean IsNazionale;
+	private List<Atleta> AtlentiComponenti;
 	
-	public ClubSportivo(int idClubSportivo, String nomeClub, Provincia sedeLegale) {
+	public ClubSportivo(String nomeClub, Nazione sedeLegale,boolean isNazionale) {
 		super();
-		IdClubSportivo = idClubSportivo;
 		NomeClub = nomeClub;
 		SedeLegale = sedeLegale;
+		IsNazionale=isNazionale;
 	}
 	
 	public int getIdClubSportivo() {
@@ -33,22 +34,24 @@ public class ClubSportivo {
 		NomeClub = nomeClub;
 	}
 	
-	public Provincia getSedeLegale() {
+	public Nazione getSedeLegale() {
 		return SedeLegale;
 	}
 	
-	public void setSedeLegale(Provincia sedeLegale) {
+	public void setSedeLegale(Nazione sedeLegale) {
 		SedeLegale = sedeLegale;
 	}
-	
-	public void AddSquadra(Squadra squadra) throws EccezioneNazionale {
-		squadra.setClubAppartenenza(this);
-		ElencoSquadre.add(squadra);
+
+	public boolean isIsNazionale() {
+		return IsNazionale;
+	}
+
+	public void setIsNazionale(boolean isNazionale) {
+		IsNazionale = isNazionale;
 	}
 	
-	public void RemoveSquadra(Squadra squadra) throws EccezioneNazionale {
-		ElencoSquadre.remove(ElencoSquadre.indexOf(squadra));
-	}
+	
+	
 	
 	
 

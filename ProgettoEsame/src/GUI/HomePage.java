@@ -13,6 +13,8 @@ import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class HomePage extends JFrame {
 
@@ -29,7 +31,7 @@ public class HomePage extends JFrame {
 	public HomePage(Controller c) {
 		controller=c;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 349);
+		setBounds(100, 100, 459, 349);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -41,7 +43,7 @@ public class HomePage extends JFrame {
 				controller.GotoFrameInsertAtleta();
 			}
 		});
-		InsertAtleti_Button.setBounds(32, 59, 264, 23);
+		InsertAtleti_Button.setBounds(85, 87, 264, 23);
 		contentPane.add(InsertAtleti_Button);
 		
 		JButton btnNewButton_1 = new JButton("Inserire nuovo procuratore");
@@ -50,7 +52,7 @@ public class HomePage extends JFrame {
 				controller.GotoFrameInsertProcuratore();
 			}
 		});
-		btnNewButton_1.setBounds(32, 25, 264, 23);
+		btnNewButton_1.setBounds(85, 53, 264, 23);
 		contentPane.add(btnNewButton_1);
 		
 		JButton VisualizzaAtletiButton = new JButton("Visualizza atleti");
@@ -59,7 +61,7 @@ public class HomePage extends JFrame {
 				controller.GoToPageViewAtleti();
 			}
 		});
-		VisualizzaAtletiButton.setBounds(32, 93, 264, 23);
+		VisualizzaAtletiButton.setBounds(85, 121, 264, 23);
 		contentPane.add(VisualizzaAtletiButton);
 		
 		JButton InsertIngaggioButton = new JButton("Aggiungi Ingaggio");
@@ -68,7 +70,7 @@ public class HomePage extends JFrame {
 					controller.GoToInsertIngaggio();	
 			}
 		});
-		InsertIngaggioButton.setBounds(32, 161, 264, 23);
+		InsertIngaggioButton.setBounds(85, 189, 264, 23);
 		contentPane.add(InsertIngaggioButton);
 		
 		JButton btnNewButton = new JButton("Visualizza Procuratori");
@@ -77,8 +79,23 @@ public class HomePage extends JFrame {
 				controller.GoToViewProcuratori();
 			}
 		});
-		btnNewButton.setBounds(32, 127, 264, 23);
+		btnNewButton.setBounds(85, 155, 264, 23);
 		contentPane.add(btnNewButton);
+		
+		JButton InsertContrattoButton = new JButton("Registra Contratto");
+		InsertContrattoButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.GoToPageInsertContratto();
+			}
+		});
+		InsertContrattoButton.setBounds(85, 223, 264, 23);
+		contentPane.add(InsertContrattoButton);
+		
+		JLabel lblNewLabel = new JLabel("Gestione atleti e procuratori");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel.setBounds(10, 11, 414, 23);
+		contentPane.add(lblNewLabel);
 		
 	}
 }

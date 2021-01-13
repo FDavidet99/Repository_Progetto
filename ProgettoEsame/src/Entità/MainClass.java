@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import Controller.ControllerQuery;
+import Controller.ControllerDAO;
 import DatabaseUtility.DatabaseConnection;
 import Eccezioni.EccezioneCF;
 import ImplementationDAO.ImplementationDAO;
