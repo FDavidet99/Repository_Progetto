@@ -627,10 +627,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			double stipendioProc = rs.getDouble("stipendioprocuratore");
 			LocalDate DataInizioIng = LocalDate.parse(rs.getDate("datainizio").toString());
 			LocalDate DataFineIng = LocalDate.parse(rs.getDate("datafine").toString());
-			System.out.println(DataInizioIng+ " "+DataFineIng);
-			Ingaggio Ingaggio = new Ingaggio (null,GetAtletaByCodiceFiscale(CfAtleta),
-					DataInizioIng,
-					DataFineIng,stipendioProc);
+			Ingaggio Ingaggio = new Ingaggio (null,GetAtletaByCodiceFiscale(CfAtleta),DataInizioIng,DataFineIng,stipendioProc);
 			ingaggiVantaggiosi.add(Ingaggio);	
 		}
 		return ingaggiVantaggiosi;	
