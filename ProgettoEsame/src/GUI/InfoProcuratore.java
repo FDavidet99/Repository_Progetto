@@ -59,30 +59,27 @@ import com.toedter.calendar.JDateChooser;
 public class InfoProcuratore extends JFrame {
 
 	private JPanel contentPane;
-	private ProcuratoreSportivo proc;
+	private ProcuratoreSportivo Procuratore;
 	private JTable TabellaStatistiche;
 	Controller controller;
 	private JTable TabellaMigliori;
-	private Object[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante","Data Inizio", "Data Fine", "Guadagno P."};
-	private Object[] ColonneTabStoriaAtleti= {"Codice Fiscale A.","Nome","Cognome", "Data Inizio", "Data Fine", "Stipendio"};
-	private Object[] ColonneContrattiMigliori= {"Id Contratto","Nome Club/Sponsor", "Club/Sponsor", "Guadagno P."};
-	private Object[] ColonneIngaggiMigliori= {"Nome atleta", "Cognome atleta","CF atleta","Data inizio","Data fine", "Stipendio P."};
+	private String[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante","Data Inizio", "Data Fine", "Guadagno P."};
+	private String[] ColonneTabStoriaAtleti= {"Codice Fiscale A.","Nome","Cognome", "Data Inizio", "Data Fine", "Stipendio"};
+	private String[] ColonneContrattiMigliori= {"Id Contratto","Nome Club/Sponsor", "Club/Sponsor", "Guadagno P."};
+	private String[] ColonneIngaggiMigliori= {"Nome atleta", "Cognome atleta","CF atleta","Data inizio","Data fine", "Stipendio P."};
 	private JLabel TotaleTabStatisticheLabel;
 	private JLabel TotaleTabMigioriLabel;
 	private JDateChooser DataInizioDateChooser;
 	private JDateChooser DataFineDateChooser;
 	private JRadioButton radioBtnIngaggiMigliori;
 	private JRadioButton radioBtnContrattiMigliori;
-	private List<Ingaggio> ingaggiVant = new ArrayList<Ingaggio>();
 	
 	/**
-	 * Create the frame.
-	 * @throws SQLException 
-	 * @throws EccezioneCF 
+	 * Create the frame. 
 	 */
-	public InfoProcuratore(Controller c,ProcuratoreSportivo proc) throws SQLException, EccezioneCF {
+	public InfoProcuratore(Controller c,ProcuratoreSportivo procuratore) {
 		controller=c;
-		this.proc = proc;
+		Procuratore = procuratore;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 830, 560);
 		contentPane = new JPanel();
@@ -102,7 +99,7 @@ public class InfoProcuratore extends JFrame {
 		scrollPane.setBounds(10, 105, 700, 87);
 		contentPane.add(scrollPane);
 		
-		JLabel InfoLabel = new JLabel("Informazioni del procuratore:"+" "+proc.getNome()+" "+proc.getCognome());
+		JLabel InfoLabel = new JLabel("Informazioni del procuratore:"+" "+procuratore.getNome()+" "+procuratore.getCognome());
 		InfoLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		InfoLabel.setBounds(10, 33, 509, 21);
 		contentPane.add(InfoLabel);
@@ -315,181 +312,35 @@ public class InfoProcuratore extends JFrame {
 			TotaleTabStatisticheLabel.setText("Totale = "+tot+" €");
 	}
 		
-	public Object[][] GetDatiTabContrattiMigliori(){
-		Object[][] ContenutoTab=new Object [0][0];
-		try {
-			ImplementationDAO DAO = ControllerDAO.getInstance().getDAO();
-			LocalDate TempDate1=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		    LocalDate TempDate2=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
-		    ArrayList<Contratto> ContrattiMigliori = (ArrayList) DAO.GetMaxContrattiProcuratori(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
-		    ContenutoTab = new Object[ContrattiMigliori.size()][ColonneContrattiMigliori.length]; 
-		    for (Iterator it = ContrattiMigliori.iterator(); it.hasNext();) {
-			    Contratto ContrattiMigliore = (Contratto) it.next();
-			    if ((ContrattiMigliore.getClub()==null)&&(ContrattiMigliore.getSponsor()==null))
-			        it.remove();
-			    }
-			for(int i=0;i<ContrattiMigliori.size();i++) {
-				TipoContratto tipoContratto = ContrattiMigliori.get(i).getTipo();
-				if(tipoContratto.equals(TipoContratto.Club)){
-					ContenutoTab[i][0] = ContrattiMigliori.get(i).getIdContratto();
-					ContenutoTab[i][1] = ContrattiMigliori.get(i).getClub().getNomeClub();
-					ContenutoTab[i][2] = "Club";
-					ContenutoTab[i][3] = ContrattiMigliori.get(i).getCompensoProcuratore();
-				}
-				else {
-					ContenutoTab[i][0] = ContrattiMigliori.get(i).getIdContratto();
-					ContenutoTab[i][1] = ContrattiMigliori.get(i).getSponsor().getNomeSponsor();
-					ContenutoTab[i][2] = "Sponsor";
-					ContenutoTab[i][3] = ContrattiMigliori.get(i).getCompensoProcuratore();
-				}
-			}
-		} catch (EccezioneCF e1) {
-			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Elementi non visualizzabili",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 200);
-			Dialog.setVisible(true);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 200);
-			Dialog.setVisible(true);
-		} catch (NullPointerException e1) {
-			e1.printStackTrace();
-			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Tutti i campi devono essere inseriti",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 200);
-			Dialog.setVisible(true);
-		}	
-		return ContenutoTab;
-	}
-	
 	public void RiempiTabContrattiMigliori(){
-			TabellaMigliori.setModel(new DefaultTableModel(
-					GetDatiTabContrattiMigliori(),ColonneContrattiMigliori
+		LocalDate DataInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	    LocalDate DataFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
+	    TabellaMigliori.setModel(new DefaultTableModel(
+	    		controller.GetDatiTabContrattiMiglioriProcuratore(Procuratore, ColonneContrattiMigliori, DataInizio, DataFine),ColonneContrattiMigliori
 			){
-				private static final long serialVersionUID = 1L;
-				public boolean isCellEditable(int r,int c) {
-					return false;
-				}
-			});	
+	    	private static final long serialVersionUID = 1L;
+	    	public boolean isCellEditable(int r,int c) {
+	    		return false;
+	    	}
+	    });	
 	}	
 	
-	public Object[][] GetDatiTabIngaggiMigliori(){
-		Object[][] ContenutoTab=new Object [0][0];
-		try {
-			ImplementationDAO DAO = ControllerDAO.getInstance().getDAO();
-			LocalDate TempDate1=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		    LocalDate TempDate2=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
-		    ingaggiVant = (ArrayList) DAO.GetIngaggiMigliori(proc,Date.valueOf(TempDate1),Date.valueOf(TempDate2));
-			ContenutoTab = new Object[ingaggiVant.size()][ColonneIngaggiMigliori.length];
-			for(int i=0;i<ingaggiVant.size();i++){
-				ContenutoTab[i][0] = ingaggiVant.get(i).getAtleta().getNome();
-				ContenutoTab[i][1] = ingaggiVant.get(i).getAtleta().getCognome();
-				ContenutoTab[i][2] = ingaggiVant.get(i).getAtleta().getCF();
-				ContenutoTab[i][3] = ingaggiVant.get(i).getDataInizio();
-				ContenutoTab[i][4] = ingaggiVant.get(i).getDataFine();
-				ContenutoTab[i][5] = ingaggiVant.get(i).getStipendioProcuratore();
-			}
-		} catch (EccezioneCF e1) {
-			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Elementi non visualizzabili",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 200);
-			Dialog.setVisible(true);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 200);
-			Dialog.setVisible(true);
-		} catch (NullPointerException e1) {
-			e1.printStackTrace();
-			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Tutti i campi devono essere inseriti",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 200);
-			Dialog.setVisible(true);
-		}	
-		return ContenutoTab;
-	}
-	
 	public void RiempiTabIngaggiMigliori() {
-			TabellaMigliori.setModel(new DefaultTableModel(
-					 GetDatiTabIngaggiMigliori(),ColonneIngaggiMigliori
+		LocalDate DataInizo=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	    LocalDate DataFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
+		TabellaMigliori.setModel(new DefaultTableModel(
+				controller.GetDatiTabIngaggiMiglioriProcuratore(Procuratore,ColonneIngaggiMigliori,DataInizo,DataFine),ColonneIngaggiMigliori
 			){
 				private static final long serialVersionUID = 1L;
 				public boolean isCellEditable(int r,int c) {
 					return false;
 				}
-			});    	
-	}
-	
-	public Object[][] GetDatiTabContrattiAttivi(ProcuratoreSportivo proc) {
-		Object[][] Contenutotab=new Object [0][0];
-		try {
-			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
-			ArrayList<Contratto> ContrattiAttivi=(ArrayList<Contratto>) dao.GetContrattiAttivi();	
-			for (Iterator it = ContrattiAttivi.iterator(); it.hasNext();) {
-			    Contratto contrattiAttivo = (Contratto) it.next();
-			    if(contrattiAttivo.getProcuratoreInteressato()==null) {
-			    	it.remove();
-			    	continue;
-			    }	
-			    if (!(contrattiAttivo.getProcuratoreInteressato().getCF().equals(proc.getCF()))) {
-			        it.remove();
-			    }
-			}
-			Contenutotab=new Object [ContrattiAttivi.size()][ColonneTabContratti.length];		
-			for(int i=0;i<ContrattiAttivi.size();i++){
-					Contratto TmpContratto=ContrattiAttivi.get(i);	
-					String NomeClub_Sponsor;
-					if(TmpContratto.getSponsor()!=null)
-						NomeClub_Sponsor=TmpContratto.getSponsor().getNomeSponsor();
-					else
-						NomeClub_Sponsor=TmpContratto.getClub().getNomeClub();	
-					
-					double Guadagno=TmpContratto.getCompensoAtleta();
-					if(TmpContratto.getCompensoAtleta()==0)
-						Guadagno=TmpContratto.getGettonePresenzaNazionale();
-
-					Contenutotab[i][0]=TmpContratto.getIdContratto();
-					Contenutotab[i][1]=TmpContratto.getTipo();
-					Contenutotab[i][2]=NomeClub_Sponsor;
-					Contenutotab[i][3]=TmpContratto.getDataInizio();
-					Contenutotab[i][4]=TmpContratto.getDataFine();
-					Contenutotab[i][5]=TmpContratto.getCompensoProcuratore();
-			}	
-		} catch (EccezioneCF e) {
-			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
-            Dialog.setBounds(400, 150, 240, 150);
-	        Dialog.setVisible(true);
-		} catch (NullPointerException e1) {
-			e1.printStackTrace();
-			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
-            Dialog.setBounds(400, 150, 240, 150);
-	        Dialog.setVisible(true);
-		} catch (SQLException e) {
-			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 200);
-			Dialog.setVisible(true);
-		}
-		return Contenutotab;
+		});    	
 	}
 	
 	public void RiempiTabContrattiAttivi() {
 		TabellaStatistiche.setModel(new DefaultTableModel(
-				GetDatiTabContrattiAttivi(proc),ColonneTabContratti 
+				controller.GetDatiTabContrattiAttiviProcuratore(Procuratore,ColonneTabContratti),ColonneTabContratti 
 		){
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int r,int c) {
@@ -499,66 +350,9 @@ public class InfoProcuratore extends JFrame {
 		
 	}
 	
-	public Object[][] GetDatiTabContratti(ProcuratoreSportivo proc) {
-		Object[][] Contenutotab=new Object [0][0];
-		try {
-			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
-			ArrayList<Contratto> ContrattiAttivi=(ArrayList<Contratto>) dao.GetContratti();	
-			for (Iterator it = ContrattiAttivi.iterator(); it.hasNext();) {
-			    Contratto contrattiAttivo = (Contratto) it.next();
-			    if(contrattiAttivo.getProcuratoreInteressato()==null) {
-			    	it.remove();
-			    	continue;}
-			    	if (!(contrattiAttivo.getProcuratoreInteressato().getCF().equals(proc.getCF()))) {
-			    		it.remove();
-			    }
-			    	
-			}
-			Contenutotab=new Object [ContrattiAttivi.size()][ColonneTabContratti.length];		
-			for(int i=0;i<ContrattiAttivi.size();i++){
-					Contratto TmpContratto=ContrattiAttivi.get(i);	
-					String NomeClub_Sponsor;
-					if(TmpContratto.getSponsor()!=null)
-						NomeClub_Sponsor=TmpContratto.getSponsor().getNomeSponsor();
-					else
-						NomeClub_Sponsor=TmpContratto.getClub().getNomeClub();	
-					
-					double Guadagno=TmpContratto.getCompensoAtleta();
-					if(TmpContratto.getCompensoAtleta()==0)
-						Guadagno=TmpContratto.getGettonePresenzaNazionale();
-
-						Contenutotab[i][0]=TmpContratto.getIdContratto();
-						Contenutotab[i][1]=TmpContratto.getTipo();
-						Contenutotab[i][2]=NomeClub_Sponsor;
-						Contenutotab[i][3]=TmpContratto.getDataInizio();
-						Contenutotab[i][4]=TmpContratto.getDataFine();
-						Contenutotab[i][5]=TmpContratto.getCompensoProcuratore();
-			}	
-		} catch (EccezioneCF e) {
-			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
-            Dialog.setBounds(400, 150, 240, 150);
-	        Dialog.setVisible(true);
-		} catch (NullPointerException e1) {
-			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
-            Dialog.setBounds(400, 150, 240, 150);
-	        Dialog.setVisible(true);
-		} catch (SQLException e) {
-			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 200);
-			Dialog.setVisible(true);
-		}
-		return Contenutotab;
-	}
-
 	public void RiempiDatiTabContratti() {
 		TabellaStatistiche.setModel(new DefaultTableModel(
-				GetDatiTabContratti(proc),ColonneTabContratti 
+				controller.GetDatiTabContrattiProcuratore(Procuratore,ColonneTabContratti),ColonneTabContratti 
 		){
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int r,int c) {
@@ -567,47 +361,9 @@ public class InfoProcuratore extends JFrame {
 		});
 	}
 	
-	public Object[][] GetDatiTabIngaggiAtletiAttivi(ProcuratoreSportivo proc) {
-		Object[][] Contenutotab=new Object [0][0];
-		try {
-			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
-			ArrayList<Ingaggio> Ingaggi=(ArrayList<Ingaggio>) dao.GetIngaggiByProcuratoreAttivi(proc);	
-			Contenutotab=new Object [Ingaggi.size()][ColonneTabStoriaAtleti.length];		
-			for(int i=0;i<Ingaggi.size();i++){
-					Ingaggio TmpIngaggio=Ingaggi.get(i);	
-
-					Contenutotab[i][0]=TmpIngaggio.getAtleta().getCF();
-					Contenutotab[i][1]=TmpIngaggio.getAtleta().getNome();
-					Contenutotab[i][2]=TmpIngaggio.getAtleta().getCognome();
-					Contenutotab[i][3]=TmpIngaggio.getDataInizio();
-					Contenutotab[i][4]=TmpIngaggio.getDataFine();
-					Contenutotab[i][5]=TmpIngaggio.getStipendioProcuratore();
-			}	
-		} catch (EccezioneCF e) {
-			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
-            Dialog.setBounds(400, 150, 240, 150);
-	        Dialog.setVisible(true);
-		} catch (NullPointerException e1) {
-			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
-            Dialog.setBounds(400, 150, 240, 150);
-	        Dialog.setVisible(true);
-		} catch (SQLException e) {
-			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 200);
-			Dialog.setVisible(true);
-		}
-		return Contenutotab;
-	}
-	
 	public void RiempiTabIngaggiAttivi() {
 		TabellaStatistiche.setModel(new DefaultTableModel(
-				GetDatiTabIngaggiAtletiAttivi(proc),ColonneTabStoriaAtleti
+				controller.GetDatiTabIngaggiAtletiAttiviProcuratore(Procuratore,ColonneTabStoriaAtleti),ColonneTabStoriaAtleti
 		){
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int r,int c) {
@@ -617,46 +373,9 @@ public class InfoProcuratore extends JFrame {
 		TabellaStatistiche.getColumnModel().getColumn(0).setPreferredWidth(100);
 	}
 
-	public Object[][] GetDatiTabIngaggiAtleti(ProcuratoreSportivo proc) {
-		Object[][] Contenutotab=new Object [0][0];
-		try {
-			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
-			ArrayList<Ingaggio> Ingaggi=(ArrayList<Ingaggio>) dao.GetIngaggiByProcuratore(proc);	
-			Contenutotab=new Object [Ingaggi.size()][ColonneTabStoriaAtleti.length];		
-			for(int i=0;i<Ingaggi.size();i++){
-					Ingaggio TmpIngaggio=Ingaggi.get(i);	
-					Contenutotab[i][0]=TmpIngaggio.getAtleta().getCF();
-					Contenutotab[i][1]=TmpIngaggio.getAtleta().getNome();
-					Contenutotab[i][2]=TmpIngaggio.getAtleta().getCognome();
-					Contenutotab[i][3]=TmpIngaggio.getDataInizio();
-					Contenutotab[i][4]=TmpIngaggio.getDataFine();
-					Contenutotab[i][5]=TmpIngaggio.getStipendioProcuratore();
-			}	
-		} catch (EccezioneCF e) {
-			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
-            Dialog.setBounds(400, 150, 240, 150);
-	        Dialog.setVisible(true);
-		} catch (NullPointerException e1) {
-			JDialog Dialog = new JDialog(); 
-	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
-            Dialog.setBounds(400, 150, 240, 150);
-	        Dialog.setVisible(true);
-		} catch (SQLException e) {
-			JDialog Dialog = new JDialog(); 
-			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
-			Dialog.setBounds(400, 150, 250, 200);
-			Dialog.setVisible(true);
-		}
-		return Contenutotab;
-	}
-
 	public void RiempiTabIngaggiAtleti() {
 		TabellaStatistiche.setModel(new DefaultTableModel(
-				GetDatiTabIngaggiAtleti(proc),ColonneTabStoriaAtleti
+				controller.GetDatiTabIngaggiAtletiProcuratore(Procuratore,ColonneTabStoriaAtleti),ColonneTabStoriaAtleti
 		){
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int r,int c) {

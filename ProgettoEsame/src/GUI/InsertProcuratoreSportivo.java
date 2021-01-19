@@ -45,13 +45,12 @@ public class InsertProcuratoreSportivo extends JFrame {
 	private JComboBox NazioneComboBox;
 	private JComboBox ProvinciaComboBox;
 	private JComboBox ComuneComboBox;
-	private ArrayList <Nazione> QueryNazioni;
-	private ArrayList <Provincia> QueryProvince;
-	private ArrayList <Comune> QueryComuni;
 	Controller controller;
 
-
-	public InsertProcuratoreSportivo(Controller c) throws SQLException {
+	/**
+	 * Create the frame.
+	 */
+	public InsertProcuratoreSportivo(Controller c) {
 		controller=c;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 541, 331);
@@ -115,21 +114,17 @@ public class InsertProcuratoreSportivo extends JFrame {
 		DataNascitaDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataNascitaDateChooser);
 		
-		ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();
-		
 		Label NazioneLabel = new Label();
 		NazioneLabel.setBackground(UIManager.getColor("Panel.background"));
 		NazioneLabel.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		NazioneLabel.setText("Nazione");
 		NazioneLabel.setBounds(10, 103, 68, 22);
 		contentPane.add(NazioneLabel);
-	
-	    QueryNazioni=new ArrayList <Nazione>();
-	    QueryNazioni=(ArrayList) OggettoConnessione.GetNazioni();
-	     
-	    ArrayList<String> NomiNazioni = new ArrayList<String>();
-			for(Nazione a:QueryNazioni)
-				NomiNazioni.add(a.getNomeNazione());
+
+		 ArrayList<Nazione> QueryNazioni = (ArrayList) c.GetDatiComboboxNazioni();		    
+		 ArrayList<String> NomiNazioni = new ArrayList<String>();
+		 for(Nazione nazione:QueryNazioni)
+			 NomiNazioni.add(nazione.getNomeNazione());
 		
 		Label ProvinciaLabel = new Label();
 		ProvinciaLabel.setBackground(UIManager.getColor("Panel.background"));
@@ -203,12 +198,12 @@ public class InsertProcuratoreSportivo extends JFrame {
 					int IndexNazione = NazioneComboBox.getSelectedIndex();
 					int IndexProvincia=ProvinciaComboBox.getSelectedIndex();
 					int IndexComune=ComuneComboBox.getSelectedIndex();	
-					Nazione TempNazione=QueryNazioni.get(IndexNazione);
+					Nazione TempNazione=(controller.GetDatiComboboxNazioni()).get(IndexNazione);
 					Provincia TempProvincia=null;
 					Comune TempComune=null;
 					if(TempNazione.getCodiceAt().equalsIgnoreCase("Z000")) {
-						 TempProvincia=QueryProvince.get(IndexProvincia);
-					     TempComune=QueryComuni.get(IndexComune);
+						 TempProvincia=(controller.GetDatiComboBoxProvince(IndexNazione)).get(IndexProvincia);
+					     TempComune=(controller.GetDatiComboBoxComuni(IndexNazione, IndexProvincia)).get(IndexComune);
 					}
 					LocalDate TempDate=DataNascitaDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 					
@@ -262,11 +257,11 @@ public class InsertProcuratoreSportivo extends JFrame {
 			public void actionPerformed(ActionEvent e) {	
 					try {
 						int IndexNazione = NazioneComboBox.getSelectedIndex();
-						if (QueryNazioni.get(IndexNazione).getCodiceAt().equals("Z000")) {	
-							QueryProvince=(ArrayList) OggettoConnessione.GetProvinceByNazione(QueryNazioni.get(IndexNazione));
+						if (controller.NazioneIsItalia(IndexNazione)) {	
 							ArrayList<String> NomiProvince= new ArrayList<String>();
-							for(Provincia a:QueryProvince)
-								NomiProvince.add(a.getNome());
+							ArrayList<Provincia> QueryProvince=(ArrayList) controller.GetDatiComboBoxProvince(IndexNazione);
+							for(Provincia provincia:QueryProvince)
+								NomiProvince.add(provincia.getNome());
 							JComboBox TmpProvincia=new JComboBox(NomiProvince.toArray());
 							ProvinciaLabel.setVisible(true);
 							ProvinciaComboBox.setVisible(true);
@@ -280,9 +275,9 @@ public class InsertProcuratoreSportivo extends JFrame {
 							ProvinciaButton.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
 									int IndexProvincia=ProvinciaComboBox.getSelectedIndex();
-									try {
-										QueryComuni=(ArrayList) OggettoConnessione.GetComuniByProvincia(QueryProvince.get(IndexProvincia));
-										ArrayList<String> NomiComuni= new ArrayList<String>();
+									try {	
+										ArrayList<String> NomiComuni = new ArrayList<String>();
+										ArrayList<Comune> QueryComuni=(ArrayList) controller.GetDatiComboBoxComuni(IndexNazione, IndexProvincia);
 										for(Comune comune:QueryComuni)
 											NomiComuni.add(comune.getNome());
 										JComboBox TmpComune=new JComboBox(NomiComuni.toArray());
@@ -293,13 +288,7 @@ public class InsertProcuratoreSportivo extends JFrame {
 										Iterator i=NomiComuni.iterator();
 										while(i.hasNext())
 											ComuneComboBox.addItem((i.next()));
-										ComuneComboBox.setSelectedIndex(-1);;
-										} catch (SQLException e1) {
-												JDialog Dialog = new JDialog(); 
-												JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-												Dialog.getContentPane().add(LabelJDialog); 
-												Dialog.setBounds(400, 150, 250, 200);
-												Dialog.setVisible(true);
+										ComuneComboBox.setSelectedIndex(-1);
 										} catch (NullPointerException e1) {
 												JDialog Dialog = new JDialog(); 
 												JLabel LabelJDialog= new JLabel("Inserire una provincia",SwingConstants.CENTER); 
@@ -316,21 +305,16 @@ public class InsertProcuratoreSportivo extends JFrame {
 							ComuneComboBox.setVisible(false);
 							ProvinciaButton.setVisible(false);
 						}
-					} catch (SQLException e1) {
-						JDialog Dialog = new JDialog(); 
-			            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			            Dialog.getContentPane().add(LabelJDialog); 
-		                Dialog.setBounds(400, 150, 250, 200);
-			            Dialog.setVisible(true);
 					} catch (NullPointerException e1) {
 						JDialog Dialog = new JDialog(); 
-						JLabel LabelJDialog= new JLabel("   Inserire una Nazione",SwingConstants.CENTER);
+						JLabel LabelJDialog= new JLabel("Inserire una Nazione",SwingConstants.CENTER);
 						Dialog.getContentPane().add(LabelJDialog); 
 						Dialog.setBounds(400, 150, 150, 70);
 						Dialog.setVisible(true);
 					}
 			}
 		});
+								
 		
 		CalcolaCf_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -342,12 +326,12 @@ public class InsertProcuratoreSportivo extends JFrame {
 					String TempCognome=CognomeTextField.getText();
 					Sesso TempSesso= (Sesso)SessoComboBox.getSelectedItem();
 					LocalDate TempDate=DataNascitaDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-					Nazione TempNazione=QueryNazioni.get(IndexNazione);
+					Nazione TempNazione=(controller.GetDatiComboboxNazioni()).get(IndexNazione);
 					Provincia TempProvincia=null;
 					Comune TempComune=null;
 					if(TempNazione.getCodiceAt().equalsIgnoreCase("Z000")) {
-						 TempProvincia=QueryProvince.get(IndexProvincia);
-					     TempComune=QueryComuni.get(IndexComune);
+						 TempProvincia=(controller.GetDatiComboBoxProvince(IndexNazione)).get(IndexProvincia);
+					     TempComune=(controller.GetDatiComboBoxComuni(IndexNazione, IndexProvincia)).get(IndexComune);
 					}
 						
 				    Persona TmpPersona;
