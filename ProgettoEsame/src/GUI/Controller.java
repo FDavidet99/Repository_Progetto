@@ -304,6 +304,8 @@ public class Controller {
 	}
 	
 	public void GotoVisualizzaProcuratoreFromInfoProcuratore() {
+		if(PageViewProcuratori == null)
+			PageViewProcuratori=new VisualizzaProcuratori(this);
 		PageInfoProcuratore.dispose();
 		PageViewProcuratori.setVisible(true);
 	}

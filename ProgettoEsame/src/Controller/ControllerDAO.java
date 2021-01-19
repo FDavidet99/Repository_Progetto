@@ -15,11 +15,10 @@ public class ControllerDAO {
 	private ImplementationDAO ImplementationDAO;
 	
 	private ControllerDAO() throws SQLException {
-		if(implementazioneScelta == ImplementazioniDAO.postgres) {
-			
-			ImplementationDAO = new ImplementationDAO_Postgres(DatabaseConnection.getInstance().getConnection());
-			
+		if(implementazioneScelta == ImplementazioniDAO.postgres) {	
+			ImplementationDAO = new ImplementationDAO_Postgres(DatabaseConnection.getInstance().getConnection());	
 		}
+		
 	}
 	
 	public static ControllerDAO getInstance() throws SQLException {
