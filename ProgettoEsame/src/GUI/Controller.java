@@ -1,40 +1,28 @@
 package GUI;
 
-
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.sql.BatchUpdateException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
-
-import com.toedter.calendar.JDateChooser;
-
-import Controller.ControllerDAO;
-import Eccezioni.EccezioneCF;
-import Entità.*;
+import Entity.*;
+import ImplementationDAO.ControllerDAO;
 import ImplementationDAO.ImplementationDAO;
+import MyExceptions.EccezioneCF;
 
 public class Controller {
 	
 	HomePage HomePage;
 	InsertAtleta PageInsertAtleta;
 	InsertProcuratoreSportivo PageInsertProcuratore;
-	VisualizzaAtleti PageViewAtleti;
+	ViewAtleti PageViewAtleti;
 	FrameForJDialog DialogErrori;
 	InsertIngaggio PageInsertIngaggio;
-	VisualizzaProcuratori PageViewProcuratori;
+	ViewProcuratori PageViewProcuratori;
 	InfoAtleta PageInfoAtleta;
 	InfoProcuratore PageInfoProcuratore;
 	InsertContratto PageInsertContratto;
@@ -208,7 +196,7 @@ public class Controller {
 	
 	public void GoToPageViewAtleti() {
 		HomePage.setVisible(false);
-		PageViewAtleti=new VisualizzaAtleti(this);
+		PageViewAtleti=new ViewAtleti(this);
 		PageViewAtleti.setVisible(true);
 	}
 	
@@ -217,7 +205,7 @@ public class Controller {
 		HomePage.setVisible(true);
 	}
 	
-	public void InsertIngaggio(Ingaggio ingaggio) {
+	public void InsertIngaggioInDB(Ingaggio ingaggio) {
 		try {			
 			ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();		
 			OggettoConnessione.InsertIngaggio(ingaggio);
@@ -242,7 +230,7 @@ public class Controller {
 	            Dialog.setVisible(true); 
 			}
 			else {
-				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+				JDialog Dialog = new JDialog(DialogErrori,"Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
                 Dialog.add(LabelJDialog); 
                 Dialog.setBounds(400, 350, 200, 200);
@@ -253,7 +241,7 @@ public class Controller {
 
 	public void GoToViewProcuratori () {
 		HomePage.setVisible(false);
-		PageViewProcuratori= new VisualizzaProcuratori(this);
+		PageViewProcuratori= new ViewProcuratori(this);
 		PageViewProcuratori.setVisible(true);
 		
 	}
@@ -264,25 +252,53 @@ public class Controller {
 	}
 	
 	public void GoToInsertIngaggio() {
-		try {
-			HomePage.setVisible(false);
-			PageInsertIngaggio=new InsertIngaggio(this);
-			PageInsertIngaggio.setVisible(true);
-		} catch (EccezioneCF e) {
-			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
-            Dialog.add(LabelJDialog); 
-            Dialog.setBounds(400, 250, 250, 200);
-            Dialog.setVisible(true); 			
-		} catch (SQLException e) {
-			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-            Dialog.add(LabelJDialog); 
-            Dialog.setBounds(400, 350, 250, 200);
-            Dialog.setVisible(true); 
-		} 
+		HomePage.setVisible(false);
+		PageInsertIngaggio=new InsertIngaggio(this);
+		PageInsertIngaggio.setVisible(true);
 	}
 
+	public List<ProcuratoreSportivo> GetProcuratori() {
+		List<ProcuratoreSportivo> QueryProcuratori=new ArrayList<>();
+		try {
+			ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();
+			QueryProcuratori=(ArrayList) OggettoConnessione.GetProcuratori();
+		} catch (EccezioneCF e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+			JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
+			Dialog.add(LabelJDialog); 
+			Dialog.setBounds(400, 250, 250, 200);
+			Dialog.setVisible(true); 			
+		} catch (SQLException e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+			Dialog.add(LabelJDialog); 
+			Dialog.setBounds(400, 350, 250, 200);
+			Dialog.setVisible(true); 
+		} 
+		return QueryProcuratori;
+	}
+	
+	public List<Atleta> GetAtleti() {
+		List<Atleta> QueryAtleti=new ArrayList<>();
+		try {
+			ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();
+		    QueryAtleti=(ArrayList) OggettoConnessione.GetAtleti();
+		} catch (EccezioneCF e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+			JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
+			Dialog.add(LabelJDialog); 
+			Dialog.setBounds(400, 250, 250, 200);
+			Dialog.setVisible(true); 			
+		} catch (SQLException e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+			Dialog.add(LabelJDialog); 
+			Dialog.setBounds(400, 350, 250, 200);
+			Dialog.setVisible(true); 
+		} 
+		return QueryAtleti;
+	}
+	
 	public void GotoHomePageFromInsertIngaggio() {
 		PageInsertIngaggio.dispose();
 		HomePage.setVisible(true);
@@ -319,7 +335,7 @@ public class Controller {
 	
 	public void GotoVisualizzaProcuratoreFromInfoProcuratore() {
 		if(PageViewProcuratori == null)
-			PageViewProcuratori=new VisualizzaProcuratori(this);
+			PageViewProcuratori=new ViewProcuratori(this);
 		PageInfoProcuratore.dispose();
 		PageViewProcuratori.setVisible(true);
 	}
@@ -329,17 +345,17 @@ public class Controller {
 		PageViewAtleti.setVisible(true);
 	}
 	
-	public void GoToPageInsertContratto() {
-		try {
+	public void GoToPageInsertContrattoInDB() {
 			HomePage.setVisible(false);
 			PageInsertContratto=new InsertContratto(this);
 			PageInsertContratto.setVisible(true);
-		} catch (EccezioneCF e) {
-			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
-            JLabel LabelJDialog= new JLabel("Errore inserimento dati",SwingConstants.CENTER); 
-            Dialog.add(LabelJDialog); 
-            Dialog.setBounds(400, 350, 250, 200);
-            Dialog.setVisible(true); 
+	}
+	
+	public List<Sponsor> GetSponsorForContratto() {
+		ArrayList<Sponsor> QuerySponsor=new ArrayList();
+		try {
+			ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();
+			QuerySponsor=(ArrayList) OggettoConnessione.GetSponsor();
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
@@ -347,6 +363,23 @@ public class Controller {
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
 		}
+		return QuerySponsor;
+	}
+	
+	public List<ClubSportivo> GetClubForContratto() {
+		ArrayList<ClubSportivo> QueryClub=new ArrayList();
+		try {
+			ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();
+			QueryClub=(ArrayList) OggettoConnessione.GetClubSportivi();
+		} catch (SQLException e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 350, 250, 200);
+            Dialog.setVisible(true); 
+		}
+		return QueryClub;
+		
 	}
 	
 	public void GotoHomeFromPageInsertContratto() {
@@ -409,7 +442,7 @@ public class Controller {
 		return procuratore;
 	}
 
-	public Object[][] GetDatiContrattiAttiviAtleta(Atleta atleta,String[] ColonneTabContratti) {
+	public Object[][] GetDatiTabContrattiAttiviAtleta(Atleta atleta,String[] ColonneTabContratti) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
@@ -460,7 +493,7 @@ public class Controller {
 		return Contenutotab;
 	}
 	
-	public Object[][] GetDatiContrattiAtleta(Atleta atleta,String[] ColonneTabContratti) {
+	public Object[][] GetDatiTabContrattiAtleta(Atleta atleta,String[] ColonneTabContratti) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
@@ -555,7 +588,7 @@ public class Controller {
 		return Contenutotab;
 	}
 
-	public Object[][] GetDatiTabellaProcuratoriAtleta(Atleta atleta,String[] ColonneTabStoriaProcuratori) {
+	public Object[][] GetDatiTabProcuratoriAtleta(Atleta atleta,String[] ColonneTabStoriaProcuratori) {
 		Object[][] Contenutotab=new Object [0][0];
 		try {
 			ImplementationDAO dao = ControllerDAO.getInstance().getDAO();
@@ -594,7 +627,7 @@ public class Controller {
 		return Contenutotab;
 	}
 	
-	public Object[][] GetDatiContrattiMiglioriAtleta(Atleta atleta,String[] ColonneContrattiMigliori, LocalDate DataInizio,LocalDate DataFine) {
+	public Object[][] GetDatiTabContrattiMiglioriAtleta(Atleta atleta,String[] ColonneContrattiMigliori, LocalDate DataInizio,LocalDate DataFine) {
 		Object[][] ContenutoTab=new Object [0][0];
 		try {
 			ImplementationDAO DAO = ControllerDAO.getInstance().getDAO(); 

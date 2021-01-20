@@ -2,24 +2,16 @@ package ImplementationDAO;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLType;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.print.attribute.standard.MediaSize.Other;
-
-import com.sun.jdi.Type;
-
-import Eccezioni.EccezioneCF;
-import Entità.*;
-
+import Entity.*;
+import MyExceptions.EccezioneCF;
 
 public class ImplementationDAO_Postgres extends ImplementationDAO {
 

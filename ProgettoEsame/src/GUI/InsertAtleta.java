@@ -5,13 +5,10 @@ import java.awt.Label;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Closeable;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 
 import javax.swing.JButton;
@@ -24,15 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import com.toedter.calendar.JDateChooser;
-
-import Controller.ControllerDAO;
-import Eccezioni.EccezioneCF;
-import Entità.*;
-import ImplementationDAO.ImplementationDAO;
+import Entity.*;
+import MyExceptions.EccezioneCF;
 
 public class InsertAtleta extends JFrame {
 

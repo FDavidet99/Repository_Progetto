@@ -22,15 +22,14 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import Controller.ControllerDAO;
-import Eccezioni.EccezioneCF;
-import Entità.Comune;
-import Entità.Nazione;
-import Entità.Persona;
-import Entità.ProcuratoreSportivo;
-import Entità.Provincia;
-import Entità.Sesso;
-import ImplementationDAO.ImplementationDAO;
+import Entity.Comune;
+import Entity.Nazione;
+import Entity.Persona;
+import Entity.ProcuratoreSportivo;
+import Entity.Provincia;
+import Entity.Sesso;
+import MyExceptions.EccezioneCF;
+
 import javax.swing.UIManager;
 import java.awt.SystemColor;
 

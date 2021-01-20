@@ -5,28 +5,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import Controller.ControllerDAO;
-import Eccezioni.EccezioneCF;
-import Entità.Atleta;
-import Entità.Contratto;
-import Entità.Ingaggio;
-import Entità.ProcuratoreSportivo;
-import Entità.TipoContratto;
-import ImplementationDAO.ImplementationDAO;
 
+import Entity.Atleta;
+import Entity.ProcuratoreSportivo;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Iterator;
 import javax.swing.JTable;
 import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
@@ -41,11 +30,6 @@ public class InfoAtleta extends JFrame {
 	private JTextField ProcuratoreAttivoField;
 	private JTable TabellaStatistiche;
 	Controller controller;
-	private JTextField ClubTextField;
-	private JTextField SponsorTextField;
-	private JTextField SommaGuadagniTextField;
-	private JTextField NomeClubTextField;
-	private JTextField NomeSponsorTextField;
 	private JTable TabellaMiglioriContratti;
 	private String[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante","Data Inizio","Data Fine", "Compenso/Gettone Presenza Nazionale"};
 	private String[] ColonneContrattiMigliori= {"Id Contratto","Club/Sponsor","Nome Club/Sponsor","Data Inizio","Data Fine","Compenso"};
@@ -119,13 +103,13 @@ public class InfoAtleta extends JFrame {
 		TabellaStatistiche = new JTable();
 		scrollPane.setViewportView(TabellaStatistiche);
 		
-		RiempiTabContrattiAttivi();
+		SetTabContrattiAttivi();
 		SetLabelTotContratti();
 		
 		JRadioButton ContrattiAttiviRadioButton = new JRadioButton("Contratti Attivi\r\n");
 		ContrattiAttiviRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RiempiTabContrattiAttivi();
+				SetTabContrattiAttivi();
 				SetLabelTotContratti();
 			}
 		});
@@ -136,7 +120,7 @@ public class InfoAtleta extends JFrame {
 		JRadioButton StoriaContrattiRadioButton = new JRadioButton("Storia Contratti");
 		StoriaContrattiRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RiempiTabContratti();
+				SetTabContratti();
 				SetLabelTotContratti();
 			}
 		});
@@ -146,7 +130,7 @@ public class InfoAtleta extends JFrame {
 		JRadioButton StoriaProcuratoriRadioButton = new JRadioButton("Storia Procuratori");
 		StoriaProcuratoriRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RiempiTabProcuratori();
+				SetTabProcuratori();
 				TotContratti.setText("");
 			}
 		});
@@ -156,7 +140,7 @@ public class InfoAtleta extends JFrame {
 	    JRadioButton TabellaGettoniNazionaliRadioButton = new JRadioButton("Contratti con Nazionali");
 	    TabellaGettoniNazionaliRadioButton.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		RiempiTabContrattiNazionali();
+	    		SetTabContrattiNazionali();
 	    		SetLabelTotContratti();
 	    	}
 	    });
@@ -185,7 +169,7 @@ public class InfoAtleta extends JFrame {
 	    			return;
 	    		if(DataInizioDateChooser.getCalendar() == null ||DataFineDateChooser.getCalendar() == null)
 	    			return;
-	    		RiempiTabContrattiMigliori();
+	    		SetTabContrattiMigliori();
 	    		SetLabelTotContrattiMigliori();
 	    	}
 	    });
@@ -200,7 +184,7 @@ public class InfoAtleta extends JFrame {
 	    			return;
 	    		if(DataInizioDateChooser.getCalendar() == null ||DataFineDateChooser.getCalendar() == null)
 	    			return;
-	    		RiempiTabContrattiMigliori();
+	    		SetTabContrattiMigliori();
 	    		SetLabelTotContrattiMigliori();
 	    	}
 	    });
@@ -261,7 +245,7 @@ public class InfoAtleta extends JFrame {
 					return;
 				if(DataInizioDateChooser.getCalendar() == null || DataFineDateChooser.getCalendar() == null)
 					return;
-				RiempiTabContrattiMigliori();
+				SetTabContrattiMigliori();
 				SetLabelTotContrattiMigliori();
 					}
 				});
@@ -275,7 +259,7 @@ public class InfoAtleta extends JFrame {
 	    			return;
 	    		if(DataInizioDateChooser.getCalendar() == null || DataFineDateChooser.getCalendar() == null)
 	    			return;
-	    		RiempiTabContrattiNazionaliMigliori();
+	    		SetTabContrattiNazionaliMigliori();
 	    		SetLabelTotContrattiMigliori();
 				
 			}
@@ -288,7 +272,6 @@ public class InfoAtleta extends JFrame {
 		GroupTabellaMiglioriContratti.add(ContrattiNazionaliMiglioriRadioButton);
 			
 	}
-	
 	
 	private void SetLabelTotContratti(){
 		int rows = TabellaStatistiche.getModel().getRowCount();
@@ -314,9 +297,9 @@ public class InfoAtleta extends JFrame {
 		TotContrattiMigliori.setText("Totale = "+tot+" €");
 	}
 		
-	public void RiempiTabContrattiAttivi() {
+	public void SetTabContrattiAttivi() {
 		TabellaStatistiche.setModel(new DefaultTableModel(
-				controller.GetDatiContrattiAttiviAtleta(atleta, ColonneTabContratti),ColonneTabContratti
+				controller.GetDatiTabContrattiAttiviAtleta(atleta, ColonneTabContratti),ColonneTabContratti
 		){
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int r,int c) {
@@ -326,9 +309,9 @@ public class InfoAtleta extends JFrame {
 		TabellaStatistiche.getColumnModel().getColumn(5).setPreferredWidth(210);
 	}
 			
-	public void RiempiTabContratti() {
+	public void SetTabContratti() {
 		TabellaStatistiche.setModel(new DefaultTableModel(
-				controller.GetDatiContrattiAtleta(atleta, ColonneTabContratti),ColonneTabContratti 
+				controller.GetDatiTabContrattiAtleta(atleta, ColonneTabContratti),ColonneTabContratti 
 		){
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int r,int c) {
@@ -339,7 +322,7 @@ public class InfoAtleta extends JFrame {
 
 	}
 	
-	public void RiempiTabContrattiNazionali() {
+	public void SetTabContrattiNazionali() {
 		TabellaStatistiche.setModel(new DefaultTableModel(
 				controller.GetDatiTabContrattiNazionaliAtleta(atleta,ColonneContrattiNazionale),ColonneContrattiNazionale
 		){
@@ -351,9 +334,9 @@ public class InfoAtleta extends JFrame {
 		TabellaStatistiche.getColumnModel().getColumn(4).setPreferredWidth(100);
 	}
 	
-	public void RiempiTabProcuratori() {
+	public void SetTabProcuratori() {
 		TabellaStatistiche.setModel(new DefaultTableModel(
-				controller.GetDatiTabellaProcuratoriAtleta(atleta,ColonneTabStoriaProcuratori),ColonneTabStoriaProcuratori
+				controller.GetDatiTabProcuratoriAtleta(atleta,ColonneTabStoriaProcuratori),ColonneTabStoriaProcuratori
 		){
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int r,int c) {
@@ -363,11 +346,11 @@ public class InfoAtleta extends JFrame {
 		TabellaStatistiche.getColumnModel().getColumn(0).setPreferredWidth(100);
 	}
 	
-	public void RiempiTabContrattiMigliori() {
+	public void SetTabContrattiMigliori() {
 		LocalDate DataInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	    LocalDate DataFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
 	    TabellaMiglioriContratti.setModel(new DefaultTableModel(
-	    		controller.GetDatiContrattiMiglioriAtleta(atleta,ColonneContrattiMigliori,DataInizio,DataFine),ColonneContrattiMigliori
+	    		controller.GetDatiTabContrattiMiglioriAtleta(atleta,ColonneContrattiMigliori,DataInizio,DataFine),ColonneContrattiMigliori
 	    		){
 	    		private static final long serialVersionUID = 1L;
 	    		public boolean isCellEditable(int r,int c) {
@@ -376,7 +359,7 @@ public class InfoAtleta extends JFrame {
 	    });	    
 }
 
-	public void RiempiTabContrattiNazionaliMigliori() {
+	public void SetTabContrattiNazionaliMigliori() {
 		LocalDate DataInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	    LocalDate DataFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
 		TabellaMiglioriContratti.setModel(new DefaultTableModel(

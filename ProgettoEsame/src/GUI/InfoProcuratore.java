@@ -1,54 +1,20 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
-import org.postgresql.translation.messages_bg;
-
-import Controller.ControllerDAO;
-import Eccezioni.EccezioneCF;
-import Entità.Atleta;
-import Entità.Contratto;
-import Entità.Ingaggio;
-import Entità.Persona;
-import Entità.ProcuratoreSportivo;
-import Entità.TipoContratto;
-import ImplementationDAO.ImplementationDAO;
-
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
+import Entity.ProcuratoreSportivo;
 import javax.swing.SwingConstants;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.ScrollPane;
-import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.MonthDay;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.Scrollable;
 import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -107,13 +73,13 @@ public class InfoProcuratore extends JFrame {
 		TabellaStatistiche = new JTable();
 		scrollPane.setViewportView(TabellaStatistiche);
 		
-		RiempiTabContrattiAttivi();
+		SetTabContrattiAttivi();
 		SetLabelTabStatistiche();
 		
 		JRadioButton ContrattiAttiviRadioButton = new JRadioButton("Contratti Attivi\r\n");
 		ContrattiAttiviRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RiempiTabContrattiAttivi();
+				SetTabContrattiAttivi();
 				SetLabelTabStatistiche();
 			}
 		});
@@ -124,31 +90,31 @@ public class InfoProcuratore extends JFrame {
 		JRadioButton StoriaContrattiRadioButton = new JRadioButton("Storia Contratti");
 		StoriaContrattiRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RiempiDatiTabContratti();
+				SetTabContratti();
 				SetLabelTabStatistiche();
 			}
 		});
-		StoriaContrattiRadioButton.setBounds(121, 75, 109, 23);
+		StoriaContrattiRadioButton.setBounds(121, 75, 130, 23);
 		contentPane.add(StoriaContrattiRadioButton);
 		
 		JRadioButton StoriaAtletiRadioButton = new JRadioButton("Storia Atleti ingaggiati");
 		StoriaAtletiRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RiempiTabIngaggiAtleti();
+				SetTabIngaggiAtleti();
 				SetLabelTabStatistiche();
 			}
 		});
-	    StoriaAtletiRadioButton.setBounds(335, 75, 167, 23);
+	    StoriaAtletiRadioButton.setBounds(350, 75, 167, 23);
 	    contentPane.add(StoriaAtletiRadioButton);
 	    
 	    JRadioButton AtletiAttiviRadioButton = new JRadioButton("Ingaggi Attivi\r\n");
 	    AtletiAttiviRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RiempiTabIngaggiAttivi();
+				SetTabIngaggiAttivi();
 				SetLabelTabStatistiche();
 			}
 		});
-		AtletiAttiviRadioButton.setBounds(232, 75, 101, 23);
+		AtletiAttiviRadioButton.setBounds(250, 75, 101, 23);
 		contentPane.add(AtletiAttiviRadioButton);
 			
 	    ButtonGroup GroupTabella = new ButtonGroup();
@@ -164,7 +130,7 @@ public class InfoProcuratore extends JFrame {
 	    			return;
 	    		if(DataInizioDateChooser.getCalendar() == null || DataFineDateChooser.getCalendar() == null)
 	    			return;
-				RiempiTabIngaggiMigliori();
+				SetTabIngaggiMigliori();
 				SetLabelTotIngaggiMigliori();
 			}
 		});
@@ -178,7 +144,7 @@ public class InfoProcuratore extends JFrame {
 	    			return;
 	    		if(DataInizioDateChooser.getCalendar() == null || DataFineDateChooser.getCalendar() == null)
 	    			return;
-				RiempiTabContrattiMigliori();
+				SetTabContrattiMigliori();
 	    		SetLabelTotContrattiMigliori();
 			}
 		});
@@ -198,11 +164,11 @@ public class InfoProcuratore extends JFrame {
 	    		if(DataInizioDateChooser.getCalendar() == null || DataFineDateChooser.getCalendar() == null)
 	    			return;
 	    		if(radioBtnContrattiMigliori.isSelected()){
-	    			RiempiTabContrattiMigliori();
+	    			SetTabContrattiMigliori();
 		    		SetLabelTotContrattiMigliori();
 	    		}
 	    		else if(radioBtnIngaggiMigliori.isSelected()){
-	    			RiempiTabIngaggiMigliori();
+	    			SetTabIngaggiMigliori();
 	    			SetLabelTotIngaggiMigliori();
 	    		}
 	    	}
@@ -220,11 +186,11 @@ public class InfoProcuratore extends JFrame {
 	    				DataInizioDateChooser.getCalendar() == null)
 	    			return;
 	    		if(radioBtnContrattiMigliori.isSelected()){
-	    			RiempiTabContrattiMigliori();
+	    			SetTabContrattiMigliori();
 		    		SetLabelTotContrattiMigliori();
 	    		}
 	    		else if(radioBtnIngaggiMigliori.isSelected()){
-	    			RiempiTabIngaggiMigliori();
+	    			SetTabIngaggiMigliori();
 	    			SetLabelTotIngaggiMigliori();
 	    		}
 	    	}
@@ -312,7 +278,7 @@ public class InfoProcuratore extends JFrame {
 			TotaleTabStatisticheLabel.setText("Totale = "+tot+" €");
 	}
 		
-	public void RiempiTabContrattiMigliori(){
+	public void SetTabContrattiMigliori(){
 		LocalDate DataInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	    LocalDate DataFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
 	    TabellaMigliori.setModel(new DefaultTableModel(
@@ -325,7 +291,7 @@ public class InfoProcuratore extends JFrame {
 	    });	
 	}	
 	
-	public void RiempiTabIngaggiMigliori() {
+	public void SetTabIngaggiMigliori() {
 		LocalDate DataInizo=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	    LocalDate DataFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
 		TabellaMigliori.setModel(new DefaultTableModel(
@@ -338,7 +304,7 @@ public class InfoProcuratore extends JFrame {
 		});    	
 	}
 	
-	public void RiempiTabContrattiAttivi() {
+	public void SetTabContrattiAttivi() {
 		TabellaStatistiche.setModel(new DefaultTableModel(
 				controller.GetDatiTabContrattiAttiviProcuratore(Procuratore,ColonneTabContratti),ColonneTabContratti 
 		){
@@ -350,7 +316,7 @@ public class InfoProcuratore extends JFrame {
 		
 	}
 	
-	public void RiempiDatiTabContratti() {
+	public void SetTabContratti() {
 		TabellaStatistiche.setModel(new DefaultTableModel(
 				controller.GetDatiTabContrattiProcuratore(Procuratore,ColonneTabContratti),ColonneTabContratti 
 		){
@@ -361,7 +327,7 @@ public class InfoProcuratore extends JFrame {
 		});
 	}
 	
-	public void RiempiTabIngaggiAttivi() {
+	public void SetTabIngaggiAttivi() {
 		TabellaStatistiche.setModel(new DefaultTableModel(
 				controller.GetDatiTabIngaggiAtletiAttiviProcuratore(Procuratore,ColonneTabStoriaAtleti),ColonneTabStoriaAtleti
 		){
@@ -373,7 +339,7 @@ public class InfoProcuratore extends JFrame {
 		TabellaStatistiche.getColumnModel().getColumn(0).setPreferredWidth(100);
 	}
 
-	public void RiempiTabIngaggiAtleti() {
+	public void SetTabIngaggiAtleti() {
 		TabellaStatistiche.setModel(new DefaultTableModel(
 				controller.GetDatiTabIngaggiAtletiProcuratore(Procuratore,ColonneTabStoriaAtleti),ColonneTabStoriaAtleti
 		){

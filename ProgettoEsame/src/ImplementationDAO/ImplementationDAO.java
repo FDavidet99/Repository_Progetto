@@ -2,9 +2,7 @@ package ImplementationDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-import InterfacceDAO.*;
+import InterfacesDAO.*;
 
 public abstract class ImplementationDAO implements NazioneDAO,ProvinciaDAO,ComuneDAO,AtletaDAO,ProcuratoreSportivoDAO,IngaggioDAO,ClubSportivoDAO,SponsorDAO,ContrattoDAO {
 	

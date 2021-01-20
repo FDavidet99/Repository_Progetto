@@ -8,7 +8,6 @@ import java.awt.Font;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -20,17 +19,13 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import com.toedter.calendar.JDateChooser;
 
-import Controller.ControllerDAO;
-import Eccezioni.EccezioneCF;
-import Entità.Atleta;
-import Entità.ClubSportivo;
-import Entità.Contratto;
-import Entità.ProcuratoreSportivo;
-import Entità.TipoContratto;
-import Entità.Sponsor;
-import ImplementationDAO.ImplementationDAO;
+import Entity.Atleta;
+import Entity.ClubSportivo;
+import Entity.Contratto;
+import Entity.ProcuratoreSportivo;
+import Entity.Sponsor;
+import Entity.TipoContratto;
 import javax.swing.JButton;
-import java.awt.Color;
 import javax.swing.UIManager;
 
 public class InsertContratto extends JFrame {
@@ -40,24 +35,23 @@ public class InsertContratto extends JFrame {
 	private JTextField CompensoAtletaTextField;
 	private JTextField CompensoProcuratoreTextField;
 	private JTextField GettonePresenzaNazionaleTextField;
-	private List<Atleta> QueryAtleti;
-	private List<ClubSportivo> QueryClub;
-	private List<Sponsor> QuerySponsor;
+	private List<Atleta> ElencoAtleti;
+	private List<ClubSportivo> ElencoClub;
+	private List<Sponsor> ElencoSponsor;
 	private JComboBox AtletaComboBox;
 	private JComboBox TipoContrattoComboBox;
 	private JComboBox SponsorComboBox;
 	private JComboBox ClubComboBox;
 	private JDateChooser DataInizioDateChooser;
 	private JDateChooser DataFineDateChooser;
-	Controller controller;
 	private JTextField NomeProcuratoretextField;
+	Controller controller;
+	
 
 	/**
 	 * Create the frame.
-	 * @throws SQLException 
-	 * @throws EccezioneCF 
 	 */
-	public InsertContratto(Controller c) throws SQLException, EccezioneCF {
+	public InsertContratto(Controller c) {
 		controller=c;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 637, 380);
@@ -65,8 +59,6 @@ public class InsertContratto extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();
 		
 		JLabel AtletaLabel = new JLabel("Atleta");
 		AtletaLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -80,13 +72,13 @@ public class InsertContratto extends JFrame {
 		CompensoAtletaLabel.setBounds(24, 178, 134, 48);
 		contentPane.add(CompensoAtletaLabel);
 		
-		JLabel lblNewLabel = new JLabel("\u200E\u20AC");
-		lblNewLabel.setBounds(191, 209, 16, 14);
-		contentPane.add(lblNewLabel);
+		JLabel EuroLabel = new JLabel("\u200E\u20AC");
+		EuroLabel.setBounds(191, 209, 16, 14);
+		contentPane.add(EuroLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("\u200E\u20AC");
-		lblNewLabel_1.setBounds(422, 206, 16, 20);
-		contentPane.add(lblNewLabel_1);
+		JLabel EuroLabel2 = new JLabel("\u200E\u20AC");
+		EuroLabel2.setBounds(422, 206, 16, 20);
+		contentPane.add(EuroLabel2);
 		
 		JLabel GettonePresenzaNazionaleLabel = new JLabel("Compenso Atleta");
 		GettonePresenzaNazionaleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -126,10 +118,9 @@ public class InsertContratto extends JFrame {
 		CompensoProcuratoreLabel.setText("<html>Compenso del Procuratore : <br/> <br/>Totale : </html>");
 		contentPane.add(CompensoProcuratoreLabel);
 		
-		QueryAtleti=new ArrayList();
-	    QueryAtleti=(ArrayList) OggettoConnessione.GetAtleti();
+	    ElencoAtleti=(ArrayList) controller.GetAtleti();
 		ArrayList<String> NomiAtleti = new ArrayList<String>();
-		for(Atleta a:QueryAtleti)
+		for(Atleta a:ElencoAtleti)
 			NomiAtleti.add(a.getNome()+" "+a.getCognome());
 		
 		AtletaComboBox = new JComboBox(NomiAtleti.toArray());
@@ -137,34 +128,20 @@ public class InsertContratto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int IndexAtleta=AtletaComboBox.getSelectedIndex();
 				if(IndexAtleta!=-1) {
-					try {
-						ProcuratoreSportivo ProcuratoreAttivo=OggettoConnessione.GetProcuratoreAttivo(QueryAtleti.get(IndexAtleta));
-						if( ProcuratoreAttivo == null) {
-							CompensoProcuratoreLabel.setVisible(false);
-							CompensoProcuratoreTextField.setVisible(false);
-							NomeProcuratoretextField.setVisible(false);
-							lblNewLabel_1.setVisible(false);
-						}
-						else {	
-							CompensoProcuratoreLabel.setVisible(true);
-							CompensoProcuratoreTextField.setVisible(true);
-							NomeProcuratoretextField.setVisible(true);
-							lblNewLabel_1.setVisible(true);
-							NomeProcuratoretextField.setText(ProcuratoreAttivo.getNome() +" "+ ProcuratoreAttivo.getCognome());
-						}
-					} catch (EccezioneCF e1) {
-						JDialog Dialog = new JDialog(); 
-						JLabel LabelJDialog= new JLabel("Errore di inserimento dati",SwingConstants.CENTER); 
-						Dialog.getContentPane().add(LabelJDialog); 
-						Dialog.setBounds(400, 150, 240, 150);
-						Dialog.setVisible(true);
-					} catch (SQLException e1) {
-						JDialog Dialog = new JDialog(); 
-						JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			        	Dialog.getContentPane().add(LabelJDialog); 
-			        	Dialog.setBounds(400, 150, 240, 150);
-			        	Dialog.setVisible(true);
-					}			
+					ProcuratoreSportivo ProcuratoreAttivo=controller.GetProcuratoreAtletaAttivo(ElencoAtleti.get(IndexAtleta));
+					if( ProcuratoreAttivo == null) {
+						CompensoProcuratoreLabel.setVisible(false);
+						CompensoProcuratoreTextField.setVisible(false);
+						NomeProcuratoretextField.setVisible(false);
+						EuroLabel2.setVisible(false);
+					}
+					else {	
+						CompensoProcuratoreLabel.setVisible(true);
+						CompensoProcuratoreTextField.setVisible(true);
+						NomeProcuratoretextField.setVisible(true);
+						EuroLabel2.setVisible(true);
+						NomeProcuratoretextField.setText(ProcuratoreAttivo.getNome() +" "+ ProcuratoreAttivo.getCognome());
+					}
 				}
 			}
 		});
@@ -184,10 +161,10 @@ public class InsertContratto extends JFrame {
 		SponsorLabel.setVisible(false);
 		contentPane.add(SponsorLabel);
 	
-		QuerySponsor=new ArrayList();
-	    QuerySponsor=(ArrayList) OggettoConnessione.GetSponsor();
+		
+	    ElencoSponsor=(ArrayList) controller.GetSponsorForContratto();
 		ArrayList<String> NomiSponsor = new ArrayList<String>();
-		for(Sponsor sponsor:QuerySponsor)
+		for(Sponsor sponsor:ElencoSponsor)
 			NomiSponsor.add(sponsor.getNomeSponsor());
 		
 		SponsorComboBox = new JComboBox(NomiSponsor.toArray());
@@ -195,11 +172,10 @@ public class InsertContratto extends JFrame {
 		SponsorComboBox.setSelectedIndex(-1);
 		SponsorComboBox.setVisible(false);
 		contentPane.add(SponsorComboBox);
-		
-		QueryClub=new ArrayList();
-	    QueryClub=(ArrayList) OggettoConnessione.GetClubSportivi();
+			
+	    ElencoClub=(ArrayList)controller.GetClubForContratto();
 		ArrayList<String> NomiClub = new ArrayList<String>();
-		for(ClubSportivo club:QueryClub)
+		for(ClubSportivo club:ElencoClub)
 			NomiClub.add(club.getNomeClub());
 		
 		ClubComboBox = new JComboBox(NomiClub.toArray());
@@ -208,7 +184,7 @@ public class InsertContratto extends JFrame {
 				int IndexClub=ClubComboBox.getSelectedIndex();
 				ClubSportivo club;
 				if(IndexClub!=-1) {
-					club = QueryClub.get(IndexClub);
+					club = ElencoClub.get(IndexClub);
 					if(club.isIsNazionale()) {
 						CompensoAtletaLabel.setVisible(false);
 						CompensoAtletaTextField.setVisible(false);
@@ -217,7 +193,7 @@ public class InsertContratto extends JFrame {
 						NomeProcuratoretextField.setVisible(false);
 						CompensoProcuratoreLabel.setVisible(false);
 						CompensoProcuratoreTextField.setVisible(false);
-						lblNewLabel_1.setVisible(false);
+						EuroLabel2.setVisible(false);
 					}
 					else {
 						CompensoAtletaLabel.setVisible(true);
@@ -226,7 +202,7 @@ public class InsertContratto extends JFrame {
 						GettonePresenzaNazionaleTextField.setVisible(false);
 						CompensoProcuratoreLabel.setVisible(true);
 						NomeProcuratoretextField.setVisible(true);
-						lblNewLabel_1.setVisible(true);
+						EuroLabel2.setVisible(true);
 					}
 				}
 				
@@ -263,28 +239,15 @@ public class InsertContratto extends JFrame {
 					ClubSportivoLabel.setVisible(false);
 					SponsorLabel.setVisible(true);
 					int IndexAtleta=AtletaComboBox.getSelectedIndex();
+					ClubComboBox.setSelectedIndex(-1);
 					if(IndexAtleta!=-1) {
-						try {	
-							ProcuratoreSportivo ProcuratoreAttivo = OggettoConnessione.GetProcuratoreAttivo(QueryAtleti.get(IndexAtleta));
-							if( ProcuratoreAttivo != null) {
-								ClubComboBox.setSelectedIndex(-1);
-								CompensoProcuratoreLabel.setVisible(true);
-								NomeProcuratoretextField.setVisible(true);
-								lblNewLabel_1.setVisible(true);
-							}
-						} catch (EccezioneCF e1) {
-							JDialog Dialog = new JDialog(); 
-							JLabel LabelJDialog= new JLabel("Errore di inserimento dati",SwingConstants.CENTER); 
-							Dialog.getContentPane().add(LabelJDialog); 
-							Dialog.setBounds(400, 150, 240, 150);
-							Dialog.setVisible(true);
-						} catch (SQLException e1) {
-							JDialog Dialog = new JDialog(); 
-							JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-							Dialog.getContentPane().add(LabelJDialog); 
-							Dialog.setBounds(400, 150, 240, 150);
-							Dialog.setVisible(true);
-						}		
+						ProcuratoreSportivo ProcuratoreAttivo =controller.GetProcuratoreAtletaAttivo(ElencoAtleti.get(IndexAtleta));
+						if( ProcuratoreAttivo != null) {
+							CompensoProcuratoreLabel.setVisible(true);
+							NomeProcuratoretextField.setVisible(true);
+							EuroLabel2.setVisible(true);
+						}
+							
 					}
 				}
 				GettonePresenzaNazionaleLabel.setVisible(false);
@@ -327,9 +290,9 @@ public class InsertContratto extends JFrame {
 					Sponsor sponsor=null;
 					ClubSportivo club=null;
 					if(IndexSponsor!=-1)
-						sponsor = QuerySponsor.get(IndexSponsor);
+						sponsor = ElencoSponsor.get(IndexSponsor);
 					if(IndexClub!=-1)
-						club = QueryClub.get(IndexClub);
+						club = ElencoClub.get(IndexClub);
 					double CompAtleta=0.0;
 					if(!(CompensoAtletaTextField.getText().isEmpty()))
 						CompAtleta=Double.parseDouble(CompensoAtletaTextField.getText());
@@ -340,23 +303,10 @@ public class InsertContratto extends JFrame {
 					if(!(GettonePresenzaNazionaleTextField.getText().isEmpty()))
 						GettonePresenzaNazionale=Double.parseDouble(GettonePresenzaNazionaleTextField.getText());
 					
-					Contratto TmpContratto = new Contratto(OggettoConnessione.GetProcuratoreAttivo(QueryAtleti.get(IndexAtleta)),QueryAtleti.get(IndexAtleta), 
+					Contratto TmpContratto = new Contratto(controller.GetProcuratoreAtletaAttivo(ElencoAtleti.get(IndexAtleta)),ElencoAtleti.get(IndexAtleta), 
 							TempDateInizio, TempDateFine, (TipoContratto) TipoContrattoComboBox.getSelectedItem(),club,sponsor,
 							CompAtleta,ComProcuratore, GettonePresenzaNazionale);
 			    	controller.InsertContratto(TmpContratto);
-			    } catch (EccezioneCF e1) {
-			    	JDialog Dialog = new JDialog(); 
-		            JLabel LabelJDialog= new JLabel("Errore di inserimento dati",SwingConstants.CENTER); 
-		            Dialog.getContentPane().add(LabelJDialog); 
-	                Dialog.setBounds(400, 150, 250, 200);
-		            Dialog.setVisible(true);
-			    	e1.printStackTrace();
-			    } catch (SQLException e1) {
-			    	JDialog Dialog = new JDialog(); 
-		            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-		            Dialog.getContentPane().add(LabelJDialog); 
-	                Dialog.setBounds(400, 150, 250, 200);
-		            Dialog.setVisible(true);
 			    } catch (NullPointerException | IndexOutOfBoundsException e1) {
 					JDialog Dialog = new JDialog(); 
 					JLabel LabelJDialog= new JLabel("Tutti i campi devono essere compilati",SwingConstants.CENTER);

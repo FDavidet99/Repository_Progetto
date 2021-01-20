@@ -1,12 +1,9 @@
 package GUI;
 
 import java.awt.Label;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,30 +13,23 @@ import javax.swing.JDialog;
 
 import com.toedter.calendar.JDateChooser;
 
-import Controller.ControllerDAO;
-import Eccezioni.EccezioneCF;
-import Entità.Atleta;
-import Entità.Ingaggio;
-import Entità.ProcuratoreSportivo;
-import ImplementationDAO.ImplementationDAO;
-
+import Entity.Atleta;
+import Entity.Ingaggio;
+import Entity.ProcuratoreSportivo;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 import javax.swing.UIManager;
 import java.awt.Font;
-import java.awt.Color;
 
 public class InsertIngaggio extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField StipendiotextField;
-	private List<ProcuratoreSportivo> QueryProcuratori;
-	private List<Atleta> QueryAtleti;
+	private ArrayList<ProcuratoreSportivo> ElencoProcuratori;
+	private ArrayList<Atleta> ElencoAtleti;
 	private JComboBox ProcuratoreComboBox;
 	private JComboBox AtletaComboBox;
 	private JDateChooser DataInizioDateChooser;
@@ -47,11 +37,9 @@ public class InsertIngaggio extends JFrame {
 	Controller controller;
 
 	/**
-	 * Create the frame.
-	 * @throws SQLException 
-	 * @throws EccezioneCF 
+	 * Create the frame. 
 	 */
-	public InsertIngaggio(Controller c) throws SQLException, EccezioneCF {
+	public InsertIngaggio(Controller c) {
 		controller=c;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 613, 401);
@@ -59,8 +47,6 @@ public class InsertIngaggio extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();
 		
 		Label ProcuratoreLabel = new Label();
 		ProcuratoreLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -83,10 +69,10 @@ public class InsertIngaggio extends JFrame {
 		DataInizioLabel.setBounds(37, 120, 71, 22);
 		contentPane.add(DataInizioLabel);
 		
-		QueryProcuratori=new ArrayList <ProcuratoreSportivo>();
-	    QueryProcuratori=(ArrayList) OggettoConnessione.GetProcuratori();
+		
+	    ElencoProcuratori=(ArrayList) controller.GetProcuratori();
 	    ArrayList<String> nomiProcuratori = new ArrayList<String>();
-		for(ProcuratoreSportivo a:QueryProcuratori)
+		for(ProcuratoreSportivo a:ElencoProcuratori)
 			nomiProcuratori.add(a.getNome()+" "+a.getCognome());
 	
 		ProcuratoreComboBox = new JComboBox(nomiProcuratori.toArray());
@@ -94,10 +80,9 @@ public class InsertIngaggio extends JFrame {
 		ProcuratoreComboBox.setSelectedIndex(-1);
 		contentPane.add(ProcuratoreComboBox);
 		
-		QueryAtleti=new ArrayList();
-	    QueryAtleti=(ArrayList) OggettoConnessione.GetAtleti();
+	    ElencoAtleti=(ArrayList) controller.GetAtleti();
 		ArrayList<String> nomiAtleti = new ArrayList<String>();
-		for(Atleta a:QueryAtleti)
+		for(Atleta a:ElencoAtleti)
 			nomiAtleti.add(a.getNome()+" "+a.getCognome());
 		
 		AtletaComboBox = new JComboBox(nomiAtleti.toArray());
@@ -152,13 +137,13 @@ public class InsertIngaggio extends JFrame {
 				try {
 					int indexProcuratore = ProcuratoreComboBox.getSelectedIndex();
 					int indexAtleta = AtletaComboBox.getSelectedIndex();					
-					ProcuratoreSportivo procuratore = QueryProcuratori.get(indexProcuratore);
-					Atleta atleta = QueryAtleti.get(indexAtleta);
+					ProcuratoreSportivo procuratore = ElencoProcuratori.get(indexProcuratore);
+					Atleta atleta = ElencoAtleti.get(indexAtleta);
 					LocalDate TempDateInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 					LocalDate TempDateFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 					double stipendioProcuratore = Double.parseDouble(StipendiotextField.getText());
 					Ingaggio ingaggio=new Ingaggio(procuratore,atleta,TempDateInizio, TempDateFine,stipendioProcuratore);
-					controller.InsertIngaggio(ingaggio);	
+					controller.InsertIngaggioInDB(ingaggio);	
 				} catch (IndexOutOfBoundsException e1) {	
 					if(ProcuratoreComboBox.getSelectedIndex()==-1) {
 						JDialog Dialog = new JDialog(); 
