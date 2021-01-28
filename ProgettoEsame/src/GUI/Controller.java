@@ -26,6 +26,7 @@ public class Controller {
 	InfoAtleta PageInfoAtleta;
 	InfoProcuratore PageInfoProcuratore;
 	InsertContratto PageInsertContratto;
+	ImplementationDAO OggettoConnessione;
 
 	public static void main(String[] args) {
 		Controller controller=new Controller();
@@ -33,6 +34,15 @@ public class Controller {
 
 	public Controller() {
 		super();
+		try {
+			OggettoConnessione=ControllerDAO.getInstance().getDAO();
+		} catch (SQLException e) {
+			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
+            Dialog.add(LabelJDialog); 
+            Dialog.setBounds(400, 350, 200, 200);
+            Dialog.setVisible(true); 
+		}
 		HomePage=new HomePage(this);
 		HomePage.setVisible(true);
 		
@@ -46,7 +56,6 @@ public class Controller {
 	
 	public boolean NazioneIsItalia(int IndexNazione) {
 		try {
-			ImplementationDAO OggettoConnessione = ControllerDAO.getInstance().getDAO();
 			ArrayList <Nazione> QueryNazioni=(ArrayList) OggettoConnessione.GetNazioni();  
 			if (QueryNazioni.get(IndexNazione).getCodiceAt().equals("Z000")) 
 				return true;

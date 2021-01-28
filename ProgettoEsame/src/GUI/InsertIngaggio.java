@@ -28,8 +28,6 @@ public class InsertIngaggio extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField StipendiotextField;
-	private ArrayList<ProcuratoreSportivo> ElencoProcuratori;
-	private ArrayList<Atleta> ElencoAtleti;
 	private JComboBox ProcuratoreComboBox;
 	private JComboBox AtletaComboBox;
 	private JDateChooser DataInizioDateChooser;
@@ -69,8 +67,7 @@ public class InsertIngaggio extends JFrame {
 		DataInizioLabel.setBounds(37, 120, 71, 22);
 		contentPane.add(DataInizioLabel);
 		
-		
-	    ElencoProcuratori=(ArrayList) controller.GetProcuratori();
+		ArrayList<ProcuratoreSportivo> ElencoProcuratori=(ArrayList) controller.GetProcuratori();
 	    ArrayList<String> nomiProcuratori = new ArrayList<String>();
 		for(ProcuratoreSportivo a:ElencoProcuratori)
 			nomiProcuratori.add(a.getNome()+" "+a.getCognome());
@@ -80,6 +77,7 @@ public class InsertIngaggio extends JFrame {
 		ProcuratoreComboBox.setSelectedIndex(-1);
 		contentPane.add(ProcuratoreComboBox);
 		
+		ArrayList<Atleta> ElencoAtleti;
 	    ElencoAtleti=(ArrayList) controller.GetAtleti();
 		ArrayList<String> nomiAtleti = new ArrayList<String>();
 		for(Atleta a:ElencoAtleti)
@@ -108,7 +106,6 @@ public class InsertIngaggio extends JFrame {
 		contentPane.add(DataFineDateChooser);
 		
 		StipendiotextField = new JTextField();
-		StipendiotextField.setEditable(false);
 		StipendiotextField.setBounds(139, 165, 86, 20);
 		contentPane.add(StipendiotextField);
 		StipendiotextField.setColumns(10);

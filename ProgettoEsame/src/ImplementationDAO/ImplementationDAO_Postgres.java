@@ -175,7 +175,7 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 			StmInsertAtleta.setString(7,null); 
 			StmInsertAtleta.setString(8,null);
 		}
-		StmInsertAtleta.setBoolean(9,atleta.isHasProcuratore());	
+		StmInsertAtleta.setBoolean(9,atleta.HasProcuratore());	
 		int RigheAggiunte=StmInsertAtleta.executeUpdate();
 		
 	}

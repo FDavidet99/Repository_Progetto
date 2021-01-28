@@ -17,7 +17,7 @@ public class Persona {
 	public Persona(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
 			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws SQLException, EccezioneCF{
 		super();
-		CodiceFiscale = calcolaCF(nome, cognome, sessoPersona, dataNascita, nazioneNascita, provinciaNascita, comuneNascita);
+		CodiceFiscale = CalcolaCF(nome, cognome, sessoPersona, dataNascita, nazioneNascita, provinciaNascita, comuneNascita);
 		Nome = nome;
 		Cognome = cognome;
 		SessoPersona = sessoPersona;
@@ -44,7 +44,7 @@ public class Persona {
 		if(CodiceFiscale!=null)
 			return CodiceFiscale;
 		else
-			return calcolaCF(Nome, Cognome, SessoPersona, DataNascita, NazioneNascita, ProvinciaNascita, ComuneNascita);
+			return CalcolaCF(Nome, Cognome, SessoPersona, DataNascita, NazioneNascita, ProvinciaNascita, ComuneNascita);
 	}
 	
 	public String getNome() {
@@ -102,7 +102,7 @@ public class Persona {
 	public void setComuneNascita(Comune comuneNascita) {
 		ComuneNascita = comuneNascita;
 	}
-
+	
 	public boolean hasNazioneNascita() {
 		if(NazioneNascita!=null)
 			return true;
@@ -123,7 +123,7 @@ public class Persona {
 		else 
 			return false;
 	}
-	
+
 	@Override
 	public String toString() {
 		String out = "[";
@@ -144,7 +144,7 @@ public class Persona {
 		return out;
 	}
 	
-	private String calcolaCF(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
+	private String CalcolaCF(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
 			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws EccezioneCF, SQLException {
 	        
 		nome = nome.toLowerCase();
@@ -154,12 +154,12 @@ public class Persona {
 		
 		String CodiceFiscale="";
 		
-		CodiceFiscale += calcolaCaratteriPerCognome(cognome);
-		CodiceFiscale += calcolaCaratteriPerNome(nome);
+		CodiceFiscale += CalcolaCaratteriPerCognome(cognome);
+		CodiceFiscale += CalcolaCaratteriPerNome(nome);
 		
 		CodiceFiscale += Integer.toString(dataNascita.getYear()).substring(2);
 		
-		CodiceFiscale += caratterePerIlMese(dataNascita);
+		CodiceFiscale += CaratterePerIlMese(dataNascita);
 		
 		int giornoNascita = dataNascita.getDayOfMonth();
 		
@@ -171,13 +171,12 @@ public class Persona {
     		CodiceFiscale += comuneNascita.getCodiceCatastale();
     	else
     		CodiceFiscale += nazioneNascita.getCodiceAt();
-		CodiceFiscale += carControllo(CodiceFiscale);
+		CodiceFiscale += getCarattereControllo(CodiceFiscale);
 		return CodiceFiscale;
 	}
 	
 	
-	
-	private char caratterePerIlMese(LocalDate dataNascita) {
+	private char CaratterePerIlMese(LocalDate dataNascita) {
 		switch (dataNascita.getMonthValue()) {
 			case 1:return 'A';
 			case 2:return 'B';
@@ -195,7 +194,7 @@ public class Persona {
 		}
 	}
 	
-	private String calcolaCaratteriPerCognome(String cognome) throws EccezioneCF {
+	private String CalcolaCaratteriPerCognome(String cognome) throws EccezioneCF {
 		String consonantiCognome = getConsonanti(cognome);
 		int dimConsonantiCognome = consonantiCognome.length();
 		
@@ -212,7 +211,7 @@ public class Persona {
 		return consonantiCognome.toUpperCase();
 	}
 	
-	private String calcolaCaratteriPerNome(String nome) throws EccezioneCF {
+	private String CalcolaCaratteriPerNome(String nome) throws EccezioneCF {
 		String consonantiNome = getConsonanti(nome);
 		int dimConsonantiNome = consonantiNome.length();
 		
@@ -268,17 +267,17 @@ public class Persona {
 		return vocali;
 	}
 	
-	public char carControllo(String cf15) throws EccezioneCF {
-		if(cf15.length()!=15)
+	private char getCarattereControllo(String codicefiscale15) throws EccezioneCF {
+		if(codicefiscale15.length()!=15)
 			throw new EccezioneCF();
-		String carPari = getCarPostoPari(cf15);
-		String carDispari = getCarPostoDispari(cf15);
+		String carPari = getCarPostoPari(codicefiscale15);
+		String carDispari = getCarPostoDispari(codicefiscale15);
 		int somma = 0;
 		for(int i=0;i<carPari.length();i++)
-			somma += getValAssociatoAcarDiStringaPari(carPari.charAt(i));
+			somma += getValoreAssociatoAcarattereDiStringaPari(carPari.charAt(i));
 		
 		for(int i=0;i<carDispari.length();i++)
-			somma += getValAssociatoAcarDiStringaDispari(carDispari.charAt(i));
+			somma += getValoreAssociatoAcarattereDiStringaDispari(carDispari.charAt(i));
 		
 		int resto = somma % 26;
 		
@@ -286,8 +285,8 @@ public class Persona {
 		return carAssociatoAresto;
 	}
 	
-	private int getValAssociatoAcarDiStringaPari(char carStrPari) throws EccezioneCF {
-		int asciiCode = (int)carStrPari;
+	private int getValoreAssociatoAcarattereDiStringaPari(char carattereStringPari) throws EccezioneCF {
+		int asciiCode = (int)carattereStringPari;
 		// per i caratteri 0..9 ritorna 0..9
 		if( asciiCode >=48 && asciiCode<=57)
 			return asciiCode - 48;
@@ -295,8 +294,8 @@ public class Persona {
 			return asciiCode - 65; // enumera A..Z
 	}
 	
-	private int getValAssociatoAcarDiStringaDispari(char carStrDispari) throws EccezioneCF {
-		switch(carStrDispari) {
+	private int getValoreAssociatoAcarattereDiStringaDispari(char carattereStringDispari) throws EccezioneCF {
+		switch(carattereStringDispari) {
 			case '0':return 1;
 			case '1':return 0;
 			case '2':return 5;
@@ -350,6 +349,6 @@ public class Persona {
 			if((i+1)%2!=0)
 				res+=s.charAt(i);
 	return res;
-	}
+	}	
 	
 }

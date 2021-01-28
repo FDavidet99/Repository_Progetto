@@ -9,22 +9,20 @@ import MyExceptions.EccezioneCF;
 public class Atleta extends Persona {
 	
 	private boolean HasProcuratore;
-	private List<ClubSportivo> ClubInCarriera;
-	private List<Contratto> Contratti;
 
 	public Atleta(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
 			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita, boolean hasProcuratore) throws SQLException, EccezioneCF {
 		super(nome, cognome, sessoPersona, dataNascita, nazioneNascita, provinciaNascita, comuneNascita);
-		setHasProcuratore(hasProcuratore);
+		HasProcuratore=hasProcuratore;
 	}
 	
 	public Atleta(String codiceFiscale,String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
 			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita, boolean hasProcuratore) throws SQLException, EccezioneCF {
 		super(codiceFiscale,nome, cognome, sessoPersona, dataNascita, nazioneNascita, provinciaNascita, comuneNascita);
-		setHasProcuratore(hasProcuratore);
+		HasProcuratore=hasProcuratore;
 	}
 
-	public boolean isHasProcuratore() {
+	public boolean HasProcuratore() {
 		return HasProcuratore;
 	}
 

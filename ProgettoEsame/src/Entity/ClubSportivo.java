@@ -7,7 +7,6 @@ public class ClubSportivo {
 	private String NomeClub;
 	private Nazione SedeLegale;
 	private boolean IsNazionale;
-	private List<Atleta> AtlentiComponenti;
 	
 	public ClubSportivo(String nomeClub, Nazione sedeLegale,boolean isNazionale) {
 		super();

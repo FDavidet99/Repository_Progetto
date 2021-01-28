@@ -35,9 +35,8 @@ public class InsertContratto extends JFrame {
 	private JTextField CompensoAtletaTextField;
 	private JTextField CompensoProcuratoreTextField;
 	private JTextField GettonePresenzaNazionaleTextField;
-	private List<Atleta> ElencoAtleti;
-	private List<ClubSportivo> ElencoClub;
-	private List<Sponsor> ElencoSponsor;
+	//private List<ClubSportivo> ElencoClub;
+	//private List<Sponsor> ElencoSponsor;
 	private JComboBox AtletaComboBox;
 	private JComboBox TipoContrattoComboBox;
 	private JComboBox SponsorComboBox;
@@ -118,7 +117,7 @@ public class InsertContratto extends JFrame {
 		CompensoProcuratoreLabel.setText("<html>Compenso del Procuratore : <br/> <br/>Totale : </html>");
 		contentPane.add(CompensoProcuratoreLabel);
 		
-	    ElencoAtleti=(ArrayList) controller.GetAtleti();
+		List<Atleta> ElencoAtleti=(ArrayList) controller.GetAtleti();
 		ArrayList<String> NomiAtleti = new ArrayList<String>();
 		for(Atleta a:ElencoAtleti)
 			NomiAtleti.add(a.getNome()+" "+a.getCognome());
@@ -162,7 +161,7 @@ public class InsertContratto extends JFrame {
 		contentPane.add(SponsorLabel);
 	
 		
-	    ElencoSponsor=(ArrayList) controller.GetSponsorForContratto();
+		List<Sponsor> ElencoSponsor=(ArrayList) controller.GetSponsorForContratto();
 		ArrayList<String> NomiSponsor = new ArrayList<String>();
 		for(Sponsor sponsor:ElencoSponsor)
 			NomiSponsor.add(sponsor.getNomeSponsor());
@@ -173,7 +172,7 @@ public class InsertContratto extends JFrame {
 		SponsorComboBox.setVisible(false);
 		contentPane.add(SponsorComboBox);
 			
-	    ElencoClub=(ArrayList)controller.GetClubForContratto();
+		 List<ClubSportivo> ElencoClub=(ArrayList)controller.GetClubForContratto();
 		ArrayList<String> NomiClub = new ArrayList<String>();
 		for(ClubSportivo club:ElencoClub)
 			NomiClub.add(club.getNomeClub());

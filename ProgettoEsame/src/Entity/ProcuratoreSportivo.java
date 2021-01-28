@@ -7,10 +7,7 @@ import java.util.List;
 import MyExceptions.EccezioneCF;
 
 public class ProcuratoreSportivo extends Persona {
-	private List<Ingaggio> IngaggioDaAtleta;
-	private List<Contratto> Contratti;
 	
-
 	public ProcuratoreSportivo(String nome, String cognome, Sesso sessoPersona, LocalDate dataNascita,
 			Nazione nazioneNascita, Provincia provinciaNascita, Comune comuneNascita) throws SQLException, EccezioneCF {
 		super(nome, cognome, sessoPersona, dataNascita, nazioneNascita, provinciaNascita, comuneNascita);
@@ -35,9 +32,4 @@ public class ProcuratoreSportivo extends Persona {
 		}
 	}
 	
-//	public void AddIngaggioDaAtleta(Ingaggio ingaggio) {
-//		ingaggio.setProcuratore(this); //non serve
-//		IngaggioDaAtleta.add(ingaggio);
-//	}
-
 }
