@@ -169,6 +169,7 @@ public class InsertIngaggio extends JFrame {
 		            Dialog.setBounds(400, 150, 230, 150);
 		            Dialog.setVisible(true);
 				} catch (NumberFormatException e1) {
+					e1.printStackTrace();
 					JDialog Dialog = new JDialog(); 
 					JLabel LabelJDialog= new JLabel("Cifra non compatibile con i dati ",SwingConstants.CENTER);
 		            Dialog.getContentPane().add(LabelJDialog); 

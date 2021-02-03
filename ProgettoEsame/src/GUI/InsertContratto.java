@@ -35,8 +35,6 @@ public class InsertContratto extends JFrame {
 	private JTextField CompensoAtletaTextField;
 	private JTextField CompensoProcuratoreTextField;
 	private JTextField GettonePresenzaNazionaleTextField;
-	//private List<ClubSportivo> ElencoClub;
-	//private List<Sponsor> ElencoSponsor;
 	private JComboBox AtletaComboBox;
 	private JComboBox TipoContrattoComboBox;
 	private JComboBox SponsorComboBox;
@@ -167,6 +165,13 @@ public class InsertContratto extends JFrame {
 			NomiSponsor.add(sponsor.getNomeSponsor());
 		
 		SponsorComboBox = new JComboBox(NomiSponsor.toArray());
+		SponsorComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CompensoAtletaTextField.setText(null);
+				CompensoProcuratoreTextField.setText(null);
+				GettonePresenzaNazionaleTextField.setText(null);
+			}
+		});
 		SponsorComboBox.setBounds(76, 89, 180, 22);
 		SponsorComboBox.setSelectedIndex(-1);
 		SponsorComboBox.setVisible(false);
@@ -180,6 +185,9 @@ public class InsertContratto extends JFrame {
 		ClubComboBox = new JComboBox(NomiClub.toArray());
 		ClubComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				CompensoAtletaTextField.setText(null);
+				CompensoProcuratoreTextField.setText(null);
+				GettonePresenzaNazionaleTextField.setText(null);
 				int IndexClub=ClubComboBox.getSelectedIndex();
 				ClubSportivo club;
 				if(IndexClub!=-1) {
@@ -201,6 +209,7 @@ public class InsertContratto extends JFrame {
 						GettonePresenzaNazionaleTextField.setVisible(false);
 						CompensoProcuratoreLabel.setVisible(true);
 						NomeProcuratoretextField.setVisible(true);
+						CompensoProcuratoreTextField.setVisible(true);
 						EuroLabel2.setVisible(true);
 					}
 				}
@@ -222,6 +231,9 @@ public class InsertContratto extends JFrame {
 		TipoContrattoComboBox.setSelectedIndex(-1);
 		TipoContrattoComboBox.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent arg0) {
+		    	GettonePresenzaNazionaleTextField.setText(null);
+		    	CompensoAtletaTextField.setText(null);
+				CompensoProcuratoreTextField.setText(null);
 		    	TipoContratto tipocontratto=(TipoContratto) TipoContrattoComboBox.getSelectedItem();
 		    	if(tipocontratto==null)
 		    		return;

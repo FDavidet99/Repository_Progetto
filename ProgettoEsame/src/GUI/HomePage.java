@@ -14,14 +14,6 @@ public class HomePage extends JFrame {
 
 	private JPanel contentPane;
 	Controller controller;
-
-	/**
-	 * Create the frame.
-	 * @param controller 
-	 */
-	public static void main(String[] args) {
-		new HomePage(new Controller());
-	}
 	
 	public HomePage(Controller c) {
 		controller=c;

@@ -26,8 +26,7 @@ public class InfoProcuratore extends JFrame {
 
 	private JPanel contentPane;
 	private ProcuratoreSportivo Procuratore;
-	private JTable TabellaStatistiche;
-	Controller controller;
+	private JTable TabellaStatistiche;	
 	private JTable TabellaMigliori;
 	private String[] ColonneTabContratti= {"Id Contratto", "Club/Sponsor", "Entita Stipulante","Data Inizio", "Data Fine", "Guadagno P."};
 	private String[] ColonneTabStoriaAtleti= {"Codice Fiscale A.","Nome","Cognome", "Data Inizio", "Data Fine", "Stipendio"};
@@ -39,6 +38,7 @@ public class InfoProcuratore extends JFrame {
 	private JDateChooser DataFineDateChooser;
 	private JRadioButton radioBtnIngaggiMigliori;
 	private JRadioButton radioBtnContrattiMigliori;
+	Controller controller;
 	
 	/**
 	 * Create the frame. 

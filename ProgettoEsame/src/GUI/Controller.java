@@ -40,7 +40,8 @@ public class Controller {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
-            Dialog.setBounds(400, 350, 200, 200);
+            Dialog.setBounds(350, 200, 200, 200);
+            Dialog.setAlwaysOnTop(true);
             Dialog.setVisible(true); 
 		}
 		HomePage=new HomePage(this);
@@ -65,6 +66,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
+            Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 350, 200, 200);
             Dialog.setVisible(true); 
             return false;
@@ -79,7 +81,8 @@ public class Controller {
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-            Dialog.add(LabelJDialog); 
+            Dialog.add(LabelJDialog);
+            Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(700, 150, 200, 200);
             Dialog.setVisible(true);
 		}
@@ -96,6 +99,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
+            Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 350, 200, 200);
             Dialog.setVisible(true);
 		}
@@ -112,7 +116,8 @@ public class Controller {
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-            Dialog.add(LabelJDialog); 
+            Dialog.add(LabelJDialog);
+            Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 350, 200, 200);
             Dialog.setVisible(true);
 		}
@@ -133,6 +138,7 @@ public class Controller {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
                 Dialog.add(LabelJDialog); 
+                Dialog.setAlwaysOnTop(true);
                 Dialog.setBounds(400, 250, 250, 200);
 	            Dialog.setVisible(true); 	
 			} catch (SQLException e1) {	
@@ -140,6 +146,7 @@ public class Controller {
 					JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 		            JLabel LabelJDialog= new JLabel("Atleta già presente",SwingConstants.CENTER); 
 	                Dialog.add(LabelJDialog); 
+	                Dialog.setAlwaysOnTop(true);
 	                Dialog.setBounds(400, 350, 200, 200);
 		            Dialog.setVisible(true); 
 				}
@@ -147,6 +154,7 @@ public class Controller {
 					JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 		            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 	                Dialog.add(LabelJDialog); 
+	                Dialog.setAlwaysOnTop(true);
 	                Dialog.setBounds(400, 350, 200, 200);
 		            Dialog.setVisible(true); 
 				}
@@ -171,6 +179,7 @@ public class Controller {
 				JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
 	            JLabel LabelJDialog= new JLabel("Il procuratore è stato inserito con successo",SwingConstants.CENTER); 
                 Dialog.add(LabelJDialog); 
+                Dialog.setAlwaysOnTop(true);
                 Dialog.setBounds(400,250, 270, 200);
 	            Dialog.setVisible(true); 
 	            PageInsertProcuratore.SvuotaCampi();		
@@ -178,6 +187,7 @@ public class Controller {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
                 Dialog.add(LabelJDialog); 
+                Dialog.setAlwaysOnTop(true);
                 Dialog.setBounds(400, 250, 250, 200);
 	            Dialog.setVisible(true); 	
 			} catch (SQLException e1) {	
@@ -185,6 +195,7 @@ public class Controller {
 					JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 		            JLabel LabelJDialog= new JLabel("Procuratore già presente",SwingConstants.CENTER); 
 	                Dialog.add(LabelJDialog); 
+	                Dialog.setAlwaysOnTop(true);
 	                Dialog.setBounds(400, 350, 200, 200);
 		            Dialog.setVisible(true); 
 				}
@@ -192,6 +203,7 @@ public class Controller {
 					JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 		            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 	                Dialog.add(LabelJDialog); 
+	                Dialog.setAlwaysOnTop(true);
 	                Dialog.setBounds(400, 350, 200, 200);
 		            Dialog.setVisible(true); 
 				}
@@ -221,6 +233,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
             JLabel LabelJDialog= new JLabel("Il procuratore è stato ingaggiato",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
+            Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400,250, 270, 200);
             Dialog.setVisible(true); 
 			PageInsertIngaggio.SvuotaCampi();
@@ -228,6 +241,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errori di inserimento dati"); 
             Dialog.add(LabelJDialog); 
+            Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 250, 250, 200);
             Dialog.setVisible(true);
 		} catch (SQLException e2) {	
@@ -235,13 +249,22 @@ public class Controller {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Ingaggio già presente",SwingConstants.CENTER); 
                 Dialog.add(LabelJDialog); 
+                Dialog.setAlwaysOnTop(true);
                 Dialog.setBounds(400, 350, 200, 200);
+	            Dialog.setVisible(true); 
+			} else if(Integer.parseInt(e2.getSQLState().toString())== 27000) {
+				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+	            JLabel LabelJDialog= new JLabel("L'Ingaggio si sovrappone temporalmente ad un ingaggio già esistente ",SwingConstants.CENTER); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setAlwaysOnTop(true);
+                Dialog.setBounds(400, 350, 430, 200);
 	            Dialog.setVisible(true); 
 			}
 			else {
 				JDialog Dialog = new JDialog(DialogErrori,"Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
                 Dialog.add(LabelJDialog); 
+                Dialog.setAlwaysOnTop(true);
                 Dialog.setBounds(400, 350, 200, 200);
 	            Dialog.setVisible(true); 
 			}
@@ -281,6 +304,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			Dialog.add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 350, 250, 200);
 			Dialog.setVisible(true); 
 		} 
@@ -296,12 +320,14 @@ public class Controller {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 			JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
 			Dialog.add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 250, 250, 200);
 			Dialog.setVisible(true); 			
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			Dialog.add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 350, 250, 200);
 			Dialog.setVisible(true); 
 		} 
@@ -368,7 +394,8 @@ public class Controller {
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-            Dialog.add(LabelJDialog); 
+            Dialog.add(LabelJDialog);
+            Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
 		}
@@ -384,6 +411,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
+            Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 350, 250, 200);
             Dialog.setVisible(true); 
 		}
@@ -403,6 +431,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(DialogErrori, "Successo"); 
             JLabel LabelJDialog= new JLabel("Il Contratto è stato registrato",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
+            Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400,250, 270, 200);
             Dialog.setVisible(true); 
 			PageInsertContratto.SvuotaCampi();
@@ -410,6 +439,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
             JLabel LabelJDialog= new JLabel("Errori di inserimento dati",SwingConstants.CENTER); 
             Dialog.add(LabelJDialog); 
+            Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 250, 250, 200);
             Dialog.setVisible(true);
 		} catch (SQLException e2) {	
@@ -417,13 +447,39 @@ public class Controller {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Contratto già presente",SwingConstants.CENTER); 
                 Dialog.add(LabelJDialog); 
+                Dialog.setAlwaysOnTop(true);
                 Dialog.setBounds(400, 350, 200, 200);
+	            Dialog.setVisible(true); 
+			}	
+			else if(Integer.parseInt(e2.getSQLState().toString())== 23514) {
+				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+	            JLabel LabelJDialog= new JLabel("Il gudagno del procuratore deve essere inferiore al compenso dell'atleta",SwingConstants.CENTER); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setAlwaysOnTop(true);
+                Dialog.setBounds(400, 350, 430, 200);
+	            Dialog.setVisible(true); 
+			}
+			else if(Integer.parseInt(e2.getSQLState().toString())== 27000) {
+				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+	            JLabel LabelJDialog= new JLabel("Il contratto si sovrappone temporalmente ad un contratto già presente",SwingConstants.CENTER); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setAlwaysOnTop(true);
+                Dialog.setBounds(400, 350, 430, 200);
+	            Dialog.setVisible(true); 
+			}
+			else if(Integer.parseInt(e2.getSQLState().toString())== 27001) {
+				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
+	            JLabel LabelJDialog= new JLabel("Il gettone presenza nazionale non deve essere inferiore o uguale a 0",SwingConstants.CENTER); 
+                Dialog.add(LabelJDialog); 
+                Dialog.setAlwaysOnTop(true);
+                Dialog.setBounds(400, 350, 430, 200);
 	            Dialog.setVisible(true); 
 			}
 			else {
 				JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 	            JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
                 Dialog.add(LabelJDialog); 
+                Dialog.setAlwaysOnTop(true);
                 Dialog.setBounds(400, 350, 200, 200);
 	            Dialog.setVisible(true); 
 			}
@@ -439,12 +495,14 @@ public class Controller {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 			JLabel LabelJDialog= new JLabel("Dati non compatibili con il sistema",SwingConstants.CENTER); 
 			Dialog.add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(700, 150, 200, 200);
 			Dialog.setVisible(true);
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			Dialog.add(LabelJDialog); 
+			Dialog.add(LabelJDialog);
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(700, 150, 200, 200);
 			Dialog.setVisible(true);
 		}
@@ -484,18 +542,21 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.getContentPane().add(LabelJDialog);
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}
@@ -536,18 +597,21 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}
@@ -579,18 +643,21 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.getContentPane().add(LabelJDialog);
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}
@@ -616,7 +683,8 @@ public class Controller {
 		} catch (EccezioneCF e) {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.getContentPane().add(LabelJDialog);
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
@@ -624,12 +692,14 @@ public class Controller {
 	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
             Dialog.setBounds(400, 150, 240, 150);
+            Dialog.setAlwaysOnTop(true);
 	        Dialog.setVisible(true);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}
@@ -671,18 +741,21 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Elementi non visualizzabili",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		} catch (SQLException e1) {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.getContentPane().add(LabelJDialog);
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Tutti i campi devono essere inseriti",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}				
@@ -713,13 +786,15 @@ public class Controller {
 		} catch (EccezioneCF e) {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.getContentPane().add(LabelJDialog);
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (SQLException e) {
@@ -727,6 +802,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}
@@ -763,6 +839,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Elementi non visualizzabili",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		} catch (SQLException e1) {
@@ -770,6 +847,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
@@ -777,6 +855,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Tutti i campi devono essere inseriti",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}	
@@ -802,6 +881,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Elementi non visualizzabili",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		} catch (SQLException e1) {
@@ -809,6 +889,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
@@ -816,6 +897,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Tutti i campi devono essere inseriti",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}	
@@ -861,6 +943,7 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
@@ -868,12 +951,14 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.getContentPane().add(LabelJDialog);
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}
@@ -918,18 +1003,21 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
-			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.getContentPane().add(LabelJDialog);
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}
@@ -955,19 +1043,22 @@ public class Controller {
 		} catch (EccezioneCF e) {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
-	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.getContentPane().add(LabelJDialog);
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}
@@ -993,26 +1084,24 @@ public class Controller {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Caratteri non visualizzabili",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (NullPointerException e1) {
 			JDialog Dialog = new JDialog(); 
 	        JLabel LabelJDialog= new JLabel("Non è stato trovato nulla",SwingConstants.CENTER); 
 	        Dialog.getContentPane().add(LabelJDialog); 
+	        Dialog.setAlwaysOnTop(true);
             Dialog.setBounds(400, 150, 240, 150);
 	        Dialog.setVisible(true);
 		} catch (SQLException e) {
 			JDialog Dialog = new JDialog(); 
 			JLabel LabelJDialog= new JLabel("Errore di connessione",SwingConstants.CENTER); 
 			Dialog.getContentPane().add(LabelJDialog); 
+			Dialog.setAlwaysOnTop(true);
 			Dialog.setBounds(400, 150, 250, 200);
 			Dialog.setVisible(true);
 		}
 		return Contenutotab;
-	}
-
-
-	
+	}	
 }
-
-
