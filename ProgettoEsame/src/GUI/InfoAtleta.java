@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
 import java.beans.PropertyChangeListener;
+import java.sql.Date;
 import java.beans.PropertyChangeEvent;
 
 public class InfoAtleta extends JFrame {
@@ -76,7 +77,8 @@ public class InfoAtleta extends JFrame {
 		contentPane.add(ProcuratoreAttivoField);
 		ProcuratoreAttivoField.setColumns(10);
 		ProcuratoreSportivo procuratore;
-		procuratore = controller.GetProcuratoreAtletaAttivo(atleta);
+		java.sql.Date date= java.sql.Date.valueOf(LocalDate.now());
+		procuratore = controller.GetProcuratoreAtletaAttivo(atleta,date,date);
 		if(procuratore!=null)
 			ProcuratoreAttivoField.setText(procuratore.getNome()+" "+procuratore.getCognome());
 		else {

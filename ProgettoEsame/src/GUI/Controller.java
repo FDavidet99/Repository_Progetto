@@ -1,5 +1,6 @@
 package GUI;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -486,11 +487,11 @@ public class Controller {
 		} 
 	}
 
-	public ProcuratoreSportivo GetProcuratoreAtletaAttivo(Atleta atleta) {
+	public ProcuratoreSportivo GetProcuratoreAtletaAttivo(Atleta atleta,Date DataInizio,Date DataFine) {
 		ProcuratoreSportivo procuratore=null;
 		try {
 			ImplementationDAO DAO = ControllerDAO.getInstance().getDAO();
-			procuratore = DAO.GetProcuratoreAttivo(atleta);
+			procuratore = DAO.GetProcuratoreAttivo(atleta,DataInizio,DataFine);
 		} catch (EccezioneCF e) {
 			JDialog Dialog = new JDialog(DialogErrori, "Attenzione"); 
 			JLabel LabelJDialog= new JLabel("Dati non compatibili con il sistema",SwingConstants.CENTER); 

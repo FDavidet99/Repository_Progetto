@@ -61,8 +61,8 @@ public class InsertProcuratoreSportivo extends JFrame {
 		Label TitoloLabel =  new Label();
 		TitoloLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		TitoloLabel.setBackground(UIManager.getColor("Panel.background"));
-		TitoloLabel.setText("Inserire i dati del nuovo atleta");
-		TitoloLabel.setBounds(10, 6, 267, 22);
+		TitoloLabel.setText("Inserire i dati del nuovo procuratore sportivo");
+		TitoloLabel.setBounds(10, 6, 400, 22);
 		contentPane.add(TitoloLabel);
 		
 		NomeTextField = new JTextField();
@@ -140,16 +140,17 @@ public class InsertProcuratoreSportivo extends JFrame {
 		contentPane.add(ComuneLabel);
 		
 		ComuneComboBox = new JComboBox();
-		ComuneComboBox.setBounds(83, 169, 113, 22);
+		ComuneComboBox.setBounds(83, 169, 160, 22);
 		ComuneComboBox.setSelectedIndex(-1);
 		contentPane.add(ComuneComboBox);
 		
-		JButton Nazione_Button = new JButton("Prosegui");
-		Nazione_Button.setBounds(240, 103, 93, 24);
-		contentPane.add(Nazione_Button);
+		JButton NazioneButton = new JButton("Prosegui");
+		NazioneButton.setBounds(260, 103, 93, 24);
+		contentPane.add(NazioneButton);
+		NazioneButton.setVisible(false);
 		
 		JButton ProvinciaButton = new JButton("Prosegui");
-		ProvinciaButton.setBounds(240, 136, 93, 24);
+		ProvinciaButton.setBounds(260, 136, 93, 24);
 		contentPane.add(ProvinciaButton);
 		ProvinciaButton.setVisible(false);
 		
@@ -160,7 +161,7 @@ public class InsertProcuratoreSportivo extends JFrame {
 				ComuneComboBox.setVisible(false);
 			}
 		});
-		ProvinciaComboBox.setBounds(84, 136, 115, 22);
+		ProvinciaComboBox.setBounds(84, 136, 160, 22);
 		ProvinciaComboBox.setSelectedIndex(-1);
 		contentPane.add(ProvinciaComboBox);	
 		
@@ -172,11 +173,17 @@ public class InsertProcuratoreSportivo extends JFrame {
     			ComuneLabel.setVisible(false);
     			ComuneComboBox.setVisible(false);
     			ProvinciaButton.setVisible(false);
-    			
+    			int IndexNazione = NazioneComboBox.getSelectedIndex();
+    			if(IndexNazione==-1)
+    				return;
+				if (controller.NazioneIsItalia(IndexNazione))
+					NazioneButton.setVisible(true);
+				else
+					NazioneButton.setVisible(false);
     		}
     	});
     	NazioneComboBox.setSelectedIndex(-1);
-		NazioneComboBox.setBounds(83, 105, 113, 20);
+		NazioneComboBox.setBounds(83, 105, 160, 20);
     	contentPane.add(NazioneComboBox);
 		
 		CfTextField = new JTextField();
@@ -193,7 +200,6 @@ public class InsertProcuratoreSportivo extends JFrame {
 		Insert_Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					
 					int IndexNazione = NazioneComboBox.getSelectedIndex();
 					int IndexProvincia=ProvinciaComboBox.getSelectedIndex();
 					int IndexComune=ComuneComboBox.getSelectedIndex();	
@@ -252,7 +258,7 @@ public class InsertProcuratoreSportivo extends JFrame {
 		RestoreButton.setBounds(334, 258, 89, 23);
 		contentPane.add(RestoreButton);
 		
-		Nazione_Button.addActionListener(new ActionListener() {
+		NazioneButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
 					try {
 						int IndexNazione = NazioneComboBox.getSelectedIndex();
@@ -298,6 +304,7 @@ public class InsertProcuratoreSportivo extends JFrame {
 								}
 							});
 						} else {
+							NazioneButton.setVisible(false);
 							ProvinciaLabel.setVisible(false);
 							ProvinciaComboBox.setVisible(false);
 							ComuneLabel.setVisible(false);

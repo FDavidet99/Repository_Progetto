@@ -57,7 +57,7 @@ public class InsertIngaggio extends JFrame {
 		AtletaLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		AtletaLabel.setBackground(UIManager.getColor("Button.background"));
 		AtletaLabel.setText("Atleta");
-		AtletaLabel.setBounds(293, 70, 44, 22);
+		AtletaLabel.setBounds(300, 70, 44, 22);
 		contentPane.add(AtletaLabel);
 		
 		Label DataInizioLabel = new Label();
@@ -73,7 +73,7 @@ public class InsertIngaggio extends JFrame {
 			nomiProcuratori.add(a.getNome()+" "+a.getCognome());
 	
 		ProcuratoreComboBox = new JComboBox(nomiProcuratori.toArray());
-		ProcuratoreComboBox.setBounds(114, 70, 100, 22);
+		ProcuratoreComboBox.setBounds(114, 70, 175, 22);
 		ProcuratoreComboBox.setSelectedIndex(-1);
 		contentPane.add(ProcuratoreComboBox);
 		
@@ -84,7 +84,7 @@ public class InsertIngaggio extends JFrame {
 			nomiAtleti.add(a.getNome()+" "+a.getCognome());
 		
 		AtletaComboBox = new JComboBox(nomiAtleti.toArray());
-		AtletaComboBox.setBounds(343, 70, 100, 22);
+		AtletaComboBox.setBounds(345, 70, 175, 22);
 		AtletaComboBox.setSelectedIndex(-1);
 		contentPane.add(AtletaComboBox);
 		

@@ -132,16 +132,17 @@ public class InsertAtleta extends JFrame {
 		contentPane.add(ComuneLabel);
 		
 		ComuneComboBox = new JComboBox();
-		ComuneComboBox.setBounds(86, 170, 113, 22);
+		ComuneComboBox.setBounds(86, 170, 160, 22);
 		ComuneComboBox.setSelectedIndex(-1);
 		contentPane.add(ComuneComboBox);
 		
-		JButton Nazione_Button = new JButton("Prosegui");
-		Nazione_Button.setBounds(240, 103, 93, 24);
-		contentPane.add(Nazione_Button);
+		JButton NazioneButton = new JButton("Prosegui");
+		NazioneButton.setBounds(260, 103, 93, 24);
+		contentPane.add(NazioneButton);
+		NazioneButton.setVisible(false);
 		
 		JButton ProvinciaButton = new JButton("Prosegui");
-		ProvinciaButton.setBounds(240, 136, 93, 24);
+		ProvinciaButton.setBounds(260, 136, 93, 24);
 		contentPane.add(ProvinciaButton);
 		ProvinciaButton.setVisible(false);
 		
@@ -152,25 +153,30 @@ public class InsertAtleta extends JFrame {
 				ComuneComboBox.setVisible(false);
 			}
 		});
-		ProvinciaComboBox.setBounds(84, 136, 115, 22);
+		ProvinciaComboBox.setBounds(84, 136, 160, 22);
 		ProvinciaComboBox.setSelectedIndex(-1);
 		contentPane.add(ProvinciaComboBox);	
 		
 		NazioneComboBox = new JComboBox (NomiNazioni.toArray());
-    	NazioneComboBox.addActionListener(new ActionListener() {
+		NazioneComboBox.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
     			ProvinciaLabel.setVisible(false);
-    			ProvinciaComboBox.setVisible(false);		
+    			ProvinciaComboBox.setVisible(false);
     			ComuneLabel.setVisible(false);
     			ComuneComboBox.setVisible(false);
     			ProvinciaButton.setVisible(false);
-    			
+    			int IndexNazione = NazioneComboBox.getSelectedIndex();
+    			if(IndexNazione==-1)
+    				return;
+				if (controller.NazioneIsItalia(IndexNazione))
+					NazioneButton.setVisible(true);
+				else
+					NazioneButton.setVisible(false);
     		}
     	});
     	NazioneComboBox.setSelectedIndex(-1);
-		NazioneComboBox.setBounds(84, 103, 113, 20);
+		NazioneComboBox.setBounds(84, 103, 160, 20);
     	contentPane.add(NazioneComboBox);
-		
 		
 		CfTextField = new JTextField();
 		CfTextField.setEditable(false);
@@ -243,7 +249,7 @@ public class InsertAtleta extends JFrame {
 		RestoreButton.setBounds(334, 258, 89, 23);
 		contentPane.add(RestoreButton);
 		
-		Nazione_Button.addActionListener(new ActionListener() {
+		NazioneButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
 					try {
 						int IndexNazione = NazioneComboBox.getSelectedIndex();
@@ -289,6 +295,7 @@ public class InsertAtleta extends JFrame {
 								}
 							});
 						} else {
+							NazioneButton.setVisible(false);
 							ProvinciaLabel.setVisible(false);
 							ProvinciaComboBox.setVisible(false);
 							ComuneLabel.setVisible(false);

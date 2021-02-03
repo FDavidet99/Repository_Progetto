@@ -395,12 +395,10 @@ public class ImplementationDAO_Postgres extends ImplementationDAO {
 	}
 
 	@Override
-	public ProcuratoreSportivo GetProcuratoreAttivo(Atleta atleta) throws SQLException, EccezioneCF {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		String curDate = formatter.format(new Date(System.currentTimeMillis()));
+	public ProcuratoreSportivo GetProcuratoreAttivo(Atleta atleta,Date DataInizio,Date DataFine) throws SQLException, EccezioneCF {
 		StmGetProcuratoreAttivo.setString(1,atleta.getCF());
-		StmGetProcuratoreAttivo.setString(2,curDate);
-		StmGetProcuratoreAttivo.setString(3,curDate);
+		StmGetProcuratoreAttivo.setDate(2,DataInizio);
+		StmGetProcuratoreAttivo.setDate(3,DataFine);
 		ResultSet rs=StmGetProcuratoreAttivo.executeQuery();
 		ProcuratoreSportivo procuratore=null;
 		while(rs.next()) {

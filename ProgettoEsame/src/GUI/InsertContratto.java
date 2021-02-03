@@ -8,6 +8,8 @@ import java.awt.Font;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -44,7 +46,6 @@ public class InsertContratto extends JFrame {
 	private JTextField NomeProcuratoretextField;
 	Controller controller;
 	
-
 	/**
 	 * Create the frame.
 	 */
@@ -76,6 +77,7 @@ public class InsertContratto extends JFrame {
 		JLabel EuroLabel2 = new JLabel("\u200E\u20AC");
 		EuroLabel2.setBounds(422, 206, 16, 20);
 		contentPane.add(EuroLabel2);
+		EuroLabel2.setVisible(false);
 		
 		JLabel GettonePresenzaNazionaleLabel = new JLabel("Compenso Atleta");
 		GettonePresenzaNazionaleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -102,11 +104,13 @@ public class InsertContratto extends JFrame {
 		NomeProcuratoretextField.setBounds(441, 179, 117, 20);
 		contentPane.add(NomeProcuratoretextField);
 		NomeProcuratoretextField.setColumns(10);
+		NomeProcuratoretextField.setVisible(false);
 		
 		CompensoProcuratoreTextField = new JTextField();
 		CompensoProcuratoreTextField.setBounds(326, 206, 86, 20);
 		contentPane.add(CompensoProcuratoreTextField);
 		CompensoProcuratoreTextField.setColumns(10);
+		CompensoProcuratoreTextField.setVisible(false);
 		
 		JLabel CompensoProcuratoreLabel = new JLabel("Compenso Procuratore");
 		CompensoProcuratoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -114,6 +118,7 @@ public class InsertContratto extends JFrame {
 		CompensoProcuratoreLabel.setBounds(276, 178, 160, 48);
 		CompensoProcuratoreLabel.setText("<html>Compenso del Procuratore : <br/> <br/>Totale : </html>");
 		contentPane.add(CompensoProcuratoreLabel);
+		CompensoProcuratoreLabel.setVisible(false);
 		
 		List<Atleta> ElencoAtleti=(ArrayList) controller.GetAtleti();
 		ArrayList<String> NomiAtleti = new ArrayList<String>();
@@ -121,28 +126,7 @@ public class InsertContratto extends JFrame {
 			NomiAtleti.add(a.getNome()+" "+a.getCognome());
 		
 		AtletaComboBox = new JComboBox(NomiAtleti.toArray());
-		AtletaComboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int IndexAtleta=AtletaComboBox.getSelectedIndex();
-				if(IndexAtleta!=-1) {
-					ProcuratoreSportivo ProcuratoreAttivo=controller.GetProcuratoreAtletaAttivo(ElencoAtleti.get(IndexAtleta));
-					if( ProcuratoreAttivo == null) {
-						CompensoProcuratoreLabel.setVisible(false);
-						CompensoProcuratoreTextField.setVisible(false);
-						NomeProcuratoretextField.setVisible(false);
-						EuroLabel2.setVisible(false);
-					}
-					else {	
-						CompensoProcuratoreLabel.setVisible(true);
-						CompensoProcuratoreTextField.setVisible(true);
-						NomeProcuratoretextField.setVisible(true);
-						EuroLabel2.setVisible(true);
-						NomeProcuratoretextField.setText(ProcuratoreAttivo.getNome() +" "+ ProcuratoreAttivo.getCognome());
-					}
-				}
-			}
-		});
-		AtletaComboBox.setBounds(76, 52, 134, 22);
+		AtletaComboBox.setBounds(76, 52, 190, 22);
 		AtletaComboBox.setSelectedIndex(-1);
 		contentPane.add(AtletaComboBox);
 		
@@ -157,69 +141,6 @@ public class InsertContratto extends JFrame {
 		SponsorLabel.setBounds(24, 92, 54, 20);
 		SponsorLabel.setVisible(false);
 		contentPane.add(SponsorLabel);
-	
-		
-		List<Sponsor> ElencoSponsor=(ArrayList) controller.GetSponsorForContratto();
-		ArrayList<String> NomiSponsor = new ArrayList<String>();
-		for(Sponsor sponsor:ElencoSponsor)
-			NomiSponsor.add(sponsor.getNomeSponsor());
-		
-		SponsorComboBox = new JComboBox(NomiSponsor.toArray());
-		SponsorComboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CompensoAtletaTextField.setText(null);
-				CompensoProcuratoreTextField.setText(null);
-				GettonePresenzaNazionaleTextField.setText(null);
-			}
-		});
-		SponsorComboBox.setBounds(76, 89, 180, 22);
-		SponsorComboBox.setSelectedIndex(-1);
-		SponsorComboBox.setVisible(false);
-		contentPane.add(SponsorComboBox);
-			
-		 List<ClubSportivo> ElencoClub=(ArrayList)controller.GetClubForContratto();
-		ArrayList<String> NomiClub = new ArrayList<String>();
-		for(ClubSportivo club:ElencoClub)
-			NomiClub.add(club.getNomeClub());
-		
-		ClubComboBox = new JComboBox(NomiClub.toArray());
-		ClubComboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CompensoAtletaTextField.setText(null);
-				CompensoProcuratoreTextField.setText(null);
-				GettonePresenzaNazionaleTextField.setText(null);
-				int IndexClub=ClubComboBox.getSelectedIndex();
-				ClubSportivo club;
-				if(IndexClub!=-1) {
-					club = ElencoClub.get(IndexClub);
-					if(club.isIsNazionale()) {
-						CompensoAtletaLabel.setVisible(false);
-						CompensoAtletaTextField.setVisible(false);
-						GettonePresenzaNazionaleLabel.setVisible(true);
-						GettonePresenzaNazionaleTextField.setVisible(true);
-						NomeProcuratoretextField.setVisible(false);
-						CompensoProcuratoreLabel.setVisible(false);
-						CompensoProcuratoreTextField.setVisible(false);
-						EuroLabel2.setVisible(false);
-					}
-					else {
-						CompensoAtletaLabel.setVisible(true);
-						CompensoAtletaTextField.setVisible(true);
-						GettonePresenzaNazionaleLabel.setVisible(false);
-						GettonePresenzaNazionaleTextField.setVisible(false);
-						CompensoProcuratoreLabel.setVisible(true);
-						NomeProcuratoretextField.setVisible(true);
-						CompensoProcuratoreTextField.setVisible(true);
-						EuroLabel2.setVisible(true);
-					}
-				}
-				
-			}
-		});
-		ClubComboBox.setBounds(76, 89, 180, 22);
-		ClubComboBox.setSelectedIndex(-1);
-		ClubComboBox.setVisible(false);
-		contentPane.add(ClubComboBox);
 		
 		JLabel TipoContrattoLabel = new JLabel("Parti Contratto");
 		TipoContrattoLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -231,6 +152,10 @@ public class InsertContratto extends JFrame {
 		TipoContrattoComboBox.setSelectedIndex(-1);
 		TipoContrattoComboBox.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent arg0) {
+		    	CompensoProcuratoreLabel.setVisible(false);
+		    	NomeProcuratoretextField.setVisible(false);
+		    	CompensoProcuratoreTextField.setVisible(false);
+		    	EuroLabel2.setVisible(false);
 		    	GettonePresenzaNazionaleTextField.setText(null);
 		    	CompensoAtletaTextField.setText(null);
 				CompensoProcuratoreTextField.setText(null);
@@ -251,15 +176,6 @@ public class InsertContratto extends JFrame {
 					SponsorLabel.setVisible(true);
 					int IndexAtleta=AtletaComboBox.getSelectedIndex();
 					ClubComboBox.setSelectedIndex(-1);
-					if(IndexAtleta!=-1) {
-						ProcuratoreSportivo ProcuratoreAttivo =controller.GetProcuratoreAtletaAttivo(ElencoAtleti.get(IndexAtleta));
-						if( ProcuratoreAttivo != null) {
-							CompensoProcuratoreLabel.setVisible(true);
-							NomeProcuratoretextField.setVisible(true);
-							EuroLabel2.setVisible(true);
-						}
-							
-					}
 				}
 				GettonePresenzaNazionaleLabel.setVisible(false);
 				GettonePresenzaNazionaleTextField.setVisible(false);
@@ -268,13 +184,81 @@ public class InsertContratto extends JFrame {
 		    }
 		});
 		contentPane.add(TipoContrattoComboBox);
-		
-		DataInizioDateChooser = new JDateChooser();
+
+		 DataInizioDateChooser = new JDateChooser();
+		 DataInizioDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
+			 public void propertyChange(PropertyChangeEvent evt) {
+				 if(DataFineDateChooser==null || DataInizioDateChooser == null)
+					 return;
+				 if(DataInizioDateChooser.getCalendar() == null ||DataFineDateChooser.getCalendar() == null)
+					 return;
+				 LocalDate TempDateInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				 LocalDate TempDateFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				 if(TempDateFine.compareTo(TempDateInizio)<0) {
+					 NomeProcuratoretextField.setVisible(false);
+						CompensoProcuratoreLabel.setVisible(false);
+						CompensoProcuratoreTextField.setVisible(false);
+						EuroLabel2.setVisible(false);
+						return;	
+				 }
+				 int IndexAtleta=AtletaComboBox.getSelectedIndex();
+				 if(IndexAtleta!=-1) {
+					 ProcuratoreSportivo ProcuratoreAttivo=controller.GetProcuratoreAtletaAttivo(ElencoAtleti.get(IndexAtleta),java.sql.Date.valueOf(TempDateInizio),java.sql.Date.valueOf(TempDateFine));
+					 if(ProcuratoreAttivo == null) {
+						 CompensoProcuratoreLabel.setVisible(false);
+						 CompensoProcuratoreTextField.setVisible(false);
+						 NomeProcuratoretextField.setVisible(false);
+						 EuroLabel2.setVisible(false);
+					 }
+					 else {	
+						 CompensoProcuratoreLabel.setVisible(true);
+						 CompensoProcuratoreTextField.setVisible(true);
+						 NomeProcuratoretextField.setVisible(true);
+						 EuroLabel2.setVisible(true);
+						 NomeProcuratoretextField.setText(ProcuratoreAttivo.getNome() +" "+ ProcuratoreAttivo.getCognome());
+					 }
+				 }
+			 }
+		});
 		DataInizioDateChooser.setBounds(93, 136, 114, 20);
 		DataInizioDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataInizioDateChooser);
 		
 		DataFineDateChooser = new JDateChooser();
+		DataFineDateChooser.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				if(DataFineDateChooser==null || DataInizioDateChooser == null)
+					return;
+				if(DataInizioDateChooser.getCalendar() == null ||DataFineDateChooser.getCalendar() == null)
+					return;
+				LocalDate TempDateInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				LocalDate TempDateFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				if(TempDateFine.compareTo(TempDateInizio)<0) {
+					NomeProcuratoretextField.setVisible(false);
+					CompensoProcuratoreLabel.setVisible(false);
+					CompensoProcuratoreTextField.setVisible(false);
+					EuroLabel2.setVisible(false);
+					return;
+				}	
+				int IndexAtleta=AtletaComboBox.getSelectedIndex();
+				if(IndexAtleta!=-1) {
+					ProcuratoreSportivo ProcuratoreAttivo=controller.GetProcuratoreAtletaAttivo(ElencoAtleti.get(IndexAtleta),java.sql.Date.valueOf(TempDateInizio),java.sql.Date.valueOf(TempDateFine));
+					if( ProcuratoreAttivo == null) {
+						CompensoProcuratoreLabel.setVisible(false);
+						CompensoProcuratoreTextField.setVisible(false);
+						NomeProcuratoretextField.setVisible(false);
+						EuroLabel2.setVisible(false);
+					}
+					else {	
+						CompensoProcuratoreLabel.setVisible(true);
+						CompensoProcuratoreTextField.setVisible(true);
+						NomeProcuratoretextField.setVisible(true);
+						EuroLabel2.setVisible(true);
+						NomeProcuratoretextField.setText(ProcuratoreAttivo.getNome() +" "+ ProcuratoreAttivo.getCognome());
+					}
+				}
+			}
+		});
 		DataFineDateChooser.setBounds(335, 136, 117, 20);
 		DataFineDateChooser.setDateFormatString("yyyy/MM/dd");
 		contentPane.add(DataFineDateChooser);
@@ -289,13 +273,96 @@ public class InsertContratto extends JFrame {
 		DataFineLabel.setBounds(266, 136, 77, 20);
 		contentPane.add(DataFineLabel);
 		
+		List<Sponsor> ElencoSponsor=(ArrayList) controller.GetSponsorForContratto();
+		ArrayList<String> NomiSponsor = new ArrayList<String>();
+		for(Sponsor sponsor:ElencoSponsor)
+			NomiSponsor.add(sponsor.getNomeSponsor());
+		
+		SponsorComboBox = new JComboBox(NomiSponsor.toArray());
+		SponsorComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				NomeProcuratoretextField.setVisible(false);
+				CompensoProcuratoreLabel.setVisible(false);
+				CompensoProcuratoreTextField.setVisible(false);
+				EuroLabel2.setVisible(false);
+				CompensoAtletaTextField.setText(null);
+				CompensoProcuratoreTextField.setText(null);
+				GettonePresenzaNazionaleTextField.setText(null);
+				DataInizioDateChooser.setCalendar(null);
+				DataFineDateChooser.setCalendar(null);
+			}
+		});
+		SponsorComboBox.setBounds(76, 89, 180, 22);
+		SponsorComboBox.setSelectedIndex(-1);
+		SponsorComboBox.setVisible(false);
+		contentPane.add(SponsorComboBox);
+		
+		List<ClubSportivo> ElencoClub=(ArrayList)controller.GetClubForContratto();
+		ArrayList<String> NomiClub = new ArrayList<String>();
+		for(ClubSportivo club:ElencoClub)
+			NomiClub.add(club.getNomeClub());
+		
+		ClubComboBox = new JComboBox(NomiClub.toArray());
+		ClubComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CompensoAtletaTextField.setText(null);
+				CompensoProcuratoreTextField.setText(null);
+				GettonePresenzaNazionaleTextField.setText(null);
+				DataInizioDateChooser.setCalendar(null);
+				DataFineDateChooser.setCalendar(null);
+				int IndexClub=ClubComboBox.getSelectedIndex();
+				ClubSportivo club;
+				if(IndexClub!=-1) {
+					club = ElencoClub.get(IndexClub);
+					if(club.isIsNazionale()) {
+						CompensoAtletaLabel.setVisible(false);
+						CompensoAtletaTextField.setVisible(false);
+						GettonePresenzaNazionaleLabel.setVisible(true);
+						GettonePresenzaNazionaleTextField.setVisible(true);
+						NomeProcuratoretextField.setVisible(false);
+						CompensoProcuratoreLabel.setVisible(false);
+						CompensoProcuratoreTextField.setVisible(false);
+						EuroLabel2.setVisible(false);
+					}
+					else {
+						CompensoAtletaLabel.setVisible(true);
+						CompensoAtletaTextField.setVisible(true);
+						GettonePresenzaNazionaleLabel.setVisible(false);
+						GettonePresenzaNazionaleTextField.setVisible(false);
+					}
+				}
+			}
+		});
+		ClubComboBox.setBounds(76, 89, 250, 22);
+		ClubComboBox.setSelectedIndex(-1);
+		ClubComboBox.setVisible(false);
+		contentPane.add(ClubComboBox);
+		
+		AtletaComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DataInizioDateChooser.setCalendar(null);
+				DataFineDateChooser.setCalendar(null);
+				TipoContrattoComboBox.setSelectedIndex(-1);
+				CompensoAtletaTextField.setText(null);
+				CompensoProcuratoreTextField.setText(null);
+				ClubComboBox.setSelectedIndex(-1);
+				SponsorComboBox.setSelectedIndex(-1);
+				GettonePresenzaNazionaleTextField.setText(null);
+				NomeProcuratoretextField.setText(null);
+				CompensoProcuratoreLabel.setVisible(false);
+				CompensoProcuratoreTextField.setVisible(false);
+				NomeProcuratoretextField.setVisible(false);
+				EuroLabel2.setVisible(false);
+			}
+		});
+			
 		JButton RegistraButton = new JButton("Registra");
 		RegistraButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {		
+				try {			
 					int IndexAtleta=AtletaComboBox.getSelectedIndex();
 					LocalDate TempDateInizio=DataInizioDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-					LocalDate TempDateFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					LocalDate TempDateFine=DataFineDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();					
 					int IndexClub=ClubComboBox.getSelectedIndex();
 					int IndexSponsor=SponsorComboBox.getSelectedIndex();
 					Sponsor sponsor=null;
@@ -314,7 +381,7 @@ public class InsertContratto extends JFrame {
 					if(!(GettonePresenzaNazionaleTextField.getText().isEmpty()))
 						GettonePresenzaNazionale=Double.parseDouble(GettonePresenzaNazionaleTextField.getText());
 					
-					Contratto TmpContratto = new Contratto(controller.GetProcuratoreAtletaAttivo(ElencoAtleti.get(IndexAtleta)),ElencoAtleti.get(IndexAtleta), 
+					Contratto TmpContratto = new Contratto(controller.GetProcuratoreAtletaAttivo(ElencoAtleti.get(IndexAtleta),java.sql.Date.valueOf(TempDateInizio),java.sql.Date.valueOf(TempDateFine)),ElencoAtleti.get(IndexAtleta), 
 							TempDateInizio, TempDateFine, (TipoContratto) TipoContrattoComboBox.getSelectedItem(),club,sponsor,
 							CompAtleta,ComProcuratore, GettonePresenzaNazionale);
 			    	controller.InsertContratto(TmpContratto);
@@ -358,6 +425,7 @@ public class InsertContratto extends JFrame {
 		TitoloLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		TitoloLabel.setBounds(24, 11, 192, 18);
 		contentPane.add(TitoloLabel);
+		
 	}
 	
 	public void SvuotaCampi() {
